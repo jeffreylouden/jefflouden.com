@@ -15,7 +15,12 @@ function createlog {
         fi
         dots+="<dot$active>.$tooltip<\/dot>\n"
 
-        day=$(date -j -v-1d -f %Y-%m-%d $day +%Y-%m-%d)
+        if [ $(uname) = 'Darwin' ]; then
+            day=$(date -j -v-1d -f %Y-%m-%d $day +%Y-%m-%d)
+        elif [ $(uname) = 'Linux' ]; then
+            day=$(date -I -d "$day - 1 day")
+        fi
+        
     done
 
     cp template.html index.html
