@@ -49,10 +49,12 @@
 
     h2 {
       font-size: 1rem;
+      height: 16px;
+      width: 16px;
     }
 
     main {
-        font-size: .5rem;
+        font-size: .62rem;
         overflow-wrap: break-word;
     }
 
