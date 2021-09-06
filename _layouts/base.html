@@ -1,8 +1,0 @@
-<!doctype html>
-<html lang="en" itemscope itemtype="https://schema.org/WebPage">
-	{% capture additional_css %}{{ site.url}}/{{ page.additional_css }}{% endcapture %}
-	{% include header.html additional_css=additional_css %}
-	<body {% if page.body_class %}class="{{page.body_class}}"{% endif %}>
-		{{ content }}
-	</body>
-</html>
