@@ -32,7 +32,7 @@
     }
 
     header {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         text-align: right;
     }
 
@@ -44,6 +44,7 @@
     
     h1 {
       font-size: .75rem;
+      margin-right: 5px;
     }
 
     h2 {
