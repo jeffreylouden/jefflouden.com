@@ -24,7 +24,13 @@ function createlog {
     done
 
     cp template.html index.html
-    sed -i '' "s/%s/$dots/" index.html
+
+    if [ $(uname) = 'Darwin' ]; then
+        sed -i '' "s/%s/$dots/" index.html
+    elif [ $(uname) = 'Linux' ]; then
+        sed -i "s/%s/$dots/" index.html
+    fi
+    
 }
 
 echo -e "🏗 building..."
