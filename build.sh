@@ -28,7 +28,7 @@ function createlog {
     if [ $(uname) = 'Darwin' ]; then
         sed -i '' "s/%s/$dots/" index.html
     elif [ $(uname) = 'Linux' ]; then
-        sed -i "s/%s/$dots/" index.html
+        sed -i -f "s/%s/$dots/" index.html
     fi
     
 }
