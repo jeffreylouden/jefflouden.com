@@ -8,11 +8,17 @@ on:
     - cron:  '0 0 * * *'
   workflow_dispatch:
 jobs:
-  build:
+  generate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: ./build.sh
+  minify_and_commit:
+    runs-on: ubuntu-latest
+    needs: generate
+    steps:
+      - name: Minify Action
+        uses: anthonyftwang/minify-action@v1.0.1
       - name: Auto committing (re)generated) files
         uses: stefanzweifel/git-auto-commit-action@v3.0.0
         with:
