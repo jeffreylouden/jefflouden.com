@@ -3,17 +3,14 @@
 function createlog {
     last_day="1983-01-07"
     day=`date +"%Y-%m-%d"`
-
     dots=""
 
     while ! [[ $day < $last_day ]]; do
-        tooltip=""
-        active=""
         if test -f "log/$day"; then
-            tooltip="<tooltip>`cat log/$day`<\/tooltip>"
-            active=' class="active"'
+            dots+="<d title='`cat log/$day`'>.<\/d>"
+        else
+            dots+="."
         fi
-        dots+="<dot$active>.$tooltip<\/dot>\n"
 
         if [ $(uname) = 'Darwin' ]; then
             day=$(date -j -v-1d -f %Y-%m-%d $day +%Y-%m-%d)
@@ -23,7 +20,7 @@ function createlog {
         
     done
 
-    cp template.html index.html
+    cp index.template index.html
 
     if [ $(uname) = 'Darwin' ]; then
         sed -i '' "s/%s/$dots/" index.html
