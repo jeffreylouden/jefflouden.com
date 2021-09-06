@@ -5,6 +5,7 @@ function createlog {
     day=`date +"%Y-%m-%d"`
     dots=""
 
+    echo -e "generating log"
     while ! [[ $day < $last_day ]]; do
         if test -f "log/$day"; then
             dots+="<d title='`cat log/$day`'>.<\/d>"
@@ -20,12 +21,15 @@ function createlog {
         
     done
 
+    echo -e "copying over template"
     cp index.template index.html
 
     if [ $(uname) = 'Darwin' ]; then
-        sed -i '' "s/%s/$dots/" index.html
+        echo -e "[darwin] sed replacing"
+        sed -i '' "s/%s/$dots/g" index.html
     elif [ $(uname) = 'Linux' ]; then
-        sed -i "s/%s/$dots/" index.html
+        echo -e "[linux] sed replacing"
+        sed -i "s/%s/$dots/g" index.html
     fi
     
 }
