@@ -13,10 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: ./build.sh
-  minify_and_commit:
-    runs-on: ubuntu-latest
-    needs: generate
-    steps:
       - name: Minify Action
         uses: anthonyftwang/minify-action@v1.0.1
       - name: Auto committing (re)generated) files
