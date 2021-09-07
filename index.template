@@ -12,6 +12,7 @@
     :root {
         --black: #111419;
         --green: #2bcab2;
+        --pink: deeppink;
         --white: #eee;
     }
 
@@ -59,8 +60,8 @@
     }
 
     d {
-      color: var(--green);
-      cursor: pointer;
+      color: var(--pink);
+      cursor: help;
     }
 
     footer {
