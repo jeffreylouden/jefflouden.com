@@ -83,8 +83,8 @@
 <body>
   <header>
     <h1>Jeffrey Louden</h1>
-    <h2><a href="https://www.linkedin.com/in/jeffreylouden/" title="Jeffrey Louden on LinkedIn" rel="noopener">↗︎</a></h3>
-    <h2><a href="https://sr.ht/~louden/" title="Jeffrey Louden on Sourcehut" rel="noopener">↗︎</a></h3>
+    <h2><a href="https://www.linkedin.com/in/jeffreylouden/" title="Jeffrey Louden on LinkedIn" rel="noopener">↗︎</a></h2>
+    <h2><a href="https://sr.ht/~louden/" title="Jeffrey Louden on Sourcehut" rel="noopener">↗︎</a></h2>
   </header>
   <main>%s</main>
   <footer>
