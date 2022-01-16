@@ -11,7 +11,8 @@
 
     :root {
         --black: #111419;
-        --green: #2bcab2;
+        --green: #00e5ff;
+        --grey: slategrey;
         --pink: deeppink;
         --white: #eee;
     }
@@ -48,22 +49,23 @@
     }
 
     h2 {
-      font-size: 1rem;
-      height: 16px;
-      text-align: center;
-      width: 16px;
+      position: relative;
+      top: 5px;
     }
 
     main {
-        font-size: .62rem;
-        letter-spacing: 3px;
+        color: var(--grey);
+        font-size: .75rem;
+        letter-spacing: 1px;
         overflow-wrap: break-word;
         padding-bottom: 20px;
     }
 
     d {
-      color: var(--pink);
+      color: var(--green);
       cursor: help;
+      position: relative;
+      top: 1px;
     }
 
     footer {
@@ -89,8 +91,22 @@
 <body>
   <header>
     <h1>Jeffrey Louden</h1>
-    <h2><a href="https://www.linkedin.com/in/jeffreylouden/" title="Jeffrey Louden on LinkedIn" rel="noopener">↗︎</a></h2>
-    <h2><a href="https://sr.ht/~louden/" title="Jeffrey Louden on Sourcehut" rel="noopener">↗︎</a></h2>
+    <h2>
+      <a href="https://www.linkedin.com/in/jeffreylouden/" title="Jeffrey Louden on LinkedIn" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+          <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"></path>
+          <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"></path>
+        </svg>
+      </a>
+    </h2>
+    <h2>
+      <a href="https://sr.ht/~louden/" title="Jeffrey Louden on Sourcehut" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+          <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"></path>
+          <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"></path>
+        </svg>
+      </a>
+    </h2>
   </header>
   <main>%s</main>
   <footer>
