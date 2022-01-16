@@ -1,0 +1,49 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "install rubygems",
+        "command": "yay -S rubygems",
+        "type": "shell"
+      },
+      {
+        "label": "rvm install",
+        "command": "rvm install 2.5.0",
+        "type": "shell"
+      },
+      {
+        "dependsOn": [
+          "rvm install"
+        ],
+        "label": "rvm use",
+        "command": "rvm use 2.5.0",
+        "type": "shell"
+      },
+      {
+        "dependsOn": [
+          "install rubygems"
+        ],
+        "label": "install bundler",
+        "command": "gem install bundler:2.1.2",
+        "type": "shell"
+      },
+      {
+        "dependsOn": [
+          "install rubygems",
+          "rvm install"
+        ],
+        "label": "bundle install",
+        "command": "bundle install",
+        "type": "shell"
+      },
+      {
+        "dependsOn": [
+          "bundle install",
+          "rvm use"
+        ],
+        "label": "jekyll",
+        "command": "bundle exec jekyll serve",
+        "type": "shell"
+      }
+    ]
+  }
