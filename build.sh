@@ -8,9 +8,9 @@ function createlog {
     echo -e "generating log"
     while ! [[ $day < $last_day ]]; do
         if test -f "log/$day"; then
-            dots+="<d title='`cat log/$day`'>・<\/d>"
+            dots+="<d title='`cat log/$day`'>1<\/d>"
         else
-            dots+="・"
+            dots+="0"
         fi
 
         if [ $(uname) = 'Darwin' ]; then
