@@ -22,14 +22,14 @@ function createlog {
     done
 
     echo -e "copying over template"
-    cp index.template index.html
+    cp index.template public/index.html
 
     if [ $(uname) = 'Darwin' ]; then
         echo -e "[darwin] sed replacing"
-        sed -i '' "s/%s/$dots/g" index.html
+        sed -i '' "s/%s/$dots/g" public/index.html
     elif [ $(uname) = 'Linux' ]; then
         echo -e "[linux] sed replacing"
-        sed -i "s/%s/$dots/g" index.html
+        sed -i "s/%s/$dots/g" public/index.html
     fi
     
 }
