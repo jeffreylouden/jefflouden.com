@@ -1,8 +1,7 @@
 image: alpine/latest
 oauth: pages.sr.ht/PAGES:RW
 environment:
-  site: jefflouden.com
-tasks:
+  site: your-usernamelouden
 - package: |
     cd $site
     ./build.sh
