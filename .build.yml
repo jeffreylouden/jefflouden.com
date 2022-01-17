@@ -1,7 +1,8 @@
 image: alpine/latest
 oauth: pages.sr.ht/PAGES:RW
 environment:
-  site: your-usernamelouden
+  site: louden.srht.site
+tasks:
 - package: |
     cd $site
     ./build.sh
