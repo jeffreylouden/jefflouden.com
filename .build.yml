@@ -4,7 +4,6 @@ environment:
   site: louden.srht.site
 tasks:
 - package: |
-    cd $site
     ./build.sh
     tar -cvz public > ../site.tar.gz
 - upload: |
