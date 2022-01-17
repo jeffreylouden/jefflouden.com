@@ -5,6 +5,8 @@ function createlog {
     day=`date +%Y-%m-%d`
     dots=""
 
+    echo $day
+
     echo -e "generating log"
     while ! [[ $day < $last_day ]]; do
         if test -f "log/$day"; then
@@ -14,6 +16,7 @@ function createlog {
         fi
 
         day=$(date -d "$day -1 days" +%Y-%m-%d)
+        echo $day
         
     done
 
