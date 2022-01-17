@@ -1,0 +1,11 @@
+image: alpine/latest
+oauth: pages.sr.ht/PAGES:RW
+environment:
+  site: jefflouden.com
+tasks:
+- package: |
+    cd $site
+    ./build.sh
+    tar -cvz public > ../site.tar.gz
+- upload: |
+    acurl -f https://pages.sr.ht/publish/$site -Fcontent=@site.tar.gz
