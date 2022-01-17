@@ -3,5 +3,9 @@
     "bash": {
       "path": "/bin/bash"
     }
-  }
+  },
+  "cSpell.words": [
+    "acurl",
+    "Fcontent"
+  ]
 }
