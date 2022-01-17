@@ -9,4 +9,4 @@ tasks:
     cd public
     tar -cvz . > site.tar.gz
 - upload: |
-    acurl -f https://pages.sr.ht/publish/$site -Fcontent=@site.tar.gz
+    acurl -f https://pages.sr.ht/publish/$site -Fcontent=@public/site.tar.gz
