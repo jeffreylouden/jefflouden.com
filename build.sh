@@ -5,8 +5,6 @@ function createlog {
     day=`date +%Y-%m-%d`
     dots=""
 
-    echo $day
-
     echo -e "generating log"
     while ! [[ $day < $last_day ]]; do
         if test -f "log/$day"; then
@@ -15,9 +13,7 @@ function createlog {
             dots+="-"
         fi
 
-        day=$(date -d "$day -1 days" +%Y-%m-%d)
-        echo $day
-        
+        day=$(date -d "$day -1 days" +%Y-%m-%d)        
     done
 
     echo -e "copying over template"
@@ -30,7 +26,6 @@ function createlog {
         echo -e "[linux] sed replacing"
         sed -i "s/%s/$dots/g" public/index.html
     fi
-    
 }
 
 echo -e "🏗 building..."
