@@ -13,7 +13,7 @@ function createlog {
             dots+="-"
         fi
 
-        day=$(date -d "$day -1 day" +%Y-%m-%d)
+        day=$(date -d "$day -1 days" +%Y-%m-%d)
         
     done
 
