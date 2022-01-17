@@ -1,9 +1,10 @@
 image: alpine/latest
 oauth: pages.sr.ht/PAGES:RW
 environment:
-  site: louden.srht.site
+  site: jefflouden.com
 tasks:
 - package: |
+    cd $site
     ./build.sh
     tar -cvz public > ../site.tar.gz
 - upload: |
