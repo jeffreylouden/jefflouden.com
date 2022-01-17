@@ -7,7 +7,6 @@ tasks:
     cd $site
     ./build.sh
     cd public
-    tar -cvz . > ../site.tar.gz
-    cd ..
+    tar -cvz . > site.tar.gz
 - upload: |
     acurl -f https://pages.sr.ht/publish/$site -Fcontent=@site.tar.gz
