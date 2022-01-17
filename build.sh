@@ -2,7 +2,7 @@
 
 function createlog {
     last_day="1983-01-07"
-    day=`date +"%Y-%m-%d"`
+    day=`date +%Y-%m-%d`
     dots=""
 
     echo -e "generating log"
@@ -13,11 +13,7 @@ function createlog {
             dots+="-"
         fi
 
-        if [ $(uname) = 'Darwin' ]; then
-            day=$(date -j -v-1d -f %Y-%m-%d $day +%Y-%m-%d)
-        elif [ $(uname) = 'Linux' ]; then
-            day=$(date -I -d "$day 12:00 -0500 -1 day" +%Y-%m-%d)
-        fi
+        day=$(date -I -d "$day -1 day")
         
     done
 
