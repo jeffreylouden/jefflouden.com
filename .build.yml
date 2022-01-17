@@ -1,4 +1,4 @@
-image: alpine/latest
+image: archlinux
 oauth: pages.sr.ht/PAGES:RW
 environment:
   site: jefflouden.com
