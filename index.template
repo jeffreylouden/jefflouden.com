@@ -12,8 +12,7 @@
     :root {
         --black: #111419;
         --green: #00e5ff;
-        --grey: slategrey;
-        --pink: deeppink;
+        --grey: #222;
         --white: #eee;
     }
 
@@ -75,6 +74,10 @@
       padding: 10px 2%;
       right: 0;
     }
+
+    footer a {
+      text-decoration: underline;
+    }
   </style>
   <meta name="robots" content="all">
   <meta name="author" content="Jeffrey Louden">
@@ -109,7 +112,7 @@
   </header>
   <main>%s</main>
   <footer>
-    <small>&copy; 2004-<time>2021</time> Jeffrey Louden. All Rights Reserved.</small>
+    <small>&copy; 2004-<time>2021</time> Jeffrey Louden. All Rights Reserved. <a href="https://github.com/jeffreylouden/jefflouden.com" title="Source Code on GitHub">source</a></small>
   </footer>
   <script type="application/ld+json">
       {
