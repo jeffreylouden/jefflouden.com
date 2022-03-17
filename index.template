@@ -73,13 +73,13 @@
     main {
         color: var(--black);
         cursor: default;
-        font-size: 1rem;
+        font-size: .6rem;
         overflow-wrap: break-word;
         padding-bottom: 20px;
     }
 
     d {
-      animation: pulse 6s infinite;
+      animation: pulse 10s infinite;
       color: var(--green);
       cursor: pointer;
       opacity: .5;
