@@ -53,7 +53,7 @@
     }
 
     main {
-        color: var(--grey);
+        color: var(--black);
         cursor: default;
         font-size: 1rem;
         overflow-wrap: break-word;
