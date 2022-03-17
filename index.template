@@ -79,7 +79,7 @@
     }
 
     d {
-      animation: pulse 2s infinite;
+      animation: pulse 6s infinite;
       color: var(--green);
       opacity: .5;
       position: relative;
