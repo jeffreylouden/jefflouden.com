@@ -1,5 +1,7 @@
 image: archlinux
 oauth: pages.sr.ht/PAGES:RW
+packages:
+- hut
 environment:
   site: jefflouden.com
 tasks:
@@ -9,4 +11,4 @@ tasks:
     cd public
     tar -cvz . > ../../site.tar.gz
 - upload: |
-    acurl -f https://pages.sr.ht/publish/$site -Fcontent=@site.tar.gz
+    hut pages publish -d $site site.tar.gz
