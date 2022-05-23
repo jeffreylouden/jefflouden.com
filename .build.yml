@@ -7,7 +7,6 @@ environment:
 tasks:
 - package: |
     cd $site
-    ./build.sh
     cd public
     tar -cvz . > ../../site.tar.gz
 - upload: |
