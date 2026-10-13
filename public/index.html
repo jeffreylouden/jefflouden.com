@@ -1,146 +1,381 @@
 <!doctype html>
-<html lang="en-us" itemscope itemtype="https://schema.org/WebPage">
+<html lang="en-US">
 <head>
   <meta charset="utf-8">
-  <title>Jeffrey Louden – Builder</title>
-  <style>a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{border:0;font:inherit;font-size:100%;margin:0;padding:0;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:"";content:none}table{border-collapse:collapse;border-spacing:0}body::-moz-selection,body::selection,html::-moz-selection,html::selection{background:#ff0}em{font-style:italic}</style>
-  <style>
-
-    :root {
-        --black: #111419;
-        --green: #00e5ff;
-        --white: #eee;
-    }
-
-    body {
-        -webkit-font-smoothing: antialiased;
-        -webkit-text-size-adjust: 100%;
-        background-color: var(--black);
-        box-sizing: border-box;
-        color: var(--white);
-        font-family: 'whois mono', 'akkurat mono', 'basis grotesque pro mono', 'space mono', 'courier new', courier, monospace;
-        font-size: 62.5%;
-        margin: 2%;
-    }
-
-    a {
-      color: var(--white);
-      text-decoration: none;
-    }
-
-    h1 {
-      margin-bottom: 10px;
-    }
-
-    main {
-      font-size: 1rem;
-      line-height: 1.5;
-      max-width: 68ch;
-      padding-bottom: 60px;
-    }
-
-    section {
-      margin-top: 2rem;
-    }
-
-    h3 {
-      color: var(--green);
-      margin-bottom: 0.5rem;
-    }
-
-    main a {
-      border-bottom: 1px solid var(--green);
-    }
-
-    main a:hover,
-    main a:focus-visible {
-      color: var(--green);
-    }
-
-    .muted {
-      opacity: 0.7;
-    }
-
-    footer {
-      background: var(--black);
-      bottom: 0;
-      font-size: 12px;
-      left: 0;
-      position: fixed;
-      padding: 10px 2%;
-      right: 0;
-    }
-
-    footer a {
-      color: var(--white);
-      text-decoration: underline;
-    }
-  </style>
-  <meta name="author" content="Jeffrey Louden">
-  <meta name="description" content="Engineering leader. SVP, Engineering at The Atlantic and founder of Existential Software Company. Formerly TIME, Lyft, The New York Times, Google, The New Yorker, and Obama for America.">
-  <link rel="canonical" href="https://jefflouden.com">
-  <meta itemprop="image" content="https://jefflouden.com/beard.jpg">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="https://jefflouden.com/favicon.ico">
+  <title>Jeffrey Louden</title>
+  <meta name="author" content="Jeffrey Louden">
+  <meta name="description" content="Jeffrey Louden is SVP, Engineering at The Atlantic and founder of Existential Software Company. Previously TIME, Lyft, The New York Times, Google, The New Yorker, and Obama for America.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f2efe8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://jefflouden.com">
+  <link rel="icon" href="favicon.ico">
+  <link rel="preload" href="fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="me" href="https://github.com/jeffreylouden">
   <link rel="me" href="https://www.linkedin.com/in/jeffreylouden/">
   <meta property="og:type" content="profile">
   <meta property="og:title" content="Jeffrey Louden">
-  <meta property="og:description" content="Engineering leader. SVP, Engineering at The Atlantic.">
+  <meta property="og:description" content="SVP, Engineering at The Atlantic.">
   <meta property="og:url" content="https://jefflouden.com">
   <meta property="og:image" content="https://jefflouden.com/jeffrey-louden.jpg">
   <meta property="profile:first_name" content="Jeffrey">
   <meta property="profile:last_name" content="Louden">
   <meta name="twitter:card" content="summary">
+  <style>
+    /* Fonts are self-hosted (SIL OFL, see fonts/OFL-*.txt) so the page never depends on a third party. */
+    @font-face {
+      font-family: 'Instrument Sans';
+      src: url('fonts/instrument-sans.woff2') format('woff2');
+      font-weight: 400 600;
+      font-stretch: 75% 100%;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Newsreader';
+      src: url('fonts/newsreader.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Newsreader';
+      src: url('fonts/newsreader-italic.woff2') format('woff2');
+      font-weight: 400;
+      font-style: italic;
+      font-display: swap;
+    }
+
+    :root {
+      --paper: #f2efe8;
+      --ink: #1a1917;
+      --muted: #6f6b63;
+      --rule: #dedad0;
+      --clay: #c2593a;
+      --fog: #7d97b0;
+      --sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+      --serif: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #1a1917;
+        --ink: #ece9e1;
+        --muted: #9a958b;
+        --rule: #34322e;
+        --clay: #de7a5a;
+        --fog: #4d6378;
+      }
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+      background: var(--clay);
+      color: var(--paper);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--rule);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.2s, color 0.2s;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: var(--clay);
+      text-decoration-color: currentColor;
+    }
+
+    a:focus-visible {
+      outline: 2px solid var(--clay);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: clamp(48px, 12vw, 136px) 24px 96px;
+      display: grid;
+      gap: clamp(56px, 9vw, 88px);
+    }
+
+    h1,
+    h2,
+    h3,
+    p,
+    ol,
+    ul,
+    dl,
+    dd {
+      margin: 0;
+      padding: 0;
+    }
+
+    ol,
+    ul {
+      list-style: none;
+    }
+
+    h1 {
+      font-size: 15px;
+      font-weight: 500;
+      font-stretch: 100%;
+    }
+
+    .role-line {
+      color: var(--muted);
+    }
+
+    .intro {
+      font-family: var(--serif);
+      font-size: clamp(21px, 3.2vw, 26px);
+      line-height: 1.35;
+      letter-spacing: -0.005em;
+      max-width: 30ch;
+      text-wrap: pretty;
+    }
+
+    h2 {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .rows {
+      display: grid;
+      gap: 32px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 9.5rem 1fr;
+      gap: 4px 24px;
+      align-items: baseline;
+    }
+
+    .years {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .org {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .title {
+      color: var(--muted);
+    }
+
+    .title + .title {
+      margin-top: 2px;
+    }
+
+    .earlier {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 0;
+    }
+
+    .earlier li:not(:last-child)::after {
+      content: '·';
+      color: var(--muted);
+      padding: 0 0.6em;
+    }
+
+    .elsewhere {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 28px;
+    }
+
+    /* The band: a grainy fog with something glowing in it. */
+    .band {
+      position: relative;
+      height: clamp(200px, 32vw, 360px);
+      overflow: hidden;
+      background:
+        radial-gradient(14% 30% at 61% 88%, rgba(120, 10, 14, 0.95), transparent 70%),
+        radial-gradient(26% 55% at 59% 90%, rgba(194, 89, 58, 0.95), transparent 72%),
+        radial-gradient(40% 80% at 56% 96%, rgba(236, 196, 140, 0.95), transparent 72%),
+        radial-gradient(60% 90% at 52% 100%, rgba(242, 239, 232, 0.55), transparent 70%),
+        radial-gradient(60% 80% at 18% 15%, rgba(255, 255, 255, 0.16), transparent 70%),
+        linear-gradient(180deg, var(--fog), color-mix(in srgb, var(--fog) 70%, #1d2a36));
+    }
+
+    .band::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.35;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .band .whisper {
+      position: absolute;
+      left: 50%;
+      bottom: 22%;
+      transform: translateX(-50%);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 18px;
+      color: rgba(255, 244, 232, 0.85);
+      opacity: 0;
+      transition: opacity 2.4s ease-in 0.6s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .band:hover .whisper {
+      opacity: 0.8;
+    }
+
+    footer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 560px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .years {
+        order: -1;
+        font-size: 13px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
   <script defer data-domain="jefflouden.com" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
   <main>
     <header>
-        <h1>Jeffrey Louden</h1>
-        <h2>
-          work://<a href="https://www.linkedin.com/in/jeffreylouden/" title="Jeffrey Louden on LinkedIn" rel="me noopener">@jeffreylouden</a>
-        </h2>
-        <h2>
-          git://<a href="https://github.com/jeffreylouden" title="Jeffrey Louden on Github" rel="me noopener">@jeffreylouden</a>
-        </h2>
-        <h2>
-          mail://<a href="mailto:jeff@jefflouden.com" title="Email Jeffrey Louden">jeff@jefflouden.com</a>
-        </h2>
+      <h1>Jeffrey Louden</h1>
+      <p class="role-line">SVP, Engineering at The Atlantic</p>
     </header>
-    <section aria-labelledby="now">
-      <h3 id="now">now://</h3>
-      <p>SVP, Engineering at <a href="https://www.theatlantic.com" rel="noopener">The Atlantic</a>.</p>
-      <p>Founder, Existential Software Company.</p>
-      <p class="muted">Washington, D.C.</p>
+
+    <p class="intro">I lead engineering teams that build products for journalism and the people who read it. I care about broad technical depth, a customer-first product sense, and teams that are diverse, inclusive, and kind.</p>
+
+    <section aria-labelledby="work">
+      <h2 id="work">Work</h2>
+      <ol class="rows">
+        <li class="row">
+          <span class="years">2025 – Now</span>
+          <div>
+            <p class="org"><a href="https://www.theatlantic.com" rel="noopener">The Atlantic</a></p>
+            <p class="title">SVP, Engineering</p>
+            <p class="title">VP, Engineering, 2025 – 2026</p>
+          </div>
+        </li>
+        <li class="row">
+          <span class="years">2022 – Now</span>
+          <div>
+            <p class="org">Existential Software Company</p>
+            <p class="title">Founder</p>
+          </div>
+        </li>
+        <li class="row">
+          <span class="years">2021 – 2022</span>
+          <div>
+            <p class="org"><a href="https://time.com" rel="noopener">TIME</a></p>
+            <p class="title">VP, Software Engineering</p>
+          </div>
+        </li>
+        <li class="row">
+          <span class="years">2020</span>
+          <div>
+            <p class="org"><a href="https://www.lyft.com" rel="noopener">Lyft</a></p>
+            <p class="title">Engineering Manager II, Memberships</p>
+          </div>
+        </li>
+        <li class="row">
+          <span class="years">Earlier</span>
+          <ul class="earlier">
+            <li>The New York Times</li>
+            <li>Google</li>
+            <li>The New Yorker</li>
+            <li>Obama for America</li>
+          </ul>
+        </li>
+      </ol>
     </section>
-    <section aria-labelledby="about">
-      <h3 id="about">about://</h3>
-      <p>I'm a leader with a blend of broad technical expertise and customer-first product vision. I have a proven record of building diverse, inclusive, and empathetic teams that deliver exceptional quality products quickly.</p>
-    </section>
-    <section aria-labelledby="previously">
-      <h3 id="previously">previously://</h3>
-      <ul>
-        <li>VP, Engineering, The Atlantic <span class="muted">2025–2026</span></li>
-        <li>VP, Software Engineering, TIME <span class="muted">2021–2022</span></li>
-        <li>Engineering Manager II, Memberships, Lyft <span class="muted">2020</span></li>
-        <li>The New York Times</li>
-        <li>Google</li>
-        <li>The New Yorker</li>
-        <li>Obama for America</li>
+
+    <section aria-labelledby="school">
+      <h2 id="school">Education</h2>
+      <ul class="rows">
+        <li class="row">
+          <span class="years"></span>
+          <div>
+            <p class="org">Florida State University</p>
+            <p class="org">Berklee College of Music</p>
+          </div>
+        </li>
       </ul>
     </section>
-    <section aria-labelledby="education">
-      <h3 id="education">edu://</h3>
-      <ul>
-        <li>Florida State University</li>
-        <li>Berklee College of Music</li>
+
+    <section aria-labelledby="elsewhere">
+      <h2 id="elsewhere">Elsewhere</h2>
+      <ul class="elsewhere">
+        <li><a href="mailto:jeff@jefflouden.com">jeff@jefflouden.com</a></li>
+        <li><a href="https://github.com/jeffreylouden" rel="me noopener">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/jeffreylouden/" rel="me noopener">LinkedIn</a></li>
       </ul>
     </section>
   </main>
+
+  <div class="band" aria-hidden="true"><span class="whisper">they’re here.</span></div>
+
   <footer>
-    <small><a href="https://github.com/jeffreylouden/jefflouden.com" title="Source Code on Github" rel="noopener">source</a></small>
+    <span>Washington, D.C.</span>
+    <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a>
   </footer>
+
+  <script>
+    console.log('%cWe traced the call. It’s coming from inside the DevTools.', 'font: italic 14px Georgia, serif; color: #c2593a');
+  </script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -148,7 +383,7 @@
       "name": "Jeffrey Louden",
       "givenName": "Jeffrey",
       "familyName": "Louden",
-      "description": "I'm a leader with a blend of broad technical expertise and customer-first product vision.",
+      "description": "SVP, Engineering at The Atlantic and founder of Existential Software Company.",
       "email": "mailto:jeff@jefflouden.com",
       "image": "https://jefflouden.com/jeffrey-louden.jpg",
       "url": "https://jefflouden.com",
