@@ -112,26 +112,28 @@
       color: var(--paper);
     }
 
+    /* Links rest at 80% opacity with the underline color at 75% (60% effective),
+       and both go to full strength on hover. */
     a {
+      --b: var(--underline);
+      --ua: 75%;
       color: inherit;
       text-decoration: underline;
-      text-decoration-color: var(--underline);
+      text-decoration-color: var(--b);
+      text-decoration-color: color-mix(in srgb, var(--b) var(--ua), transparent);
       text-decoration-thickness: 1px;
       text-underline-offset: 3px;
       opacity: 0.8;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s, text-decoration-color 0.2s;
     }
 
     a:hover,
     a:focus-visible {
+      --ua: 100%;
       opacity: 1;
     }
 
     /* Brand underlines: each organization's own color. */
-    a[data-brand] {
-      text-decoration-color: var(--b);
-    }
-
     [data-brand="atlantic"] { --b: #e7131a; }
     [data-brand="existential"] { --b: #59c2cf; }
     [data-brand="time"] { --b: #e90606; }
@@ -146,12 +148,11 @@
     a[data-brand="google"] {
       text-decoration: none;
       padding-bottom: 3px;
-      background: linear-gradient(90deg, #4285f4 0 25%, #ea4335 25% 50%, #fbbc05 50% 75%, #34a853 75%) no-repeat left bottom / 100% 1px;
-    }
-
-    a[data-brand="google"]:hover,
-    a[data-brand="google"]:focus-visible {
-      background-size: 100% 2px;
+      background: linear-gradient(90deg,
+        color-mix(in srgb, #4285f4 var(--ua), transparent) 0 25%,
+        color-mix(in srgb, #ea4335 var(--ua), transparent) 25% 50%,
+        color-mix(in srgb, #fbbc05 var(--ua), transparent) 50% 75%,
+        color-mix(in srgb, #34a853 var(--ua), transparent) 75%) no-repeat left bottom / 100% 1px;
     }
 
     a:focus-visible {
