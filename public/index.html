@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Jeffrey Louden – Builder</title>
-  <style>a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{border:0;font:inherit;font-size:100%;;margin:0;padding:0;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:"";content:none}table{border-collapse:collapse;border-spacing:0}body::-moz-selection,body::selection,html::-moz-selection,html::selection{background:#ff0}em{font-style:italic}</style>
+  <style>a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{border:0;font:inherit;font-size:100%;margin:0;padding:0;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:"";content:none}table{border-collapse:collapse;border-spacing:0}body::-moz-selection,body::selection,html::-moz-selection,html::selection{background:#ff0}em{font-style:italic}</style>
   <style>
 
     :root {
@@ -35,7 +35,30 @@
     main {
       font-size: 1rem;
       line-height: 1.5;
-      padding-bottom: 20px;
+      max-width: 68ch;
+      padding-bottom: 60px;
+    }
+
+    section {
+      margin-top: 2rem;
+    }
+
+    h3 {
+      color: var(--green);
+      margin-bottom: 0.5rem;
+    }
+
+    main a {
+      border-bottom: 1px solid var(--green);
+    }
+
+    main a:hover,
+    main a:focus-visible {
+      color: var(--green);
+    }
+
+    .muted {
+      opacity: 0.7;
     }
 
     footer {
@@ -54,13 +77,21 @@
     }
   </style>
   <meta name="author" content="Jeffrey Louden">
-  <meta name="description" content="Mission-driven Engineering leader. Vice President of Software Engineering at Time USA, LLC. Formerly Lyft, The New York Times, Google, The New Yorker, Obama for America, and Apple.">
+  <meta name="description" content="Mission-driven Engineering leader. Vice President of Software Engineering at TIME. Formerly Lyft, The New York Times, Google, The New Yorker, Obama for America, and Apple.">
   <link rel="canonical" href="https://jefflouden.com">
   <meta itemprop="image" content="https://jefflouden.com/beard.jpg">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="https://jefflouden.com/favicon.ico">
   <link rel="me" href="https://github.com/jeffreylouden">
   <link rel="me" href="https://www.linkedin.com/in/jeffreylouden/">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="Jeffrey Louden">
+  <meta property="og:description" content="Mission-driven engineering leader. Vice President of Software Engineering at TIME.">
+  <meta property="og:url" content="https://jefflouden.com">
+  <meta property="og:image" content="https://jefflouden.com/jeffrey-louden.jpg">
+  <meta property="profile:first_name" content="Jeffrey">
+  <meta property="profile:last_name" content="Louden">
+  <meta name="twitter:card" content="summary">
   <script defer data-domain="jefflouden.com" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
@@ -68,36 +99,71 @@
     <header>
         <h1>Jeffrey Louden</h1>
         <h2>
-          work://<a href="https://www.linkedin.com/in/jeffreylouden/" title="Jeffrey Louden on LinkedIn" rel="noopener">@jeffreylouden</a>
+          work://<a href="https://www.linkedin.com/in/jeffreylouden/" title="Jeffrey Louden on LinkedIn" rel="me noopener">@jeffreylouden</a>
         </h2>
         <h2>
-          git://<a href="https://github.com/jeffreylouden" title="Jeffrey Louden on Github" rel="noopener">@jeffreylouden</a>
+          git://<a href="https://github.com/jeffreylouden" title="Jeffrey Louden on Github" rel="me noopener">@jeffreylouden</a>
         </h2>
-      </header>
+        <h2>
+          mail://<a href="mailto:jeff@jefflouden.com" title="Email Jeffrey Louden">jeff@jefflouden.com</a>
+        </h2>
+    </header>
+    <section aria-labelledby="now">
+      <h3 id="now">now://</h3>
+      <p>Vice President, Software Engineering at <a href="https://time.com" rel="noopener">TIME</a>.</p>
+      <p class="muted">Great Barrington, MA</p>
+    </section>
+    <section aria-labelledby="previously">
+      <h3 id="previously">previously://</h3>
+      <ul>
+        <li>Lyft</li>
+        <li>The New York Times</li>
+        <li>Google</li>
+        <li>The New Yorker</li>
+        <li>Obama for America</li>
+        <li>Apple</li>
+      </ul>
+    </section>
+    <section aria-labelledby="education">
+      <h3 id="education">edu://</h3>
+      <ul>
+        <li>Florida State University</li>
+        <li>Berklee College of Music</li>
+      </ul>
+    </section>
   </main>
   <footer>
     <small><a href="https://github.com/jeffreylouden/jefflouden.com" title="Source Code on Github" rel="noopener">source</a></small>
   </footer>
   <script type="application/ld+json">
-      {
+    {
       "@context": "https://schema.org",
       "@type": "Person",
+      "name": "Jeffrey Louden",
+      "givenName": "Jeffrey",
+      "familyName": "Louden",
+      "description": "Mission-driven engineering leader.",
+      "email": "mailto:jeff@jefflouden.com",
+      "image": "https://jefflouden.com/jeffrey-louden.jpg",
+      "url": "https://jefflouden.com",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Great Barrington",
-        "addressRegion": "MA"
+        "addressRegion": "MA",
+        "addressCountry": "US"
       },
       "jobTitle": "Vice President, Software Engineering",
-      "worksFor": "TIME USA, LLC."
-      "givenName": "Jeffrey",
-      "familyName": "Louden",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TIME USA, LLC",
+        "url": "https://time.com"
+      },
       "alumniOf": [
-        "Florida State University",
-        "Berklee College of Music"
+        { "@type": "CollegeOrUniversity", "name": "Florida State University" },
+        { "@type": "CollegeOrUniversity", "name": "Berklee College of Music" }
       ],
       "birthDate": "1983-01-07",
-      "url": "https://jefflouden.com",
-      "sameAs" : [
+      "sameAs": [
         "https://github.com/jeffreylouden",
         "https://www.linkedin.com/in/jeffreylouden/"
       ]
