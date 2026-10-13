@@ -245,22 +245,6 @@
       margin-top: 2px;
     }
 
-    /* Inline so the row can balance: wraps 2 + 2 rather than leaving one name alone. */
-    .earlier {
-      text-wrap: balance;
-    }
-
-    .earlier li {
-      display: inline;
-      white-space: nowrap;
-    }
-
-    .earlier li:not(:last-child)::after {
-      content: '/';
-      color: var(--muted);
-      padding: 0 0.5em;
-    }
-
     /* Aureo lockup, recreated from aureo.audio: waveform mark plus the Outfit Bold wordmark as a path. */
     .built {
       display: flex;
@@ -386,11 +370,11 @@
         </li>
         <li class="row">
           <span class="years">Earlier</span>
-          <ul class="earlier">
-            <li><a href="https://www.nytimes.com" rel="noopener" data-brand="ink">The New York Times</a></li>
-            <li><a href="https://about.google" rel="noopener" data-brand="google">Google</a></li>
-            <li><a href="https://www.newyorker.com" rel="noopener" data-brand="ink">The New Yorker</a></li>
-            <li>Obama for America</li>
+          <ul>
+            <li class="org"><a href="https://www.nytimes.com" rel="noopener" data-brand="ink">The New York Times</a></li>
+            <li class="org"><a href="https://about.google" rel="noopener" data-brand="google">Google</a></li>
+            <li class="org"><a href="https://www.newyorker.com" rel="noopener" data-brand="ink">The New Yorker</a></li>
+            <li class="org">Obama for America</li>
           </ul>
         </li>
       </ol>
