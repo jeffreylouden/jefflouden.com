@@ -1,0 +1,12 @@
+{
+  "name": "Jeffrey Louden",
+  "short_name": "Jeff Louden",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#f7f7f5",
+  "theme_color": "#f7f7f5",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

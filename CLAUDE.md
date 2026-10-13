@@ -29,8 +29,12 @@ When asked to sync:
    - Elsewhere (email plus links). Education is kept in the workbook but not shown on the site
    - link each organization to its `url` when it has one; Existential also links Aureo (https://aureo.audio)
    - footer location
-   - the JSON-LD `Person` block, the meta description and the Open Graph tags
-   - `public/humans.txt`
+   - the JSON-LD `@graph` (ProfilePage, Person, organizations): titles, `worksFor`, `alumniOf`, and `ProfilePage.dateModified`
+   - `<title>`, meta description, Open Graph and Twitter tags (keep title and og:title identical)
+   - `public/llms.txt` (plain-language profile for AI answer engines; keep it factual and in sync with the page)
+   - `public/sitemap.xml` `<lastmod>` and `public/humans.txt` "Last update"
+   - `public/og.png` if the headline or title changed (it is a 1200x630 card rendered from HTML with the site fonts and `beard.jpg`)
+   - new organizations get a `data-brand` underline color (see the brand block in the CSS). Hover text must stay at 4.5:1 contrast in both themes; darken or lighten `--bt` until it does, and keep `--b` as the true brand color
 3. Links with `removeAtExit: true` stay on the site until Jeff says his LinkedIn account is closed. Then remove them everywhere: header, `rel="me"`, JSON-LD `sameAs`, humans.txt.
 4. Validate the JSON-LD (`python3 -c 'import json,re;...'`). It must parse.
 5. Commit, push, open a PR, then set `meta/sync.syncedAt` to the current time.

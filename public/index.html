@@ -1,27 +1,45 @@
 <!doctype html>
-<html lang="en-US">
+<html lang="en-US" prefix="og: https://ogp.me/ns# profile: https://ogp.me/ns/profile#">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jeffrey Louden</title>
+  <title>Jeffrey Louden · SVP, Engineering at The Atlantic</title>
+  <meta name="description" content="Jeffrey Louden (Jeff Louden) is SVP, Engineering at The Atlantic and founder of Existential Software Company. Previously TIME, Lyft, The New York Times and Google.">
   <meta name="author" content="Jeffrey Louden">
-  <meta name="description" content="Jeffrey Louden is SVP, Engineering at The Atlantic and founder of Existential Software Company. Previously TIME, Lyft, The New York Times, Google, The New Yorker, and Obama for America.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://jefflouden.com/">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
-  <link rel="canonical" href="https://jefflouden.com">
-  <link rel="icon" href="favicon.ico">
+  <link rel="icon" href="favicon.ico" sizes="64x64">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="author" href="humans.txt">
+  <link rel="alternate" type="text/markdown" href="llms.txt" title="Plain-text profile for language models">
+  <link rel="sitemap" type="application/xml" href="sitemap.xml">
   <link rel="me" href="https://github.com/jeffreylouden">
   <link rel="me" href="https://www.linkedin.com/in/jeffreylouden/">
+  <link rel="me" href="mailto:jeff@jefflouden.com">
   <meta property="og:type" content="profile">
-  <meta property="og:title" content="Jeffrey Louden">
-  <meta property="og:description" content="SVP, Engineering at The Atlantic.">
-  <meta property="og:url" content="https://jefflouden.com">
-  <meta property="og:image" content="https://jefflouden.com/jeffrey-louden.jpg">
+  <meta property="og:site_name" content="Jeffrey Louden">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://jefflouden.com/">
+  <meta property="og:title" content="Jeffrey Louden · SVP, Engineering at The Atlantic">
+  <meta property="og:description" content="I build teams and things. SVP, Engineering at The Atlantic and founder of Existential Software Company.">
+  <meta property="og:image" content="https://jefflouden.com/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Jeffrey Louden, SVP, Engineering at The Atlantic. I build teams and things.">
   <meta property="profile:first_name" content="Jeffrey">
   <meta property="profile:last_name" content="Louden">
-  <meta name="twitter:card" content="summary">
+  <meta property="profile:username" content="jeffreylouden">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jeffrey Louden · SVP, Engineering at The Atlantic">
+  <meta name="twitter:description" content="I build teams and things. SVP, Engineering at The Atlantic and founder of Existential Software Company.">
+  <meta name="twitter:image" content="https://jefflouden.com/og.png">
+  <meta name="twitter:image:alt" content="Jeffrey Louden, SVP, Engineering at The Atlantic. I build teams and things.">
   <style>
     /* Fonts are self-hosted (SIL OFL, see fonts/OFL-*.txt) so the page never depends on a third party. */
     @font-face {
@@ -107,6 +125,49 @@
     a:focus-visible {
       color: var(--blood);
       text-decoration-color: currentColor;
+    }
+
+    /* Brand underlines: each organization's own color. --b is the exact brand
+       color for the underline; --bt is a contrast-checked shade (4.5:1) for hover text. */
+    a[data-brand] {
+      text-decoration-color: var(--b);
+      text-decoration-thickness: 2px;
+    }
+
+    a[data-brand]:hover,
+    a[data-brand]:focus-visible {
+      color: var(--bt, var(--blood));
+      text-decoration-color: var(--b);
+    }
+
+    [data-brand="atlantic"] { --b: #e7131a; --bt: #e21319; }
+    [data-brand="existential"] { --b: #59c2cf; --bt: #387a82; }
+    [data-brand="aureo"] { --b: #34b2c5; --bt: #247b88; }
+    [data-brand="time"] { --b: #e90606; --bt: #e40606; }
+    [data-brand="lyft"] { --b: #ff00bf; --bt: #d4009f; }
+    [data-brand="linkedin"] { --b: #0a66c2; --bt: #0a66c2; }
+    [data-brand="google"] { --bt: #376ecb; }
+    [data-brand="ink"] { --b: var(--ink); }
+
+    @media (prefers-color-scheme: dark) {
+      [data-brand="atlantic"] { --bt: #ea3238; }
+      [data-brand="existential"] { --bt: #59c2cf; }
+      [data-brand="aureo"] { --bt: #34b2c5; }
+      [data-brand="time"] { --bt: #ed2e2e; }
+      [data-brand="lyft"] { --bt: #ff00bf; }
+      [data-brand="linkedin"] { --b: #3480cc; --bt: #3480cc; }
+      [data-brand="google"] { --bt: #4285f4; }
+    }
+
+    a[data-brand="google"] {
+      text-decoration: none;
+      padding-bottom: 2px;
+      background: linear-gradient(90deg, #4285f4 0 25%, #ea4335 25% 50%, #fbbc05 50% 75%, #34a853 75%) no-repeat left bottom / 100% 2px;
+    }
+
+    a[data-brand="google"]:hover,
+    a[data-brand="google"]:focus-visible {
+      background-size: 100% 3px;
     }
 
     a:focus-visible {
@@ -211,10 +272,18 @@
       padding: 0 0.6em;
     }
 
+    address {
+      font-style: normal;
+    }
+
     .elsewhere {
       display: flex;
       flex-wrap: wrap;
       gap: 8px 28px;
+    }
+
+    footer small {
+      font-size: inherit;
     }
 
     footer {
@@ -262,61 +331,61 @@
       <h2 id="work">Work</h2>
       <ol class="rows">
         <li class="row">
-          <span class="years">2025 – Now</span>
+          <span class="years"><time datetime="2025-10">2025</time> – Now</span>
           <div>
-            <p class="org"><a href="https://www.theatlantic.com" rel="noopener">The Atlantic</a></p>
+            <p class="org"><a href="https://www.theatlantic.com" rel="noopener" data-brand="atlantic">The Atlantic</a></p>
             <p class="title">SVP, Engineering</p>
-            <p class="title">VP, Engineering, 2025 – 2026</p>
+            <p class="title">VP, Engineering, <time datetime="2025-10">2025</time> – <time datetime="2026-06">2026</time></p>
           </div>
         </li>
         <li class="row">
-          <span class="years">2022 – Now</span>
+          <span class="years"><time datetime="2022-07">2022</time> – Now</span>
           <div>
-            <p class="org"><a href="https://existential.engineering" rel="noopener">Existential Software Company</a></p>
+            <p class="org"><a href="https://existential.engineering" rel="noopener" data-brand="existential">Existential Software Company</a></p>
             <p class="title">Founder</p>
-            <p class="title">Built <a href="https://aureo.audio" rel="noopener">Aureo</a></p>
+            <p class="title">Built <a href="https://aureo.audio" rel="noopener" data-brand="aureo">Aureo</a></p>
           </div>
         </li>
         <li class="row">
-          <span class="years">2021 – 2022</span>
+          <span class="years"><time datetime="2021-03">2021</time> – <time datetime="2022-07">2022</time></span>
           <div>
-            <p class="org"><a href="https://time.com" rel="noopener">TIME</a></p>
+            <p class="org"><a href="https://time.com" rel="noopener" data-brand="time">TIME</a></p>
             <p class="title">VP, Software Engineering</p>
           </div>
         </li>
         <li class="row">
-          <span class="years">2020</span>
+          <span class="years"><time datetime="2020-05">2020</time></span>
           <div>
-            <p class="org"><a href="https://www.lyft.com" rel="noopener">Lyft</a></p>
+            <p class="org"><a href="https://www.lyft.com" rel="noopener" data-brand="lyft">Lyft</a></p>
             <p class="title">Engineering Manager II, Memberships</p>
           </div>
         </li>
         <li class="row">
           <span class="years">Earlier</span>
           <ul class="earlier">
-            <li><a href="https://www.nytimes.com" rel="noopener">The New York Times</a></li>
-            <li><a href="https://about.google" rel="noopener">Google</a></li>
-            <li><a href="https://www.newyorker.com" rel="noopener">The New Yorker</a></li>
+            <li><a href="https://www.nytimes.com" rel="noopener" data-brand="ink">The New York Times</a></li>
+            <li><a href="https://about.google" rel="noopener" data-brand="google">Google</a></li>
+            <li><a href="https://www.newyorker.com" rel="noopener" data-brand="ink">The New Yorker</a></li>
             <li>Obama for America</li>
           </ul>
         </li>
       </ol>
     </section>
 
-
     <section aria-labelledby="elsewhere">
       <h2 id="elsewhere">Elsewhere</h2>
-      <ul class="elsewhere">
-        <li><a href="mailto:jeff@jefflouden.com">jeff@jefflouden.com</a></li>
-        <li><a href="https://github.com/jeffreylouden" rel="me noopener">GitHub</a></li>
-        <li><a href="https://www.linkedin.com/in/jeffreylouden/" rel="me noopener">LinkedIn</a></li>
-      </ul>
+      <address>
+        <ul class="elsewhere">
+          <li><a href="mailto:jeff@jefflouden.com" rel="me">jeff@jefflouden.com</a></li>
+          <li><a href="https://github.com/jeffreylouden" rel="me noopener" data-brand="ink">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/jeffreylouden/" rel="me noopener" data-brand="linkedin">LinkedIn</a></li>
+        </ul>
+      </address>
     </section>
   </main>
 
-
   <footer>
-    <span>© 2009–2026 Jeffrey Louden</span>
+    <small>© <time datetime="2009">2009</time>–<time datetime="2026">2026</time> Jeffrey Louden</small>
     <span>Washington, D.C. · <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a></span>
   </footer>
 
@@ -326,37 +395,103 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Jeffrey Louden",
-      "givenName": "Jeffrey",
-      "familyName": "Louden",
-      "description": "SVP, Engineering at The Atlantic and founder of Existential Software Company.",
-      "email": "mailto:jeff@jefflouden.com",
-      "image": "https://jefflouden.com/jeffrey-louden.jpg",
-      "url": "https://jefflouden.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Washington",
-        "addressRegion": "DC",
-        "addressCountry": "US"
-      },
-      "jobTitle": "SVP, Engineering",
-      "worksFor": [
+      "@graph": [
+        {
+          "@type": "ProfilePage",
+          "@id": "https://jefflouden.com/#profile",
+          "url": "https://jefflouden.com/",
+          "name": "Jeffrey Louden · SVP, Engineering at The Atlantic",
+          "inLanguage": "en-US",
+          "dateModified": "2026-10-13",
+          "isPartOf": { "@id": "https://jefflouden.com/#website" },
+          "mainEntity": { "@id": "https://jefflouden.com/#person" },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://jefflouden.com/og.png",
+            "width": 1200,
+            "height": 630
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://jefflouden.com/#website",
+          "url": "https://jefflouden.com/",
+          "name": "Jeffrey Louden",
+          "inLanguage": "en-US",
+          "publisher": { "@id": "https://jefflouden.com/#person" },
+          "copyrightHolder": { "@id": "https://jefflouden.com/#person" },
+          "copyrightYear": 2009
+        },
+        {
+          "@type": "Person",
+          "@id": "https://jefflouden.com/#person",
+          "name": "Jeffrey Louden",
+          "alternateName": ["Jeff Louden"],
+          "givenName": "Jeffrey",
+          "familyName": "Louden",
+          "url": "https://jefflouden.com/",
+          "mainEntityOfPage": { "@id": "https://jefflouden.com/#profile" },
+          "description": "Engineering executive. SVP, Engineering at The Atlantic and founder of Existential Software Company.",
+          "jobTitle": "SVP, Engineering",
+          "hasOccupation": {
+            "@type": "Occupation",
+            "name": "Senior Vice President, Engineering",
+            "occupationLocation": { "@type": "City", "name": "Washington, D.C." }
+          },
+          "worksFor": [
+            { "@id": "https://jefflouden.com/#org-atlantic" },
+            { "@id": "https://jefflouden.com/#org-existential" }
+          ],
+          "alumniOf": [
+            { "@type": "Organization", "name": "TIME", "url": "https://time.com" },
+            { "@type": "Organization", "name": "Lyft", "url": "https://www.lyft.com" },
+            { "@type": "Organization", "name": "The New York Times", "url": "https://www.nytimes.com" },
+            { "@type": "Organization", "name": "Google", "url": "https://about.google" },
+            { "@type": "Organization", "name": "The New Yorker", "url": "https://www.newyorker.com" },
+            { "@type": "Organization", "name": "Obama for America" }
+          ],
+          "knowsAbout": ["Software engineering", "Engineering leadership", "Digital publishing", "Product development"],
+          "email": "mailto:jeff@jefflouden.com",
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://jefflouden.com/jeffrey-louden-square.jpg",
+            "width": 800,
+            "height": 800
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Washington",
+            "addressRegion": "DC",
+            "addressCountry": "US"
+          },
+          "birthDate": "1983-01-07",
+          "sameAs": [
+            "https://github.com/jeffreylouden",
+            "https://www.linkedin.com/in/jeffreylouden/"
+          ]
+        },
         {
           "@type": "Organization",
+          "@id": "https://jefflouden.com/#org-atlantic",
           "name": "The Atlantic",
           "url": "https://www.theatlantic.com"
         },
         {
           "@type": "Organization",
+          "@id": "https://jefflouden.com/#org-existential",
           "name": "Existential Software Company",
-          "url": "https://existential.engineering"
+          "url": "https://existential.engineering",
+          "founder": { "@id": "https://jefflouden.com/#person" },
+          "foundingDate": "2022-07"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://jefflouden.com/#aureo",
+          "name": "Aureo",
+          "url": "https://aureo.audio",
+          "author": { "@id": "https://jefflouden.com/#person" },
+          "publisher": { "@id": "https://jefflouden.com/#org-existential" }
         }
-      ],
-      "birthDate": "1983-01-07",
-      "sameAs": [
-        "https://github.com/jeffreylouden",
-        "https://www.linkedin.com/in/jeffreylouden/"
       ]
     }
   </script>

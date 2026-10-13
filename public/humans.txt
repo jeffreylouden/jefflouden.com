@@ -1,4 +1,4 @@
-Developer:      Jeffrey Louden
+Developer:      Jeffrey Louden (SVP, Engineering at The Atlantic)
 Contact:        jeff [at] jefflouden [dot] com
 Linkedin:       https://www.linkedin.com/in/jeffreylouden/
 GitHub:         https://github.com/jeffreylouden
@@ -9,4 +9,6 @@ From:           Louisville, Kentucky, United States
 Language:       English
 Doctype:        HTML5
 IDE:            vim
-Standards:      HTML5, CSS3
+Standards:      HTML5, CSS3, schema.org JSON-LD
+Fonts:          Instrument Sans, Newsreader (SIL OFL)
+Last update:    2026-10-13
