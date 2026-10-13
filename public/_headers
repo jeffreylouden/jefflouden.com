@@ -17,3 +17,12 @@
 
 /llms.txt
   Content-Type: text/markdown; charset=utf-8
+  Access-Control-Allow-Origin: *
+
+/index.md
+  Content-Type: text/markdown; charset=utf-8
+  Access-Control-Allow-Origin: *
+
+/.well-known/ai-catalog.json
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *

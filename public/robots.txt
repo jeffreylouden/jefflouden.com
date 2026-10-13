@@ -1,5 +1,7 @@
 # Everyone, including AI crawlers and answer engines, is welcome.
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 
 Sitemap: https://jefflouden.com/sitemap.xml
+Agentmap: https://jefflouden.com/.well-known/ai-catalog.json

@@ -1,0 +1,34 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Jeffrey Louden",
+    "identifier": "did:web:jefflouden.com"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:jefflouden.com:profile:jeffrey-louden",
+      "displayName": "Jeffrey Louden: profile",
+      "description": "Plain-language professional profile of Jeffrey Louden (Jeff Louden), SVP, Engineering at The Atlantic and founder of Existential Software Company.",
+      "type": "text/markdown",
+      "url": "https://jefflouden.com/llms.txt",
+      "representativeQueries": [
+        "who is Jeffrey Louden",
+        "what does Jeff Louden do at The Atlantic",
+        "Jeffrey Louden work history",
+        "how to contact Jeff Louden"
+      ]
+    },
+    {
+      "identifier": "urn:air:jefflouden.com:page:home",
+      "displayName": "jefflouden.com home page (Markdown)",
+      "description": "The jefflouden.com home page as Markdown. Also served at https://jefflouden.com/ to requests that send Accept: text/markdown.",
+      "type": "text/markdown",
+      "url": "https://jefflouden.com/index.md",
+      "representativeQueries": [
+        "Jeffrey Louden personal website",
+        "who founded Existential Software Company",
+        "who built Aureo"
+      ]
+    }
+  ]
+}
