@@ -1,6 +1,6 @@
 # Jeffrey Louden
 
-> Jeffrey Louden (also Jeff Louden) is an engineering executive based in Washington, D.C. He is SVP, Engineering at The Atlantic and the founder of Existential Software Company, where he built Aureo.
+> Jeffrey Louden (also Jeff Louden) is an engineering executive based in Washington, D.C. He is SVP, Engineering at The Atlantic and the founder of Existential Engineering Company, where he built Aureo.
 
 Canonical profile: https://jefflouden.com/
 Contact: jeff@jefflouden.com
@@ -8,7 +8,7 @@ Contact: jeff@jefflouden.com
 ## Work
 
 - The Atlantic: SVP, Engineering (June 2026 to present); VP, Engineering (October 2025 to June 2026). Washington, D.C. https://www.theatlantic.com
-- Existential Software Company: Founder (July 2022 to present). Built Aureo (https://aureo.audio). https://existential.engineering
+- Existential Engineering Company: Founder (July 2022 to present). Built Aureo (https://aureo.audio). https://existential.engineering
 - TIME: VP, Software Engineering (March 2021 to July 2022). New York, remote. https://time.com
 - Lyft: Engineering Manager II, Memberships (May 2020 to November 2020). San Francisco Bay Area. https://www.lyft.com
 - The New York Times: Director of Technology, NYT Cooking (June 2015 to January 2020). Led a 25-person engineering team; NYT Cooking became a $20 million subscription product and won two Webby Awards and the 2019 James Beard Award for Publication of the Year. https://www.nytimes.com

@@ -8,7 +8,7 @@
     {
       "identifier": "urn:air:jefflouden.com:profile:jeffrey-louden",
       "displayName": "Jeffrey Louden: profile",
-      "description": "Plain-language professional profile of Jeffrey Louden (Jeff Louden), SVP, Engineering at The Atlantic and founder of Existential Software Company.",
+      "description": "Plain-language professional profile of Jeffrey Louden (Jeff Louden), SVP, Engineering at The Atlantic and founder of Existential Engineering Company.",
       "type": "text/markdown",
       "url": "https://jefflouden.com/llms.txt",
       "representativeQueries": [
@@ -26,7 +26,7 @@
       "url": "https://jefflouden.com/index.md",
       "representativeQueries": [
         "Jeffrey Louden personal website",
-        "who founded Existential Software Company",
+        "who founded Existential Engineering Company",
         "who built Aureo"
       ]
     }
