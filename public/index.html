@@ -7,8 +7,8 @@
   <meta name="author" content="Jeffrey Louden">
   <meta name="description" content="Jeffrey Louden is SVP, Engineering at The Atlantic and founder of Existential Software Company. Previously TIME, Lyft, The New York Times, Google, The New Yorker, and Obama for America.">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#f2efe8" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
   <link rel="canonical" href="https://jefflouden.com">
   <link rel="icon" href="favicon.ico">
   <link rel="preload" href="fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
@@ -47,24 +47,22 @@
     }
 
     :root {
-      --paper: #f2efe8;
-      --ink: #1a1917;
-      --muted: #6f6b63;
-      --rule: #dedad0;
-      --clay: #c2593a;
-      --fog: #7d97b0;
+      --paper: #f7f7f5;
+      --ink: #161616;
+      --muted: #6b6b6b;
+      --rule: #dcdcd8;
+      --blood: #8c1c24;
       --sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
       --serif: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --paper: #1a1917;
-        --ink: #ece9e1;
-        --muted: #9a958b;
-        --rule: #34322e;
-        --clay: #de7a5a;
-        --fog: #4d6378;
+        --paper: #111111;
+        --ink: #ededeb;
+        --muted: #8e8e8a;
+        --rule: #2e2e2c;
+        --blood: #d25a63;
       }
     }
 
@@ -90,7 +88,7 @@
     }
 
     ::selection {
-      background: var(--clay);
+      background: var(--blood);
       color: var(--paper);
     }
 
@@ -105,12 +103,12 @@
 
     a:hover,
     a:focus-visible {
-      color: var(--clay);
+      color: var(--blood);
       text-decoration-color: currentColor;
     }
 
     a:focus-visible {
-      outline: 2px solid var(--clay);
+      outline: 2px solid var(--blood);
       outline-offset: 3px;
       border-radius: 2px;
     }
@@ -217,52 +215,11 @@
       gap: 8px 28px;
     }
 
-    /* The band: a grainy fog with something glowing in it. */
-    .band {
-      position: relative;
-      height: clamp(200px, 32vw, 360px);
-      overflow: hidden;
-      background:
-        radial-gradient(14% 30% at 61% 88%, rgba(120, 10, 14, 0.95), transparent 70%),
-        radial-gradient(26% 55% at 59% 90%, rgba(194, 89, 58, 0.95), transparent 72%),
-        radial-gradient(40% 80% at 56% 96%, rgba(236, 196, 140, 0.95), transparent 72%),
-        radial-gradient(60% 90% at 52% 100%, rgba(242, 239, 232, 0.55), transparent 70%),
-        radial-gradient(60% 80% at 18% 15%, rgba(255, 255, 255, 0.16), transparent 70%),
-        linear-gradient(180deg, var(--fog), color-mix(in srgb, var(--fog) 70%, #1d2a36));
-    }
-
-    .band::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      opacity: 0.35;
-      mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    }
-
-    .band .whisper {
-      position: absolute;
-      left: 50%;
-      bottom: 22%;
-      transform: translateX(-50%);
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 18px;
-      color: rgba(255, 244, 232, 0.85);
-      opacity: 0;
-      transition: opacity 2.4s ease-in 0.6s;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-
-    .band:hover .whisper {
-      opacity: 0.8;
-    }
-
     footer {
-      max-width: 720px;
+      width: min(672px, calc(100% - 48px));
       margin: 0 auto;
-      padding: 20px 24px 28px;
+      padding: 24px 0 40px;
+      border-top: 1px solid var(--rule);
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
@@ -297,7 +254,7 @@
       <p class="role-line">SVP, Engineering at The Atlantic</p>
     </header>
 
-    <p class="intro">I lead engineering teams that build products for journalism and the people who read it. I care about broad technical depth, a customer-first product sense, and teams that are diverse, inclusive, and kind.</p>
+    <p class="intro">I build engineering teams, and the products they make.</p>
 
     <section aria-labelledby="work">
       <h2 id="work">Work</h2>
@@ -313,8 +270,9 @@
         <li class="row">
           <span class="years">2022 – Now</span>
           <div>
-            <p class="org">Existential Software Company</p>
+            <p class="org"><a href="https://existential.engineering" rel="noopener">Existential Software Company</a></p>
             <p class="title">Founder</p>
+            <p class="title">Built <a href="https://aureo.audio" rel="noopener">Aureo</a></p>
           </div>
         </li>
         <li class="row">
@@ -334,27 +292,15 @@
         <li class="row">
           <span class="years">Earlier</span>
           <ul class="earlier">
-            <li>The New York Times</li>
-            <li>Google</li>
-            <li>The New Yorker</li>
+            <li><a href="https://www.nytimes.com" rel="noopener">The New York Times</a></li>
+            <li><a href="https://about.google" rel="noopener">Google</a></li>
+            <li><a href="https://www.newyorker.com" rel="noopener">The New Yorker</a></li>
             <li>Obama for America</li>
           </ul>
         </li>
       </ol>
     </section>
 
-    <section aria-labelledby="school">
-      <h2 id="school">Education</h2>
-      <ul class="rows">
-        <li class="row">
-          <span class="years"></span>
-          <div>
-            <p class="org">Florida State University</p>
-            <p class="org">Berklee College of Music</p>
-          </div>
-        </li>
-      </ul>
-    </section>
 
     <section aria-labelledby="elsewhere">
       <h2 id="elsewhere">Elsewhere</h2>
@@ -366,15 +312,14 @@
     </section>
   </main>
 
-  <div class="band" aria-hidden="true"><span class="whisper">they’re here.</span></div>
 
   <footer>
-    <span>Washington, D.C.</span>
-    <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a>
+    <span>© 2009–2026 Jeffrey Louden</span>
+    <span>Washington, D.C. · <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a></span>
   </footer>
 
   <script>
-    console.log('%cWe traced the call. It’s coming from inside the DevTools.', 'font: italic 14px Georgia, serif; color: #c2593a');
+    console.log('%cWe traced the call. It’s coming from inside the DevTools.', 'font: italic 14px Georgia, serif; color: #8c1c24');
   </script>
   <script type="application/ld+json">
     {
@@ -402,12 +347,9 @@
         },
         {
           "@type": "Organization",
-          "name": "Existential Software Company"
+          "name": "Existential Software Company",
+          "url": "https://existential.engineering"
         }
-      ],
-      "alumniOf": [
-        { "@type": "CollegeOrUniversity", "name": "Florida State University" },
-        { "@type": "CollegeOrUniversity", "name": "Berklee College of Music" }
       ],
       "birthDate": "1983-01-07",
       "sameAs": [

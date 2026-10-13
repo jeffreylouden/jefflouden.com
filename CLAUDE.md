@@ -2,7 +2,7 @@
 
 Jeff's personal site and his long-term replacement for LinkedIn. One static page, `public/index.html`, with no build step. Keep it that way: no frameworks, no client-side rendering of content, no new third-party scripts. Fonts are self-hosted in `public/fonts`. The page should still work in 20 years.
 
-Design: warm paper and ink palette, Instrument Sans for UI and Newsreader for the intro, one quiet column. The grainy band at the bottom (a red light in fog) and the 404 page carry a small horror-movie wink. Keep that to a whisper; the rest stays executive.
+Design: neutral paper and ink with one oxblood accent (links on hover, text selection), Instrument Sans for UI and Newsreader for the one-line intro, one quiet column. Keep the intro short. The 404 page and a console message carry a small horror-movie wink; keep it to a whisper, the rest stays executive. The footer copyright starts in 2009, the year the domain was registered; bump the end year each January.
 
 ## Source of truth
 
@@ -26,7 +26,8 @@ When asked to sync:
    - `header`: name and the current headline
    - `.intro`: the bio
    - Work: one `.row` per organization, newest first. The years column uses `YYYY – YYYY` or `YYYY – Now`. Multiple titles at one org stack under it. Roles with no dates go in the single "Earlier" row
-   - Education and Elsewhere (email plus links)
+   - Elsewhere (email plus links). Education is kept in the workbook but not shown on the site
+   - link each organization to its `url` when it has one; Existential also links Aureo (https://aureo.audio)
    - footer location
    - the JSON-LD `Person` block, the meta description and the Open Graph tags
    - `public/humans.txt`
