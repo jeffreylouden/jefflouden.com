@@ -25,7 +25,7 @@ When asked to sync:
 2. Update `public/index.html` by hand, keeping its current design:
    - `header`: name and the current headline
    - `.intro`: the bio
-   - Work: one `.row` per organization, newest first. The years column uses `YYYY – YYYY` or `YYYY – Now`. Multiple titles at one org stack under it. A role with no dates yet goes in an "Earlier" row (one name per line) until it has dates
+   - Work: one `.row` per organization, newest first. The years column uses `YYYY – YYYY` or `YYYY – Now`. Multiple titles at one org stack under it. Roles before 2020 (The New York Times and older) go in a single "Earlier" row, one name per line with no titles or dates; the résumé, llms.txt and index.md keep their full dated history
    - Elsewhere (email plus links). Education is kept in the workbook but not shown on the site
    - link each organization to its `url` when it has one; Existential also links Aureo (https://aureo.audio)
    - footer location
