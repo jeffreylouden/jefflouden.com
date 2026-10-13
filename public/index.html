@@ -118,44 +118,29 @@
       text-decoration-color: var(--underline);
       text-decoration-thickness: 1px;
       text-underline-offset: 3px;
-      transition: text-decoration-color 0.2s, color 0.2s;
+      opacity: 0.8;
+      transition: opacity 0.2s;
     }
 
     a:hover,
     a:focus-visible {
-      color: var(--blood);
-      text-decoration-color: currentColor;
+      opacity: 1;
     }
 
-    /* Brand underlines: each organization's own color. --b is the exact brand
-       color for the underline; --bt is a contrast-checked shade (4.5:1) for hover text. */
+    /* Brand underlines: each organization's own color. */
     a[data-brand] {
       text-decoration-color: var(--b);
     }
 
-    a[data-brand]:hover,
-    a[data-brand]:focus-visible {
-      color: var(--bt, var(--blood));
-      text-decoration-color: var(--b);
-    }
-
-    [data-brand="atlantic"] { --b: #e7131a; --bt: #e21319; }
-    [data-brand="existential"] { --b: #59c2cf; --bt: #387a82; }
-    [data-brand="aureo"] { --b: #34b2c5; --bt: #247b88; }
-    [data-brand="time"] { --b: #e90606; --bt: #e40606; }
-    [data-brand="lyft"] { --b: #ff00bf; --bt: #d4009f; }
-    [data-brand="linkedin"] { --b: #0a66c2; --bt: #0a66c2; }
-    [data-brand="google"] { --bt: #376ecb; }
+    [data-brand="atlantic"] { --b: #e7131a; }
+    [data-brand="existential"] { --b: #59c2cf; }
+    [data-brand="time"] { --b: #e90606; }
+    [data-brand="lyft"] { --b: #ff00bf; }
+    [data-brand="linkedin"] { --b: #0a66c2; }
     [data-brand="ink"] { --b: var(--ink); }
 
     @media (prefers-color-scheme: dark) {
-      [data-brand="atlantic"] { --bt: #ea3238; }
-      [data-brand="existential"] { --bt: #59c2cf; }
-      [data-brand="aureo"] { --bt: #34b2c5; }
-      [data-brand="time"] { --bt: #ed2e2e; }
-      [data-brand="lyft"] { --bt: #ff00bf; }
-      [data-brand="linkedin"] { --b: #3480cc; --bt: #3480cc; }
-      [data-brand="google"] { --bt: #4285f4; }
+      [data-brand="linkedin"] { --b: #3480cc; }
     }
 
     a[data-brand="google"] {
@@ -305,17 +290,6 @@
       height: 11px;
       width: auto;
       fill: currentColor;
-      transition: fill 0.2s;
-    }
-
-    .aureo:hover,
-    .aureo:focus-visible {
-      color: var(--ink);
-    }
-
-    .aureo:hover .aureo-word,
-    .aureo:focus-visible .aureo-word {
-      fill: #34b2c5;
     }
 
     @media (prefers-reduced-motion: no-preference) {

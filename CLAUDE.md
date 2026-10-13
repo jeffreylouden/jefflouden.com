@@ -2,7 +2,7 @@
 
 Jeff's personal site and his long-term replacement for LinkedIn. One static page, `public/index.html`, with no build step. Keep it that way: no frameworks, no client-side rendering of content, no new third-party scripts. Fonts are self-hosted in `public/fonts`. The page should still work in 20 years.
 
-Design: neutral paper and ink with one oxblood accent (links on hover, text selection), Instrument Sans for UI and Newsreader for the one-line intro, one quiet column. Keep the intro short. The 404 page and a console message carry a small horror-movie wink; keep it to a whisper, the rest stays executive. The footer copyright starts in 2009, the year the domain was registered; bump the end year each January.
+Design: neutral paper and ink with one oxblood accent (default link underline, text selection). Links rest at 80% opacity and go to 100% on hover; hover never changes their color. Type: Instrument Sans for UI and Newsreader for the one-line intro, one quiet column. Keep the intro short. The 404 page and a console message carry a small horror-movie wink; keep it to a whisper, the rest stays executive. The footer copyright starts in 2009, the year the domain was registered; bump the end year each January.
 
 ## Source of truth
 
@@ -34,7 +34,7 @@ When asked to sync:
    - `public/llms.txt` (plain-language profile for AI answer engines; keep it factual and in sync with the page)
    - `public/sitemap.xml` `<lastmod>` and `public/humans.txt` "Last update"
    - `public/og.png` if the headline or title changed (it is a 1200x630 card rendered from HTML with the site fonts and `beard.jpg`)
-   - new organizations get a `data-brand` underline color (see the brand block in the CSS). Hover text must stay at 4.5:1 contrast in both themes; darken or lighten `--bt` until it does, and keep `--b` as the true brand color
+   - new organizations get a `data-brand` underline in their true brand color (see the brand block in the CSS); black brands use `ink`
 3. Links with `removeAtExit: true` stay on the site until Jeff says his LinkedIn account is closed. Then remove them everywhere: header, `rel="me"`, JSON-LD `sameAs`, humans.txt.
 4. Validate the JSON-LD (`python3 -c 'import json,re;...'`). It must parse.
 5. Commit, push, open a PR, then set `meta/sync.syncedAt` to the current time.
