@@ -30,6 +30,7 @@ When asked to sync:
    - link each organization to its `url` when it has one; Existential also links Aureo (https://aureo.audio)
    - footer location
    - the JSON-LD `@graph` (ProfilePage, Person, organizations): titles, `worksFor`, `alumniOf`, and `ProfilePage.dateModified`
+   - `sameAs`: every organization carries its Wikidata and English Wikipedia URLs (look the QID up, never guess it). The Person's `sameAs` lists only profiles Jeff controls; add his own Wikidata item, Bluesky or other profiles there as they come to exist, and mirror each as a `rel="me"` link
    - `<title>`, meta description, Open Graph and Twitter tags (keep title and og:title identical)
    - `public/llms.txt` (plain-language profile for AI answer engines; keep it factual and in sync with the page)
    - `public/index.md` (the page as Markdown; served at `/` to `Accept: text/markdown` requests by `functions/_middleware.js`)
