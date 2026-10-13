@@ -1,2 +1,5 @@
+# Everyone, including AI crawlers and answer engines, is welcome.
 User-agent: *
 Allow: /
+
+Sitemap: https://jefflouden.com/sitemap.xml
