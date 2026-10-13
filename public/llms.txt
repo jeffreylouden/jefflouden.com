@@ -11,9 +11,18 @@ Contact: jeff@jefflouden.com
 - Existential Software Company: Founder (July 2022 to present). Built Aureo (https://aureo.audio). https://existential.engineering
 - TIME: VP, Software Engineering (March 2021 to July 2022). New York, remote. https://time.com
 - Lyft: Engineering Manager II, Memberships (May 2020 to November 2020). San Francisco Bay Area. https://www.lyft.com
-- Earlier: The New York Times, Google, The New Yorker, Obama for America.
+- The New York Times: Director of Technology, NYT Cooking (June 2015 to January 2020). Led a 25-person engineering team; NYT Cooking became a $20 million subscription product and won two Webby Awards and the 2019 James Beard Award for Publication of the Year. https://www.nytimes.com
+- Google: Senior Web Developer (March 2014 to May 2015). https://about.google
+- The New Yorker: Director of Engineering (February 2013 to December 2013). https://www.newyorker.com
+- Obama for America: Lead Software Engineer, BarackObama.com (September 2011 to January 2013). https://barackobama.com/
+
+## Education
+
+- Berklee College of Music: Certificate, Music Technology and Production (2005 to 2007)
+- Florida State University: B.S., Information Studies (2001 to 2005)
 
 ## Elsewhere
 
+- Résumé (PDF): https://jefflouden.com/jeffrey-louden-resume.pdf
 - GitHub: https://github.com/jeffreylouden
 - LinkedIn: https://www.linkedin.com/in/jeffreylouden/

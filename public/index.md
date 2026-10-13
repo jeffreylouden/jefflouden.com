@@ -10,12 +10,16 @@ I build teams and things.
 - **Existential Software Company** (2022 – Now): Founder. Built Aureo (https://aureo.audio). https://existential.engineering
 - **TIME** (2021 – 2022): VP, Software Engineering. https://time.com
 - **Lyft** (2020): Engineering Manager II, Memberships. https://www.lyft.com
-- **Earlier**: The New York Times, Google, The New Yorker, Obama for America
+- **The New York Times** (2015 – 2020): Director of Technology, NYT Cooking. https://www.nytimes.com
+- **Google** (2014 – 2015): Senior Web Developer. https://about.google
+- **The New Yorker** (2013): Director of Engineering. https://www.newyorker.com
+- **Obama for America** (2011 – 2013): Lead Software Engineer. https://barackobama.com/
 
 ## Elsewhere
 
 - Email: jeff@jefflouden.com
 - GitHub: https://github.com/jeffreylouden
 - LinkedIn: https://www.linkedin.com/in/jeffreylouden/
+- Résumé (PDF): https://jefflouden.com/jeffrey-louden-resume.pdf
 
 Washington, D.C. · © 2009–2026 Jeffrey Louden · https://jefflouden.com/

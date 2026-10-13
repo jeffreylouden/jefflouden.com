@@ -25,7 +25,7 @@ When asked to sync:
 2. Update `public/index.html` by hand, keeping its current design:
    - `header`: name and the current headline
    - `.intro`: the bio
-   - Work: one `.row` per organization, newest first. The years column uses `YYYY – YYYY` or `YYYY – Now`. Multiple titles at one org stack under it. Roles with no dates go in the single "Earlier" row
+   - Work: one `.row` per organization, newest first. The years column uses `YYYY – YYYY` or `YYYY – Now`. Multiple titles at one org stack under it. A role with no dates yet goes in an "Earlier" row (one name per line) until it has dates
    - Elsewhere (email plus links). Education is kept in the workbook but not shown on the site
    - link each organization to its `url` when it has one; Existential also links Aureo (https://aureo.audio)
    - footer location
@@ -36,6 +36,7 @@ When asked to sync:
    - `public/.well-known/ai-catalog.json` if the headline or the profile's representative queries change
    - `public/sitemap.xml` `<lastmod>` and `public/humans.txt` "Last update"
    - `public/og.png` if the headline or title changed (it is a 1200x630 card rendered from HTML with the site fonts and `beard.jpg`)
+   - the résumé: edit `resume/resume.html` to match, then run `resume/build.sh <path-to-chrome>` to regenerate `public/jeffrey-louden-resume.pdf`. It must stay one US Letter page; check the page count after building. The résumé also lists education and a short line per role
    - new organizations get a `data-brand` underline in their true brand color (see the brand block in the CSS); black brands use `ink`
 3. Links with `removeAtExit: true` stay on the site until Jeff says his LinkedIn account is closed. Then remove them everywhere: header, `rel="me"`, JSON-LD `sameAs`, humans.txt.
 4. Validate the JSON-LD (`python3 -c 'import json,re;...'`). It must parse.
