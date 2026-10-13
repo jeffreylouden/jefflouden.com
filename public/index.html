@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Whatever you do, don't read the source. -->
 <html lang="en-US" prefix="og: https://ogp.me/ns# profile: https://ogp.me/ns/profile#">
 <head>
   <meta charset="utf-8">
@@ -409,6 +410,26 @@
 
   <script>
     console.log('%cWe traced the call. It’s coming from inside the DevTools.', 'font: italic 14px Georgia, serif; color: #8c1c24');
+    console.log('%cType resume for the record.', 'font: 12px Georgia, serif; color: #6b6b6b');
+
+    // `resume` in the console: the Work section as a table, read from the page itself, then the PDF.
+    Object.defineProperty(window, 'resume', {
+      configurable: true,
+      get: function () {
+        var text = function (el) {
+          return el.textContent.replace(/\s+/g, ' ').trim() + (el.querySelector('.aureo') ? ' Aureo' : '');
+        };
+        console.table([].map.call(document.querySelectorAll('.row'), function (row) {
+          var org = row.querySelector('.org');
+          return {
+            Years: text(row.querySelector('.years')),
+            Where: org ? text(org) : [].map.call(row.querySelectorAll('li'), text).join(', '),
+            What: [].map.call(row.querySelectorAll('.title'), text).join('; ')
+          };
+        }));
+        return new URL('jeffrey-louden-resume.pdf', location.href).href;
+      }
+    });
   </script>
   <script type="application/ld+json">
     {
