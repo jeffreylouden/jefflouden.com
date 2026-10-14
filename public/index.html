@@ -12,6 +12,10 @@
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
+  <script>
+    // A saved light or dark choice overrides the system setting; without one, the system decides.
+    try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
   <link rel="icon" href="favicon.ico" sizes="64x64">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
@@ -77,10 +81,13 @@
       --underline: #dba8ab;
       --sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
       --serif: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif;
+      color-scheme: light;
     }
 
+    /* Light or dark follows the system unless the toggle in the footer has saved a choice. */
     @media (prefers-color-scheme: dark) {
-      :root {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
         --paper: #111111;
         --ink: #ededeb;
         --muted: #8e8e8a;
@@ -88,6 +95,16 @@
         --blood: #d25a63;
         --underline: #6e3237;
       }
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #111111;
+      --ink: #ededeb;
+      --muted: #8e8e8a;
+      --rule: #2e2e2c;
+      --blood: #d25a63;
+      --underline: #6e3237;
     }
 
     *,
@@ -146,8 +163,10 @@
     [data-brand="ink"] { --b: var(--ink); }
 
     @media (prefers-color-scheme: dark) {
-      [data-brand="linkedin"] { --b: #3480cc; }
+      :root:not([data-theme="light"]) [data-brand="linkedin"] { --b: #3480cc; }
     }
+
+    :root[data-theme="dark"] [data-brand="linkedin"] { --b: #3480cc; }
 
     a[data-brand="google"] {
       text-decoration: none;
@@ -303,6 +322,34 @@
       color: var(--ink);
     }
 
+    /* The light and dark toggle reads like the footer links. Without JavaScript it stays hidden. */
+    #theme {
+      font: inherit;
+      color: var(--ink);
+      background: none;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: color-mix(in srgb, var(--underline) 75%, transparent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      opacity: 0.8;
+      transition: opacity 0.2s, text-decoration-color 0.2s;
+    }
+
+    #theme:hover,
+    #theme:focus-visible {
+      text-decoration-color: var(--underline);
+      opacity: 1;
+    }
+
+    #theme:focus-visible {
+      outline: 2px solid var(--blood);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
     footer small {
       font-size: inherit;
     }
@@ -406,10 +453,30 @@
 
   <footer>
     <small>© <time datetime="2009">2009</time>–<time datetime="2026">2026</time> Jeffrey Louden</small>
-    <span>Washington, D.C. <span class="sep">/</span> <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a></span>
+    <span>Washington, D.C. <span class="sep">/</span> <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a><span hidden> <span class="sep">/</span> <button id="theme" type="button"></button></span></span>
   </footer>
 
   <script>
+    // The light and dark toggle. It names the mode it switches to, and a choice that matches
+    // the system setting is forgotten so the system decides again.
+    (function () {
+      var button = document.getElementById('theme');
+      var root = document.documentElement;
+      var system = window.matchMedia('(prefers-color-scheme: dark)');
+      function current() { return root.dataset.theme || (system.matches ? 'dark' : 'light'); }
+      function label() { button.textContent = current() === 'dark' ? 'Light mode' : 'Dark mode'; }
+      button.addEventListener('click', function () {
+        var next = current() === 'dark' ? 'light' : 'dark';
+        var saved = next === (system.matches ? 'dark' : 'light') ? null : next;
+        if (saved) root.dataset.theme = saved; else delete root.dataset.theme;
+        try { if (saved) localStorage.setItem('theme', saved); else localStorage.removeItem('theme'); } catch (e) {}
+        label();
+      });
+      if (system.addEventListener) system.addEventListener('change', label);
+      label();
+      button.parentNode.hidden = false;
+    })();
+
     // For whoever opens the console: the name (drawn after Instrument Sans), a whisper, and where things live.
     console.log('%c' + [
       "   █       ▄▀  ▄▀                   █                 █",
