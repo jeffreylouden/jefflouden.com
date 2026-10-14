@@ -301,6 +301,17 @@
       border-radius: 3px;
     }
 
+    /* A soft shadow lifts the mark off the paper; on the dark ground it has nothing to do. */
+    .aureo {
+      filter: drop-shadow(0 1px 1.5px rgb(22 22 22 / 0.22));
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .aureo { filter: none; }
+    }
+
+    :root[data-theme="dark"] .aureo { filter: none; }
+
     .aureo-bars {
       width: 18px;
       height: 18px;
@@ -345,11 +356,18 @@
       color: var(--ink);
     }
 
-    /* The light and dark toggle: an ink ring, half filled, that turns over between the modes.
+    /* The light and dark toggle, at the top right of the column: an ink ring, half filled, that turns over between the modes.
        Without JavaScript it stays hidden. */
+    header {
+      position: relative;
+      padding-right: 32px;
+    }
+
     #theme {
+      position: absolute;
+      top: 3px;
+      right: 0;
       display: inline-flex;
-      vertical-align: -2px;
       background: none;
       border: 0;
       padding: 0;
@@ -358,6 +376,10 @@
       opacity: 0.8;
       transition: opacity 0.2s;
       view-transition-name: theme-toggle;
+    }
+
+    #theme[hidden] {
+      display: none;
     }
 
     #theme:hover,
@@ -443,6 +465,7 @@
     <header>
       <h1>Jeffrey Louden</h1>
       <p class="role-line">SVP, Engineering at The Atlantic</p>
+      <button id="theme" type="button" hidden><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.25"/><path class="half" d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
     </header>
 
     <p class="intro">I build teams and things.</p>
@@ -506,7 +529,7 @@
 
   <footer>
     <small>© <time datetime="2009">2009</time>–<time datetime="2026">2026</time> Jeffrey Louden</small>
-    <span>Washington, D.C. <span class="sep">/</span> <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a><span hidden> <span class="sep">/</span> <button id="theme" type="button"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.25"/><path class="half" d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button></span></span>
+    <span>Washington, D.C. <span class="sep">/</span> <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a></span>
   </footer>
 
   <script>
@@ -536,7 +559,7 @@
       }
       if (system.addEventListener) system.addEventListener('change', label);
       label();
-      button.parentNode.hidden = false;
+      button.hidden = false;
     })();
 
     // For whoever opens the console: the name (drawn after Instrument Sans), a whisper, and where things live.
