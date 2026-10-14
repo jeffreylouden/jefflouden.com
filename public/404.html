@@ -5,24 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Not found · Jeffrey Louden</title>
   <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
   <style>
-    @font-face { font-family: 'Newsreader'; src: url('/fonts/newsreader-italic.woff2') format('woff2'); font-style: italic; font-display: swap; }
-    :root { --paper: #f7f7f5; --ink: #161616; --muted: #6b6b6b; --blood: #8c1c24; }
-    @media (prefers-color-scheme: dark) { :root { --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --blood: #d25a63; } }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--paper); color: var(--ink); font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; padding: 24px; box-sizing: border-box; }
-    main { max-width: 32ch; display: grid; gap: 16px; }
-    p { margin: 0; }
-    .line { font-family: 'Newsreader', Georgia, serif; font-style: italic; font-size: 26px; line-height: 1.3; }
+    @font-face { font-family: 'Instrument Sans'; src: url('/fonts/instrument-sans.woff2') format('woff2'); font-weight: 400 600; font-stretch: 75% 100%; font-display: swap; }
+    @font-face { font-family: 'Newsreader'; src: url('/fonts/newsreader.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+    :root { --paper: #f7f7f5; --ink: #161616; --muted: #6b6b6b; --blood: #8c1c24; --underline: #dba8ab; }
+    @media (prefers-color-scheme: dark) { :root { --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --blood: #d25a63; --underline: #6e3237; } }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    ::selection { background: var(--blood); color: var(--paper); }
+    h1, p { margin: 0; }
+    /* The same column as the home page. */
+    main { max-width: 720px; margin: 0 auto; padding: clamp(48px, 12vw, 136px) 24px 96px; display: grid; gap: clamp(40px, 7vw, 64px); }
+    h1 { font-size: 15px; font-weight: 500; }
+    .note { display: grid; gap: 20px; }
     .muted { color: var(--muted); }
-    a { color: inherit; text-underline-offset: 3px; text-decoration-color: var(--blood); opacity: .8; transition: opacity .2s; }
-    a:hover, a:focus-visible { opacity: 1; }
+    .line { font-family: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif; font-size: clamp(21px, 3.2vw, 26px); line-height: 1.35; letter-spacing: -0.005em; max-width: 30ch; text-wrap: pretty; }
+    a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--underline) 75%, transparent); text-decoration-thickness: 1px; text-underline-offset: 3px; opacity: 0.8; transition: opacity 0.2s, text-decoration-color 0.2s; }
+    a:hover, a:focus-visible { text-decoration-color: var(--underline); opacity: 1; }
+    a:focus-visible { outline: 2px solid var(--blood); outline-offset: 3px; border-radius: 2px; }
   </style>
 </head>
 <body>
   <main>
-    <p class="muted">404</p>
-    <p class="line">We traced the page. It isn’t coming from inside the site.</p>
-    <p><a href="/">Get back to the house</a></p>
+    <header>
+      <h1>404</h1>
+      <p class="muted">Not found</p>
+    </header>
+    <div class="note">
+      <p class="line">We traced the page. It isn’t coming from inside the site.</p>
+      <p><a href="/">Get back to the house</a></p>
+    </div>
   </main>
 </body>
 </html>
