@@ -82,6 +82,12 @@
       --sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
       --serif: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif;
       color-scheme: light;
+      /* The Aureo bars, deepened so they hold up on paper; dark mode keeps aureo.audio's own. */
+      --aureo-1: #2f8f7f;
+      --aureo-2: #b04f62;
+      --aureo-3: #8f7f2f;
+      --aureo-4: #337a9d;
+      --aureo-5: #4f5fbf;
     }
 
     /* Light or dark follows the system unless the toggle in the footer has saved a choice. */
@@ -94,6 +100,11 @@
         --rule: #2e2e2c;
         --blood: #d25a63;
         --underline: #6e3237;
+        --aureo-1: #6cc6b7;
+        --aureo-2: #c66c7b;
+        --aureo-3: #c6b76c;
+        --aureo-4: #6ca8c6;
+        --aureo-5: #7281cd;
       }
     }
 
@@ -105,6 +116,11 @@
       --rule: #2e2e2c;
       --blood: #d25a63;
       --underline: #6e3237;
+      --aureo-1: #6cc6b7;
+      --aureo-2: #c66c7b;
+      --aureo-3: #c6b76c;
+      --aureo-4: #6ca8c6;
+      --aureo-5: #7281cd;
     }
 
     *,
@@ -294,6 +310,13 @@
       overflow: visible;
     }
 
+    .aureo-bars path:nth-child(1) { stroke: var(--aureo-1); }
+    .aureo-bars path:nth-child(2),
+    .aureo-bars path:nth-child(6) { stroke: var(--aureo-2); }
+    .aureo-bars path:nth-child(3) { stroke: var(--aureo-3); }
+    .aureo-bars path:nth-child(4) { stroke: var(--aureo-4); }
+    .aureo-bars path:nth-child(5) { stroke: var(--aureo-5); }
+
     .aureo-word {
       height: 11px;
       width: auto;
@@ -334,6 +357,7 @@
       cursor: pointer;
       opacity: 0.8;
       transition: opacity 0.2s;
+      view-transition-name: theme-toggle;
     }
 
     #theme:hover,
@@ -345,6 +369,22 @@
       outline: 2px solid var(--blood);
       outline-offset: 3px;
       border-radius: 50%;
+    }
+
+    /* Switching modes cross-fades the page on the icon's timing; the icon itself stays out of
+       the fade and animates live on top. */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.6s;
+      animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    ::view-transition-old(theme-toggle) {
+      display: none;
+    }
+
+    ::view-transition-new(theme-toggle) {
+      animation: none;
     }
 
     #theme svg {
@@ -481,13 +521,19 @@
         button.dataset.mode = current();
         button.setAttribute('aria-label', current() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
       }
+      var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+      // Where the browser can, the page cross-fades between the two modes on the icon's timing.
       button.addEventListener('click', function () {
+        if (document.startViewTransition && !still.matches) document.startViewTransition(toggle);
+        else toggle();
+      });
+      function toggle() {
         var next = current() === 'dark' ? 'light' : 'dark';
         var saved = next === (system.matches ? 'dark' : 'light') ? null : next;
         if (saved) root.dataset.theme = saved; else delete root.dataset.theme;
         try { if (saved) localStorage.setItem('theme', saved); else localStorage.removeItem('theme'); } catch (e) {}
         label();
-      });
+      }
       if (system.addEventListener) system.addEventListener('change', label);
       label();
       button.parentNode.hidden = false;
