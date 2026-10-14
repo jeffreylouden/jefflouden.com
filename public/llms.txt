@@ -26,3 +26,4 @@ Contact: jeff@jefflouden.com
 - Résumé (PDF): https://jefflouden.com/jeffrey-louden-resume.pdf
 - GitHub: https://github.com/jeffreylouden
 - LinkedIn: https://www.linkedin.com/in/jeffreylouden/
+- Wikidata: https://www.wikidata.org/wiki/Q141728742
