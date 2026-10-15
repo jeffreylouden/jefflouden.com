@@ -12,6 +12,10 @@
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
+  <script>
+    // A saved light or dark choice overrides the system setting; without one, the system decides.
+    try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
   <link rel="icon" href="favicon.ico" sizes="64x64">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
@@ -77,17 +81,46 @@
       --underline: #dba8ab;
       --sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
       --serif: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif;
+      color-scheme: light;
+      /* The Aureo bars, deepened so they hold up on paper; dark mode keeps aureo.audio's own. */
+      --aureo-1: #2f8f7f;
+      --aureo-2: #b04f62;
+      --aureo-3: #8f7f2f;
+      --aureo-4: #337a9d;
+      --aureo-5: #4f5fbf;
     }
 
+    /* Light or dark follows the system unless the toggle in the footer has saved a choice. */
     @media (prefers-color-scheme: dark) {
-      :root {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
         --paper: #111111;
         --ink: #ededeb;
         --muted: #8e8e8a;
         --rule: #2e2e2c;
         --blood: #d25a63;
         --underline: #6e3237;
+        --aureo-1: #6cc6b7;
+        --aureo-2: #c66c7b;
+        --aureo-3: #c6b76c;
+        --aureo-4: #6ca8c6;
+        --aureo-5: #7281cd;
       }
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #111111;
+      --ink: #ededeb;
+      --muted: #8e8e8a;
+      --rule: #2e2e2c;
+      --blood: #d25a63;
+      --underline: #6e3237;
+      --aureo-1: #6cc6b7;
+      --aureo-2: #c66c7b;
+      --aureo-3: #c6b76c;
+      --aureo-4: #6ca8c6;
+      --aureo-5: #7281cd;
     }
 
     *,
@@ -146,8 +179,10 @@
     [data-brand="ink"] { --b: var(--ink); }
 
     @media (prefers-color-scheme: dark) {
-      [data-brand="linkedin"] { --b: #3480cc; }
+      :root:not([data-theme="light"]) [data-brand="linkedin"] { --b: #3480cc; }
     }
+
+    :root[data-theme="dark"] [data-brand="linkedin"] { --b: #3480cc; }
 
     a[data-brand="google"] {
       text-decoration: none;
@@ -266,6 +301,17 @@
       border-radius: 3px;
     }
 
+    /* A soft shadow lifts the mark off the paper; on the dark ground it has nothing to do. */
+    .aureo {
+      filter: drop-shadow(0 1px 1.5px rgb(22 22 22 / 0.22));
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .aureo { filter: none; }
+    }
+
+    :root[data-theme="dark"] .aureo { filter: none; }
+
     .aureo-bars {
       width: 18px;
       height: 18px;
@@ -274,6 +320,13 @@
       stroke-linecap: round;
       overflow: visible;
     }
+
+    .aureo-bars path:nth-child(1) { stroke: var(--aureo-1); }
+    .aureo-bars path:nth-child(2),
+    .aureo-bars path:nth-child(6) { stroke: var(--aureo-2); }
+    .aureo-bars path:nth-child(3) { stroke: var(--aureo-3); }
+    .aureo-bars path:nth-child(4) { stroke: var(--aureo-4); }
+    .aureo-bars path:nth-child(5) { stroke: var(--aureo-5); }
 
     .aureo-word {
       height: 11px;
@@ -301,6 +354,70 @@
 
     footer a {
       color: var(--ink);
+    }
+
+    /* The light and dark toggle, in the top-right corner of the page: an ink ring, half filled, that turns over between the modes.
+       Without JavaScript it stays hidden. */
+    #theme {
+      position: absolute;
+      top: clamp(16px, 2.5vw, 24px);
+      right: clamp(16px, 2.5vw, 24px);
+      display: inline-flex;
+      background: none;
+      border: 0;
+      padding: 0;
+      color: var(--ink);
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+      view-transition-name: theme-toggle;
+    }
+
+    #theme[hidden] {
+      display: none;
+    }
+
+    #theme:hover,
+    #theme:focus-visible {
+      opacity: 1;
+    }
+
+    #theme:focus-visible {
+      outline: 2px solid var(--blood);
+      outline-offset: 3px;
+      border-radius: 50%;
+    }
+
+    /* Switching modes cross-fades the page on the icon's timing; the icon itself stays out of
+       the fade and animates live on top. */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.6s;
+      animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    ::view-transition-old(theme-toggle) {
+      display: none;
+    }
+
+    ::view-transition-new(theme-toggle) {
+      animation: none;
+    }
+
+    #theme svg {
+      display: block;
+      width: 14px;
+      height: 14px;
+    }
+
+    #theme .half {
+      transform-box: view-box;
+      transform-origin: 8px 8px;
+      transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    #theme[data-mode="dark"] .half {
+      transform: rotate(180deg);
     }
 
     footer small {
@@ -339,6 +456,7 @@
   </style>
 </head>
 <body>
+  <button id="theme" type="button" hidden><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.25"/><path class="half" d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
   <main>
     <header>
       <h1>Jeffrey Louden</h1>
@@ -410,6 +528,35 @@
   </footer>
 
   <script>
+    // The light and dark toggle. It shows the current mode and is labelled with the next; a choice that matches
+    // the system setting is forgotten so the system decides again.
+    (function () {
+      var button = document.getElementById('theme');
+      var root = document.documentElement;
+      var system = window.matchMedia('(prefers-color-scheme: dark)');
+      function current() { return root.dataset.theme || (system.matches ? 'dark' : 'light'); }
+      function label() {
+        button.dataset.mode = current();
+        button.setAttribute('aria-label', current() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      }
+      var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+      // Where the browser can, the page cross-fades between the two modes on the icon's timing.
+      button.addEventListener('click', function () {
+        if (document.startViewTransition && !still.matches) document.startViewTransition(toggle);
+        else toggle();
+      });
+      function toggle() {
+        var next = current() === 'dark' ? 'light' : 'dark';
+        var saved = next === (system.matches ? 'dark' : 'light') ? null : next;
+        if (saved) root.dataset.theme = saved; else delete root.dataset.theme;
+        try { if (saved) localStorage.setItem('theme', saved); else localStorage.removeItem('theme'); } catch (e) {}
+        label();
+      }
+      if (system.addEventListener) system.addEventListener('change', label);
+      label();
+      button.hidden = false;
+    })();
+
     // For whoever opens the console: the name (drawn after Instrument Sans), a whisper, and where things live.
     console.log('%c' + [
       "   █       ▄▀  ▄▀                   █                 █",

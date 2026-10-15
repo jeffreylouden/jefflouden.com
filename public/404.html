@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Not found · Jeffrey Louden</title>
   <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="light dark">
+  <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <style>
     @font-face { font-family: 'Instrument Sans'; src: url('/fonts/instrument-sans.woff2') format('woff2'); font-weight: 400 600; font-stretch: 75% 100%; font-display: swap; }
     @font-face { font-family: 'Newsreader'; src: url('/fonts/newsreader.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-    :root { --paper: #f7f7f5; --ink: #161616; --muted: #6b6b6b; --blood: #8c1c24; --underline: #dba8ab; }
-    @media (prefers-color-scheme: dark) { :root { --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --blood: #d25a63; --underline: #6e3237; } }
+    :root { --paper: #f7f7f5; --ink: #161616; --muted: #6b6b6b; --blood: #8c1c24; --underline: #dba8ab; color-scheme: light; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --blood: #d25a63; --underline: #6e3237; } }
+    :root[data-theme="dark"] { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --blood: #d25a63; --underline: #6e3237; }
     *, *::before, *::after { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
     body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
