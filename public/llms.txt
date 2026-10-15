@@ -25,6 +25,7 @@ Contact: jeff@jefflouden.com
 ## Elsewhere
 
 - Résumé (PDF): https://jefflouden.com/jeffrey-louden-resume.pdf
+- Contact card (vCard): https://jefflouden.com/jeffrey-louden.vcf
 - GitHub: https://github.com/jeffreylouden
 - LinkedIn: https://www.linkedin.com/in/jeffreylouden/
 - Wikidata: https://www.wikidata.org/wiki/Q141728742

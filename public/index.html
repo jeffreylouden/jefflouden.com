@@ -14,7 +14,8 @@
   <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
   <script>
     // A saved light or dark choice overrides the system setting; without one, the system decides.
-    try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+    // The browser's own bar (theme-color) follows the choice too.
+    var t; try { t = localStorage.getItem('theme'); } catch (e) {} if (t === 'light' || t === 'dark') { document.documentElement.dataset.theme = t; } else { t = null; } function bar(t) { var m = document.querySelectorAll('meta[name="theme-color"]'), c = {}, i; for (i = 0; i < m.length; i++) { m[i].dataset.color = m[i].dataset.color || m[i].content; c[/dark/.test(m[i].media) ? 'dark' : 'light'] = m[i].dataset.color; } for (i = 0; i < m.length; i++) m[i].content = t ? c[t] : m[i].dataset.color; } bar(t);
   </script>
   <link rel="icon" href="favicon.ico" sizes="64x64">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -453,11 +454,51 @@
         transition: none !important;
       }
     }
+    .print-note {
+      display: none;
+    }
+
+    /* Print in light, without the toggle, whatever mode is on screen, and point to the résumé. */
+    @media print {
+      .print-note {
+        display: block;
+        color: var(--muted);
+      }
+
+      :root:not(#print) {
+        color-scheme: light;
+        --paper: #fff;
+        --ink: #161616;
+        --muted: #6b6b6b;
+        --rule: #dcdcd8;
+        --blood: #8c1c24;
+        --underline: #dba8ab;
+        --aureo-1: #2f8f7f;
+        --aureo-2: #b04f62;
+        --aureo-3: #8f7f2f;
+        --aureo-4: #337a9d;
+        --aureo-5: #4f5fbf;
+      }
+
+      :root:not(#print) [data-brand="linkedin"] {
+        --b: #0a66c2;
+      }
+
+      #theme {
+        display: none;
+      }
+
+      .aureo {
+        filter: none;
+      }
+    }
+
   </style>
 </head>
 <body>
   <button id="theme" type="button" hidden><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.25"/><path class="half" d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
   <main>
+    <p class="print-note">The full résumé is at jefflouden.com/jeffrey-louden-resume.pdf</p>
     <header>
       <h1>Jeffrey Louden</h1>
       <p class="role-line">SVP, Engineering at The Atlantic</p>
@@ -517,6 +558,7 @@
           <li><a href="https://github.com/jeffreylouden" rel="me noopener" data-brand="ink">GitHub</a></li>
           <li><a href="https://www.linkedin.com/in/jeffreylouden/" rel="me noopener" data-brand="linkedin">LinkedIn</a></li>
           <li><a href="jeffrey-louden-resume.pdf" type="application/pdf">Résumé (PDF)</a></li>
+          <li><a href="jeffrey-louden.vcf" type="text/vcard" download>Save contact</a></li>
         </ul>
       </address>
     </section>
@@ -551,13 +593,23 @@
         if (saved) root.dataset.theme = saved; else delete root.dataset.theme;
         try { if (saved) localStorage.setItem('theme', saved); else localStorage.removeItem('theme'); } catch (e) {}
         label();
+        bar(saved);
       }
       if (system.addEventListener) system.addEventListener('change', label);
       label();
       button.hidden = false;
     })();
 
-    // For whoever opens the console: the name (drawn after Instrument Sans), a whisper, and where things live.
+    // Printing from the keyboard opens the résumé, the printable version of this page.
+    // Printing from the browser's menu still prints the page, pointing to the résumé.
+    document.addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && !e.altKey && !e.shiftKey && e.key.toLowerCase() === 'p') {
+        e.preventDefault();
+        window.open('jeffrey-louden-resume.pdf', '_blank', 'noopener');
+      }
+    });
+
+        // For whoever opens the console: the name (drawn after Instrument Sans), a whisper, and where things live.
     console.log('%c' + [
       "   █       ▄▀  ▄▀                   █                 █",
       "   █  ▄▄  ▄█▄ ▄█▄ ▄ ▄  ▄▄  ▄   ▄    █     ▄▄  ▄  ▄  ▄▄█  ▄▄  ▄▄▄",
@@ -588,7 +640,7 @@
           "url": "https://jefflouden.com/",
           "name": "Jeffrey Louden · SVP, Engineering at The Atlantic",
           "inLanguage": "en-US",
-          "dateModified": "2026-10-14",
+          "dateModified": "2026-10-15",
           "isPartOf": { "@id": "https://jefflouden.com/#website" },
           "mainEntity": { "@id": "https://jefflouden.com/#person" },
           "primaryImageOfPage": {

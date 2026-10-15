@@ -26,3 +26,7 @@
 /.well-known/ai-catalog.json
   Content-Type: application/json
   Access-Control-Allow-Origin: *
+
+/jeffrey-louden.vcf
+  Content-Type: text/vcard; charset=utf-8
+  Content-Disposition: attachment; filename="jeffrey-louden.vcf"

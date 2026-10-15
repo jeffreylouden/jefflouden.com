@@ -21,5 +21,6 @@ I build teams and things.
 - GitHub: https://github.com/jeffreylouden
 - LinkedIn: https://www.linkedin.com/in/jeffreylouden/
 - Résumé (PDF): https://jefflouden.com/jeffrey-louden-resume.pdf
+- Contact card (vCard): https://jefflouden.com/jeffrey-louden.vcf
 
 Washington, D.C. · © 2009–2026 Jeffrey Louden · https://jefflouden.com/
