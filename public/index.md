@@ -11,7 +11,7 @@ I build teams and things.
 - **TIME** (2021 – 2022): VP, Software Engineering. https://time.com
 - **Lyft** (2020): Engineering Manager II, Memberships. https://www.lyft.com
 - **The New York Times** (2015 – 2020): Director of Technology, NYT Cooking. https://www.nytimes.com
-- **Google** (2014 – 2015): Senior Web Developer. https://about.google
+- **Nest and Google** (2014 – 2015): Senior Web Developer. Joined Nest just before Google acquired it, and stayed on at Google. https://about.google
 - **The New Yorker** (2013): Director of Engineering. https://www.newyorker.com
 - **Obama for America** (2011 – 2013): Lead Software Engineer. https://barackobama.com/
 
