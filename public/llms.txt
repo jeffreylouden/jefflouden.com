@@ -7,11 +7,11 @@ Contact: jeff@jefflouden.com
 
 ## Work
 
-- The Atlantic: SVP, Engineering (June 2026 to present); VP, Engineering (October 2025 to June 2026). Washington, D.C. https://www.theatlantic.com
+- The Atlantic: SVP, Engineering (June 2026 to present), and VP, Engineering (October 2025 to June 2026). Washington, D.C. https://www.theatlantic.com
 - Existential Engineering Company: Founder (July 2022 to present). Built Aureo (https://aureo.audio). https://existential.engineering
 - TIME: VP, Software Engineering (March 2021 to July 2022). New York, remote. https://time.com
 - Lyft: Engineering Manager II, Memberships (May 2020 to November 2020). San Francisco Bay Area. https://www.lyft.com
-- The New York Times: Director of Technology, NYT Cooking (June 2015 to January 2020). Led a 25-person engineering team; NYT Cooking became a $20 million subscription product and won two Webby Awards and the 2019 James Beard Award for Publication of the Year. https://www.nytimes.com
+- The New York Times: Director of Technology, NYT Cooking (June 2015 to January 2020). Led a 25-person engineering team. NYT Cooking became a $20 million subscription product and won two Webby Awards and the 2019 James Beard Award for Publication of the Year. https://www.nytimes.com
 - Google: Senior Web Developer (March 2014 to May 2015). https://about.google
 - The New Yorker: Director of Engineering (February 2013 to December 2013). https://www.newyorker.com
 - Obama for America: Lead Software Engineer, BarackObama.com (September 2011 to January 2013). https://barackobama.com/
