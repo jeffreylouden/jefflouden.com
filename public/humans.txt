@@ -11,4 +11,4 @@ Doctype:        HTML5
 IDE:            vim
 Standards:      HTML5, CSS3, schema.org JSON-LD
 Fonts:          Instrument Sans, Newsreader (SIL OFL)
-Last update:    2026-10-14
+Last update:    2026-10-15
