@@ -35,7 +35,7 @@ When asked to sync:
    - `public/llms.txt` (plain-language profile for AI answer engines; keep it factual and in sync with the page)
    - `public/index.md` (the page as Markdown; served at `/` to `Accept: text/markdown` requests by `functions/_middleware.js`)
    - `public/.well-known/ai-catalog.json` if the headline or the profile's representative queries change
-   - `public/jeffrey-louden.vcf` (the contact card linked as "Save contact": name, current title and org, email, site, city, and a 256px photo from `jeffrey-louden-square.jpg`; vCard 3.0 with CRLF line endings, lines folded at 75)
+   - `public/jeffrey-louden.vcf` (the contact card linked as "Save contact": name, current title and org, email, site, city, and a 256px square headshot embedded as base64 (for now a crop of an older photo, to be replaced with a new headshot); vCard 3.0 with CRLF line endings, lines folded at 75)
    - `public/sitemap.xml` `<lastmod>` and `public/humans.txt` "Last update"
    - `public/og.png` if the headline or title changed (it is a 1200x630 card rendered from HTML with the site fonts and `beard.jpg`)
    - the résumé: edit `resume/resume.html` to match, then run `resume/build.sh <path-to-chrome>` to regenerate `public/resume.pdf`. It lives at the short `/resume.pdf` (saved as `jeffrey-louden-resume.pdf` via `_headers`; `_redirects` sends the old `/jeffrey-louden-resume.pdf` there). It must stay one US Letter page; check the page count after building. The résumé also lists education and a short line per role
