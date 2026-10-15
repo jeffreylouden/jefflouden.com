@@ -12,7 +12,7 @@ Its database has these collections:
 
 - `profile/main`: name, headline, location, email, bio
 - `roles`: org, title, start/end (`YYYY-MM`, blank end means current), location, url, summary
-- `education`: school, credential, start, end
+- `education`: school, credential, start, end, onResume (`false` keeps an entry in the workbook but off the résumé and llms.txt)
 - `links`: label, url, removeAtExit, order
 - `checklist`: the LinkedIn exit steps (not published to the site)
 - `meta/sync`: `syncedAt` (ms epoch) of the last sync to the site
