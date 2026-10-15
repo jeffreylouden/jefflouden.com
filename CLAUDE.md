@@ -38,7 +38,7 @@ When asked to sync:
    - `public/jeffrey-louden.vcf` (the contact card linked as "Save contact": name, current title and org, email, site, city, and a 256px photo from `jeffrey-louden-square.jpg`; vCard 3.0 with CRLF line endings, lines folded at 75)
    - `public/sitemap.xml` `<lastmod>` and `public/humans.txt` "Last update"
    - `public/og.png` if the headline or title changed (it is a 1200x630 card rendered from HTML with the site fonts and `beard.jpg`)
-   - the résumé: edit `resume/resume.html` to match, then run `resume/build.sh <path-to-chrome>` to regenerate `public/jeffrey-louden-resume.pdf`. It must stay one US Letter page; check the page count after building. The résumé also lists education and a short line per role
+   - the résumé: edit `resume/resume.html` to match, then run `resume/build.sh <path-to-chrome>` to regenerate `public/resume.pdf`. It lives at the short `/resume.pdf` (saved as `jeffrey-louden-resume.pdf` via `_headers`; `_redirects` sends the old `/jeffrey-louden-resume.pdf` there). It must stay one US Letter page; check the page count after building. The résumé also lists education and a short line per role
    - new organizations get a `data-brand` underline in their true brand color (see the brand block in the CSS); black brands use `ink`
 3. Links with `removeAtExit: true` stay on the site until Jeff says his LinkedIn account is closed. Then remove them everywhere: header, `rel="me"`, JSON-LD `sameAs`, humans.txt.
 4. Validate the JSON-LD (`python3 -c 'import json,re;...'`). It must parse.

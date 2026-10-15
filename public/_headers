@@ -30,3 +30,7 @@
 /jeffrey-louden.vcf
   Content-Type: text/vcard; charset=utf-8
   Content-Disposition: attachment; filename="jeffrey-louden.vcf"
+
+# A short URL, but a descriptive name when someone saves it.
+/resume.pdf
+  Content-Disposition: inline; filename="jeffrey-louden-resume.pdf"
