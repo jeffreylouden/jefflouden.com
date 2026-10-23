@@ -33,6 +33,7 @@ When asked to sync:
    - Contact (email, profile links, the résumé and the contact card). Education is kept in the workbook but not shown on the site
    - link each organization to its `url` when it has one; Existential also links Aureo (https://aureo.audio)
    - footer location
+   - the header on `public/log.html` repeats the name and current headline (keep it in step with the home page)
    - the JSON-LD `@graph` (ProfilePage, Person, organizations): titles, `worksFor`, `alumniOf`, and `ProfilePage.dateModified` (a full ISO 8601 datetime with offset, like `2026-10-15T18:16:04-04:00`, since Search Console rejects a bare date)
    - `sameAs`: every organization carries its Wikidata and English Wikipedia URLs (look the QID up, never guess it). The Person's `sameAs` lists only profiles Jeff controls; add his own Wikidata item, Bluesky or other profiles there as they come to exist, and mirror each as a `rel="me"` link
    - `<title>`, meta description, Open Graph and Twitter tags (keep title and og:title identical)

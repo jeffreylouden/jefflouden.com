@@ -12,8 +12,11 @@
   <link rel="stylesheet" href="/site.css">
   <style>
     /* Shared styles live in site.css. These are this page's own. */
-    /* The way home, at the top as well as in the footer. */
-    .home { margin-bottom: 20px; }
+    /* The same header and spacing as the home page, with the name linking home, then the page's name in the intro's serif. */
+    main { gap: clamp(56px, 9vw, 88px); }
+    .name { font-weight: 500; }
+    .intro { font-family: var(--serif); font-size: clamp(21px, 3.2vw, 26px); font-weight: 400; line-height: 1.35; letter-spacing: -0.005em; max-width: 30ch; text-wrap: pretty; }
+    .intro + p { margin-top: 8px; }
     /* A plain list, newest first. Dates are kept in the markup but not shown. */
     .log { display: grid; gap: 28px; }
     .log p { max-width: 56ch; text-wrap: pretty; }
@@ -28,10 +31,13 @@
 <body>
   <main>
     <header>
-      <p class="home"><a href="/">Jeffrey Louden</a></p>
-      <h1>Log</h1>
-      <p class="muted">Things I like, and the odd note</p>
+      <p class="name"><a href="/">Jeffrey Louden</a></p>
+      <p class="muted">SVP, Engineering at The Atlantic</p>
     </header>
+    <div>
+      <h1 class="intro">Log</h1>
+      <p class="muted">Things I like, and the odd note</p>
+    </div>
     <ol class="log" reversed>
       <!--
         Newest at the top. Copy this, fill it in, and delete what you don't need.
