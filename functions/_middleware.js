@@ -1,6 +1,6 @@
 // Markdown for agents: requests for the home page that send
 // `Accept: text/markdown` get public/index.md instead of HTML.
-// Terminals (`curl jefflouden.com`) get public/index.txt.
+// Terminals (`curl https://jefflouden.com`) get public/index.txt.
 // Everything else falls through to the static site, with a fresh CSP nonce.
 // Only "/" and "/index.html" reach this function (see public/_routes.json).
 
