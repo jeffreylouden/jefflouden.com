@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="/site.css">
   <style>
     /* Shared styles live in site.css. These are this page's own. */
+    /* The way home, at the top as well as in the footer. */
+    .home { margin-bottom: 20px; }
     /* A plain list, newest first. Dates are kept in the markup but not shown. */
     .log { display: grid; gap: 28px; }
     .log p { max-width: 56ch; text-wrap: pretty; }
@@ -26,6 +28,7 @@
 <body>
   <main>
     <header>
+      <p class="home"><a href="/">Jeffrey Louden</a></p>
       <h1>Log</h1>
       <p class="muted">Things I like, and the odd note</p>
     </header>
