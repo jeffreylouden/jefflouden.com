@@ -12,10 +12,8 @@
   <link rel="stylesheet" href="/site.css">
   <style>
     /* Shared styles live in site.css. These are this page's own. */
-    /* One row per entry, laid out like the Work rows on the home page: the date, then the thing. */
+    /* A plain list, newest first. Dates are kept in the markup but not shown. */
     .log { display: grid; gap: 28px; }
-    .log li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 4px 24px; align-items: baseline; }
-    .log time { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
     .log p { max-width: 56ch; text-wrap: pretty; }
     .log p + p { margin-top: 2px; }
     .what { font-weight: 500; }
@@ -23,7 +21,6 @@
     /* Quotes are set in the intro's serif, with who said it underneath. */
     blockquote { margin: 0; font-family: var(--serif); font-size: 19px; line-height: 1.4; letter-spacing: -0.005em; }
     .who { color: var(--muted); font-size: 13px; }
-    @media (max-width: 560px) { .log li { grid-template-columns: 1fr; } .log time { font-size: 13px; } }
   </style>
 </head>
 <body>
@@ -35,25 +32,19 @@
     <ol class="log" reversed>
       <!--
         Newest at the top. Copy this, fill it in, and delete what you don't need.
-        The kind is any word (film, album, song, book, site, thing, quote, note). It isn't shown,
-        it's there to sort or filter by one day.
-        A note is just the date and one <p> of text, with no title.
+        The kind (film, album, song, book, site, thing, quote, note) and the date aren't shown,
+        they're there to sort or filter by one day.
+        A note is just one <p> of text, with no title.
         A quote swaps the title for <blockquote><p>“…”</p></blockquote> and <p class="who">Who said it</p>.
 
-      <li data-kind="kind">
-        <time datetime="YYYY-MM-DD">YYYY-MM-DD</time>
-        <div>
-          <p class="what"><a href="https://…">Title</a></p>
-          <p>A line in my own words.</p>
-        </div>
+      <li data-kind="kind" data-date="YYYY-MM-DD">
+        <p class="what"><a href="https://…">Title</a></p>
+        <p>A line in my own words.</p>
       </li>
       -->
-      <li data-kind="site">
-        <time datetime="2026-10-23">2026-10-23</time>
-        <div>
-          <p class="what"><a href="https://100r.co/site/home.html">Hundred Rabbits</a></p>
-          <p>What lovely humans. Each year I envy them a little more, and wish I could run away to build things on a boat too.</p>
-        </div>
+      <li data-kind="site" data-date="2026-10-23">
+        <p class="what"><a href="https://100r.co/site/home.html">Hundred Rabbits</a></p>
+        <p>What lovely humans. Each year I envy them a little more, and wish I could run away to build things on a boat too.</p>
       </li>
     </ol>
   </main>
