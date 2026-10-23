@@ -1,12 +1,12 @@
 /* Shared by every page: fonts, colors, the column, links and the footer.
    Anything only one page uses stays in that page's own <style>. */
 
-/* Fonts are self-hosted (SIL OFL, see fonts/OFL-*.txt) so the site never depends on a third party. */
+/* Fonts are self-hosted (SIL OFL, see fonts/OFL-*.txt) so the site never depends on a third party.
+   Both are trimmed to what the site uses: Instrument Sans at width 100 and weights 400 to 600, Newsreader at optical size 24. */
 @font-face {
   font-family: 'Instrument Sans';
   src: url('/fonts/instrument-sans.woff2') format('woff2');
   font-weight: 400 600;
-  font-stretch: 75% 100%;
   font-display: swap;
 }
 @font-face {
@@ -14,13 +14,6 @@
   src: url('/fonts/newsreader.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Newsreader';
-  src: url('/fonts/newsreader-italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
   font-display: swap;
 }
 
