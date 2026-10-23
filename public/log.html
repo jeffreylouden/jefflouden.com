@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Log · Jeffrey Louden</title>
+  <title>Jeffrey Louden’s log</title>
   <meta name="description" content="Things Jeffrey Louden likes, and the odd note, newest first.">
   <link rel="canonical" href="https://jefflouden.com/log">
   <meta name="color-scheme" content="light dark">
@@ -30,7 +30,6 @@
     .log li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 4px 24px; align-items: baseline; }
     .log time { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
     .what { font-weight: 500; }
-    .kind { color: var(--muted); font-weight: 400; font-size: 13px; padding-left: 0.5em; }
     .log p { max-width: 56ch; text-wrap: pretty; }
     .log p + p { margin-top: 2px; }
     .what + p, .who + p { color: var(--muted); }
@@ -55,23 +54,24 @@
     <ol class="log" reversed>
       <!--
         Newest at the top. Copy this, fill it in, and delete what you don't need.
-        The kind is any word: film, album, song, book, site, thing.
-        A note is just the date and one <p> of text, with no title or kind.
+        The kind is any word (film, album, song, book, site, thing, quote, note). It isn't shown,
+        it's there to sort or filter by one day.
+        A note is just the date and one <p> of text, with no title.
         A quote swaps the title for <blockquote><p>“…”</p></blockquote> and <p class="who">Who said it</p>.
 
-      <li>
+      <li data-kind="kind">
         <time datetime="YYYY-MM-DD">YYYY-MM-DD</time>
         <div>
-          <p class="what"><a href="https://…">Title</a><span class="kind">kind</span></p>
+          <p class="what"><a href="https://…">Title</a></p>
           <p>A line in my own words.</p>
         </div>
       </li>
       -->
-      <li>
+      <li data-kind="site">
         <time datetime="2026-10-23">2026-10-23</time>
         <div>
-          <p class="what"><a href="https://100r.co/site/home.html">Hundred Rabbits</a><span class="kind">site</span></p>
-          <p>I just genuinely love what these lovely humans do.</p>
+          <p class="what"><a href="https://100r.co/site/home.html">Hundred Rabbits</a></p>
+          <p>What lovely humans. My envy to escape to building things on a boat like them grows each year.</p>
         </div>
       </li>
     </ol>
