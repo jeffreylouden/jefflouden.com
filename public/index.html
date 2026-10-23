@@ -52,10 +52,6 @@
   <link rel="stylesheet" href="/site.css">
   <style>
     /* Shared styles live in site.css. These are the home page's own. */
-    main {
-      gap: clamp(56px, 9vw, 88px);
-    }
-
     /* Brand underlines: each organization's own color. */
     [data-brand="atlantic"] { --b: #e7131a; }
     [data-brand="existential"] { --b: #59c2cf; }
@@ -83,15 +79,6 @@
 
     .role-line {
       color: var(--muted);
-    }
-
-    .intro {
-      font-family: var(--serif);
-      font-size: clamp(21px, 3.2vw, 26px);
-      line-height: 1.35;
-      letter-spacing: -0.005em;
-      max-width: 30ch;
-      text-wrap: pretty;
     }
 
     h2 {
