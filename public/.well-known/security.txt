@@ -1,0 +1,5 @@
+# Found something? Thank you. Please write before you tell the world.
+Contact: mailto:jeff@jefflouden.com
+Expires: 2027-10-22T00:00:00Z
+Preferred-Languages: en
+Canonical: https://jefflouden.com/.well-known/security.txt

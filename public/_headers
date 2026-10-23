@@ -1,9 +1,14 @@
+# The home page gets these from functions/_middleware.js instead, with a
+# per-response CSP nonce in place of the hash below. That hash is the 404
+# page's one inline script: edit that script and the hash must change too.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Strict-Transport-Security: max-age=15552000; includeSubDomains
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-Y8M2nyVjJnbpSzcmLPBDqtbo3uvzaY9uq6XXH+BQgis=' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
