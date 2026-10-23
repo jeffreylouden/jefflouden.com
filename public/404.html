@@ -11,9 +11,9 @@
   <style>
     @font-face { font-family: 'Instrument Sans'; src: url('/fonts/instrument-sans.woff2') format('woff2'); font-weight: 400 600; font-stretch: 75% 100%; font-display: swap; }
     @font-face { font-family: 'Newsreader'; src: url('/fonts/newsreader.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-    :root { --paper: #f7f7f5; --ink: #161616; --muted: #6b6b6b; --blood: #8c1c24; --underline: #dba8ab; color-scheme: light; }
-    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --blood: #d25a63; --underline: #6e3237; } }
-    :root[data-theme="dark"] { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --blood: #d25a63; --underline: #6e3237; }
+    :root { --paper: #f7f7f5; --ink: #161616; --muted: #6b6b6b; --rule: #dcdcd8; --blood: #8c1c24; --underline: #dba8ab; color-scheme: light; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --rule: #2e2e2c; --blood: #d25a63; --underline: #6e3237; } }
+    :root[data-theme="dark"] { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --rule: #2e2e2c; --blood: #d25a63; --underline: #6e3237; }
     *, *::before, *::after { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
     body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
@@ -28,6 +28,11 @@
     a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--underline) 75%, transparent); text-decoration-thickness: 1px; text-underline-offset: 3px; opacity: 0.8; transition: opacity 0.2s, text-decoration-color 0.2s; }
     a:hover, a:focus-visible { text-decoration-color: var(--underline); opacity: 1; }
     a:focus-visible { outline: 2px solid var(--blood); outline-offset: 3px; border-radius: 2px; }
+    /* The footer is the same on every page (index.html, log.html, 404.html). Change them together. */
+    footer { width: min(672px, calc(100% - 48px)); margin: 0 auto; padding: 24px 0 40px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; font-size: 13px; color: var(--muted); }
+    footer small { font-size: inherit; }
+    footer .sep { padding: 0 0.25em; }
+    footer a { color: var(--ink); }
   </style>
 </head>
 <body>
@@ -41,5 +46,10 @@
       <p><a href="/">Get back to the house</a></p>
     </div>
   </main>
+
+  <footer>
+    <small>© <time datetime="2009">2009</time>–<time datetime="2026">2026</time> <a href="/">Jeffrey Louden</a></small>
+    <span><span class="p-locality">Washington, D.C.</span> <span class="sep">/</span> <a href="/log">Log</a> <span class="sep">/</span> <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a></span>
+  </footer>
 </body>
 </html>
