@@ -26,7 +26,7 @@
   résumé     https://jefflouden.com/resume.pdf
   vcard      curl -O https://jefflouden.com/jeffrey-louden.vcf
   markdown   curl -H "Accept: text/markdown" https://jefflouden.com/
-  links      https://jefflouden.com/links
+  log        https://jefflouden.com/log
   source     https://github.com/jeffreylouden/jefflouden.com
 
   Washington, D.C.   © 2009–2026 Jeffrey Louden

@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Links · Jeffrey Louden</title>
-  <meta name="description" content="People and places on the web Jeffrey Louden admires, and why.">
-  <link rel="canonical" href="https://jefflouden.com/links">
+  <title>Log · Jeffrey Louden</title>
+  <meta name="description" content="Things Jeffrey Louden likes, and the odd note, newest first.">
+  <link rel="canonical" href="https://jefflouden.com/log">
   <meta name="color-scheme" content="light dark">
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <style>
     @font-face { font-family: 'Instrument Sans'; src: url('/fonts/instrument-sans.woff2') format('woff2'); font-weight: 400 600; font-stretch: 75% 100%; font-display: swap; }
-    @font-face { font-family: 'Newsreader'; src: url('/fonts/newsreader.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
     :root { --paper: #f7f7f5; --ink: #161616; --muted: #6b6b6b; --rule: #dcdcd8; --blood: #8c1c24; --underline: #dba8ab; color-scheme: light; }
     @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --rule: #2e2e2c; --blood: #d25a63; --underline: #6e3237; } }
     :root[data-theme="dark"] { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --rule: #2e2e2c; --blood: #d25a63; --underline: #6e3237; }
@@ -19,37 +18,58 @@
     html { -webkit-text-size-adjust: 100%; }
     body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
     ::selection { background: var(--blood); color: var(--paper); }
-    h1, p, ul { margin: 0; padding: 0; }
-    ul { list-style: none; }
+    h1, p, ol { margin: 0; padding: 0; }
+    ol { list-style: none; }
     /* The same column as the home page. */
     main { max-width: 720px; margin: 0 auto; padding: clamp(48px, 12vw, 136px) 24px 96px; display: grid; gap: clamp(40px, 7vw, 64px); }
     h1 { font-size: 15px; font-weight: 500; }
     .muted { color: var(--muted); }
-    .line { font-family: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif; font-size: clamp(21px, 3.2vw, 26px); line-height: 1.35; letter-spacing: -0.005em; max-width: 30ch; text-wrap: pretty; }
-    .links { display: grid; gap: 28px; }
-    .name { font-size: 16px; font-weight: 500; }
-    .why { color: var(--muted); max-width: 56ch; text-wrap: pretty; }
+    /* One row per entry, laid out like the Work rows on the home page: the date, then the thing. */
+    .log { display: grid; gap: 28px; }
+    .log li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 4px 24px; align-items: baseline; }
+    .log time { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .what { font-weight: 500; }
+    .kind { color: var(--muted); font-weight: 400; font-size: 13px; padding-left: 0.5em; }
+    .log p { max-width: 56ch; text-wrap: pretty; }
+    .log p + p { margin-top: 2px; }
+    .what + p { color: var(--muted); }
     a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--underline) 75%, transparent); text-decoration-thickness: 1px; text-underline-offset: 3px; opacity: 0.8; transition: opacity 0.2s, text-decoration-color 0.2s; }
     a:hover, a:focus-visible { text-decoration-color: var(--underline); opacity: 1; }
     a:focus-visible { outline: 2px solid var(--blood); outline-offset: 3px; border-radius: 2px; }
     footer { width: min(672px, calc(100% - 48px)); margin: 0 auto; padding: 24px 0 40px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
     footer a { color: var(--ink); }
+    @media (max-width: 560px) { .log li { grid-template-columns: 1fr; } .log time { font-size: 13px; } }
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   </style>
 </head>
 <body>
   <main>
     <header>
-      <h1>Links</h1>
-      <p class="muted">Jeffrey Louden</p>
+      <h1>Log</h1>
+      <p class="muted">Things I like, and the odd note</p>
     </header>
-    <p class="line">People and places on the web I admire, and why.</p>
-    <ul class="links">
+    <ol class="log" reversed>
+      <!--
+        Newest at the top. Copy this, fill it in, and delete what you don't need.
+        The kind is any word: film, album, song, book, site, thing.
+        A note is just the date and one <p> of text, with no title or kind.
+
       <li>
-        <p class="name"><a href="https://100r.co/site/home.html" rel="noopener">Hundred Rabbits</a></p>
-        <p class="why">I just genuinely love what these lovely humans do.</p>
+        <time datetime="YYYY-MM-DD">YYYY-MM-DD</time>
+        <div>
+          <p class="what"><a href="https://…">Title</a><span class="kind">kind</span></p>
+          <p>A line in my own words.</p>
+        </div>
       </li>
-    </ul>
+      -->
+      <li>
+        <time datetime="2026-10-23">2026-10-23</time>
+        <div>
+          <p class="what"><a href="https://100r.co/site/home.html">Hundred Rabbits</a><span class="kind">site</span></p>
+          <p>I just genuinely love what these lovely humans do.</p>
+        </div>
+      </li>
+    </ol>
   </main>
   <footer><a href="/">Jeffrey Louden</a></footer>
 </body>
