@@ -1,5 +1,6 @@
 # Found something? Thank you. Please write before you tell the world.
 Contact: mailto:jeff@jefflouden.com
+Encryption: https://jefflouden.com/.well-known/openpgpkey/hu/6xuudz7n1xd4oce35nic9jy5mwszon9j
 Expires: 2027-10-22T00:00:00Z
 Preferred-Languages: en
 Canonical: https://jefflouden.com/.well-known/security.txt

@@ -36,6 +36,12 @@
   Content-Type: application/json
   Access-Control-Allow-Origin: *
 
+# Web Key Directory (direct method): the OpenPGP key for jeff@, so
+# `gpg --locate-keys jeff@jefflouden.com` finds it. The spec asks for CORS.
+/.well-known/openpgpkey/*
+  Content-Type: application/octet-stream
+  Access-Control-Allow-Origin: *
+
 /jeffrey-louden.vcf
   Content-Type: text/vcard; charset=utf-8
   Content-Disposition: attachment; filename="jeffrey-louden.vcf"
