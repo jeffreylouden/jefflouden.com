@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jeffrey Louden’s log</title>
+  <meta name="description" content="Things Jeffrey Louden likes, and the odd note, newest first.">
+  <link rel="canonical" href="https://jefflouden.com/log">
+  <meta name="color-scheme" content="light dark">
+  <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="stylesheet" href="/site.css">
+  <style>
+    /* Shared styles live in site.css. These are this page's own. */
+    /* One row per entry, laid out like the Work rows on the home page: the date, then the thing. */
+    .log { display: grid; gap: 28px; }
+    .log li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 4px 24px; align-items: baseline; }
+    .log time { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .log p { max-width: 56ch; text-wrap: pretty; }
+    .log p + p { margin-top: 2px; }
+    .what { font-weight: 500; }
+    .what + p, .who + p { color: var(--muted); }
+    /* Quotes are set in the intro's serif, with who said it underneath. */
+    blockquote { margin: 0; font-family: var(--serif); font-size: 19px; line-height: 1.4; letter-spacing: -0.005em; }
+    .who { color: var(--muted); font-size: 13px; }
+    @media (max-width: 560px) { .log li { grid-template-columns: 1fr; } .log time { font-size: 13px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Log</h1>
+      <p class="muted">Things I like, and the odd note</p>
+    </header>
+    <ol class="log" reversed>
+      <!--
+        Newest at the top. Copy this, fill it in, and delete what you don't need.
+        The kind is any word (film, album, song, book, site, thing, quote, note). It isn't shown,
+        it's there to sort or filter by one day.
+        A note is just the date and one <p> of text, with no title.
+        A quote swaps the title for <blockquote><p>“…”</p></blockquote> and <p class="who">Who said it</p>.
+
+      <li data-kind="kind">
+        <time datetime="YYYY-MM-DD">YYYY-MM-DD</time>
+        <div>
+          <p class="what"><a href="https://…">Title</a></p>
+          <p>A line in my own words.</p>
+        </div>
+      </li>
+      -->
+      <li data-kind="site">
+        <time datetime="2026-10-23">2026-10-23</time>
+        <div>
+          <p class="what"><a href="https://100r.co/site/home.html">Hundred Rabbits</a></p>
+          <p>What lovely humans. Each year I envy them a little more, and wish I could run away to build things on a boat too.</p>
+        </div>
+      </li>
+    </ol>
+  </main>
+  <footer>
+    <small>© <time datetime="2009">2009</time>–<time datetime="2026">2026</time> <a href="/">Jeffrey Louden</a></small>
+    <span><span class="p-locality">Washington, D.C.</span> <span class="sep">/</span> <a href="/log">Log</a> <span class="sep">/</span> <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a></span>
+  </footer>
+</body>
+</html>

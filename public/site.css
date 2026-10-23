@@ -1,0 +1,207 @@
+/* Shared by every page: fonts, colors, the column, links and the footer.
+   Anything only one page uses stays in that page's own <style>. */
+
+/* Fonts are self-hosted (SIL OFL, see fonts/OFL-*.txt) so the site never depends on a third party.
+   Both are trimmed to what the site uses: Instrument Sans at width 100 and weights 400 to 600, Newsreader at optical size 24. */
+@font-face {
+  font-family: 'Instrument Sans';
+  src: url('/fonts/instrument-sans.woff2') format('woff2');
+  font-weight: 400 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/fonts/newsreader.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --paper: #f7f7f5;
+  --ink: #161616;
+  --muted: #6b6b6b;
+  --rule: #dcdcd8;
+  --blood: #8c1c24;
+  --underline: #dba8ab;
+  --sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --serif: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif;
+  color-scheme: light;
+  /* The Aureo bars, deepened so they hold up on paper; dark mode keeps aureo.audio's own. */
+  --aureo-1: #2f8f7f;
+  --aureo-2: #b04f62;
+  --aureo-3: #8f7f2f;
+  --aureo-4: #337a9d;
+  --aureo-5: #4f5fbf;
+}
+
+/* Light or dark follows the system unless the toggle has saved a choice. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #111111;
+    --ink: #ededeb;
+    --muted: #8e8e8a;
+    --rule: #2e2e2c;
+    --blood: #d25a63;
+    --underline: #6e3237;
+    --aureo-1: #6cc6b7;
+    --aureo-2: #c66c7b;
+    --aureo-3: #c6b76c;
+    --aureo-4: #6ca8c6;
+    --aureo-5: #7281cd;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #111111;
+  --ink: #ededeb;
+  --muted: #8e8e8a;
+  --rule: #2e2e2c;
+  --blood: #d25a63;
+  --underline: #6e3237;
+  --aureo-1: #6cc6b7;
+  --aureo-2: #c66c7b;
+  --aureo-3: #c6b76c;
+  --aureo-4: #6ca8c6;
+  --aureo-5: #7281cd;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--blood);
+  color: var(--paper);
+}
+
+/* Links rest at 80% opacity with the underline color at 75% (60% effective),
+   and both go to full strength on hover. */
+a {
+  --b: var(--underline);
+  --ua: 75%;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--b);
+  text-decoration-color: color-mix(in srgb, var(--b) var(--ua), transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  opacity: 0.8;
+  transition: opacity 0.2s, text-decoration-color 0.2s;
+}
+
+a:hover,
+a:focus-visible {
+  --ua: 100%;
+  opacity: 1;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--blood);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* One quiet column. */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(48px, 12vw, 136px) 24px 96px;
+  display: grid;
+  gap: clamp(40px, 7vw, 64px);
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+ul,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+h1 {
+  font-size: 15px;
+  font-weight: 500;
+  font-stretch: 100%;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+footer {
+  width: min(672px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 24px 0 40px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+footer small {
+  font-size: inherit;
+}
+
+footer .sep {
+  padding: 0 0.25em;
+}
+
+footer a {
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* Print in light, whatever mode is on screen. */
+@media print {
+  :root:not(#print) {
+    color-scheme: light;
+    --paper: #fff;
+    --ink: #161616;
+    --muted: #6b6b6b;
+    --rule: #dcdcd8;
+    --blood: #8c1c24;
+    --underline: #dba8ab;
+    --aureo-1: #2f8f7f;
+    --aureo-2: #b04f62;
+    --aureo-3: #8f7f2f;
+    --aureo-4: #337a9d;
+    --aureo-5: #4f5fbf;
+  }
+}

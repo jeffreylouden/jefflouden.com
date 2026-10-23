@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jeffrey Louden · SVP, Engineering at The Atlantic</title>
+  <title>Jeffrey Louden, SVP, Engineering at The Atlantic</title>
   <meta name="description" content="Jeffrey Louden (Jeff Louden) is SVP, Engineering at The Atlantic and founder of Existential Engineering Company. Previously TIME, Lyft, The New York Times and Google.">
   <meta name="author" content="Jeffrey Louden">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -20,7 +20,7 @@
   <link rel="icon" href="favicon.ico" sizes="64x64">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="preload" href="fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="author" href="humans.txt">
   <link rel="alternate" type="text/markdown" href="llms.txt" title="Plain-text profile for language models">
   <link rel="alternate" type="text/markdown" href="index.md" title="This page as Markdown">
@@ -34,7 +34,7 @@
   <meta property="og:site_name" content="Jeffrey Louden">
   <meta property="og:locale" content="en_US">
   <meta property="og:url" content="https://jefflouden.com/">
-  <meta property="og:title" content="Jeffrey Louden · SVP, Engineering at The Atlantic">
+  <meta property="og:title" content="Jeffrey Louden, SVP, Engineering at The Atlantic">
   <meta property="og:description" content="I build teams and things. SVP, Engineering at The Atlantic and founder of Existential Engineering Company.">
   <meta property="og:image" content="https://jefflouden.com/og.png">
   <meta property="og:image:type" content="image/png">
@@ -45,123 +45,15 @@
   <meta property="profile:last_name" content="Louden">
   <meta property="profile:username" content="jeffreylouden">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Jeffrey Louden · SVP, Engineering at The Atlantic">
+  <meta name="twitter:title" content="Jeffrey Louden, SVP, Engineering at The Atlantic">
   <meta name="twitter:description" content="I build teams and things. SVP, Engineering at The Atlantic and founder of Existential Engineering Company.">
   <meta name="twitter:image" content="https://jefflouden.com/og.png">
   <meta name="twitter:image:alt" content="Jeffrey Louden, SVP, Engineering at The Atlantic. I build teams and things.">
+  <link rel="stylesheet" href="/site.css">
   <style>
-    /* Fonts are self-hosted (SIL OFL, see fonts/OFL-*.txt) so the page never depends on a third party.
-       Both are trimmed to what the page uses: Instrument Sans at width 100 and weights 400 to 600, Newsreader at optical size 24. */
-    @font-face {
-      font-family: 'Instrument Sans';
-      src: url('fonts/instrument-sans.woff2') format('woff2');
-      font-weight: 400 600;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Newsreader';
-      src: url('fonts/newsreader.woff2') format('woff2');
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    :root {
-      --paper: #f7f7f5;
-      --ink: #161616;
-      --muted: #6b6b6b;
-      --rule: #dcdcd8;
-      --blood: #8c1c24;
-      --underline: #dba8ab;
-      --sans: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
-      --serif: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif;
-      color-scheme: light;
-      /* The Aureo bars, deepened so they hold up on paper; dark mode keeps aureo.audio's own. */
-      --aureo-1: #2f8f7f;
-      --aureo-2: #b04f62;
-      --aureo-3: #8f7f2f;
-      --aureo-4: #337a9d;
-      --aureo-5: #4f5fbf;
-    }
-
-    /* Light or dark follows the system unless the toggle in the footer has saved a choice. */
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        color-scheme: dark;
-        --paper: #111111;
-        --ink: #ededeb;
-        --muted: #8e8e8a;
-        --rule: #2e2e2c;
-        --blood: #d25a63;
-        --underline: #6e3237;
-        --aureo-1: #6cc6b7;
-        --aureo-2: #c66c7b;
-        --aureo-3: #c6b76c;
-        --aureo-4: #6ca8c6;
-        --aureo-5: #7281cd;
-      }
-    }
-
-    :root[data-theme="dark"] {
-      color-scheme: dark;
-      --paper: #111111;
-      --ink: #ededeb;
-      --muted: #8e8e8a;
-      --rule: #2e2e2c;
-      --blood: #d25a63;
-      --underline: #6e3237;
-      --aureo-1: #6cc6b7;
-      --aureo-2: #c66c7b;
-      --aureo-3: #c6b76c;
-      --aureo-4: #6ca8c6;
-      --aureo-5: #7281cd;
-    }
-
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-
-    html {
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 15px;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    ::selection {
-      background: var(--blood);
-      color: var(--paper);
-    }
-
-    /* Links rest at 80% opacity with the underline color at 75% (60% effective),
-       and both go to full strength on hover. */
-    a {
-      --b: var(--underline);
-      --ua: 75%;
-      color: inherit;
-      text-decoration: underline;
-      text-decoration-color: var(--b);
-      text-decoration-color: color-mix(in srgb, var(--b) var(--ua), transparent);
-      text-decoration-thickness: 1px;
-      text-underline-offset: 3px;
-      opacity: 0.8;
-      transition: opacity 0.2s, text-decoration-color 0.2s;
-    }
-
-    a:hover,
-    a:focus-visible {
-      --ua: 100%;
-      opacity: 1;
+    /* Shared styles live in site.css. These are the home page's own. */
+    main {
+      gap: clamp(56px, 9vw, 88px);
     }
 
     /* Brand underlines: each organization's own color. */
@@ -187,43 +79,6 @@
         color-mix(in srgb, #ea4335 var(--ua), transparent) 25% 50%,
         color-mix(in srgb, #fbbc05 var(--ua), transparent) 50% 75%,
         color-mix(in srgb, #34a853 var(--ua), transparent) 75%) no-repeat left bottom / 100% 1px;
-    }
-
-    a:focus-visible {
-      outline: 2px solid var(--blood);
-      outline-offset: 3px;
-      border-radius: 2px;
-    }
-
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: clamp(48px, 12vw, 136px) 24px 96px;
-      display: grid;
-      gap: clamp(56px, 9vw, 88px);
-    }
-
-    h1,
-    h2,
-    h3,
-    p,
-    ol,
-    ul,
-    dl,
-    dd {
-      margin: 0;
-      padding: 0;
-    }
-
-    ol,
-    ul {
-      list-style: none;
-    }
-
-    h1 {
-      font-size: 15px;
-      font-weight: 500;
-      font-stretch: 100%;
     }
 
     .role-line {
@@ -343,14 +198,6 @@
       gap: 8px 28px;
     }
 
-    footer .sep {
-      padding: 0 0.25em;
-    }
-
-    footer a {
-      color: var(--ink);
-    }
-
     /* The light and dark toggle, in the top-right corner of the page: an ink ring, half filled, that turns over between the modes.
        Without JavaScript it stays hidden. */
     #theme {
@@ -415,23 +262,6 @@
       transform: rotate(180deg);
     }
 
-    footer small {
-      font-size: inherit;
-    }
-
-    footer {
-      width: min(672px, calc(100% - 48px));
-      margin: 0 auto;
-      padding: 24px 0 40px;
-      border-top: 1px solid var(--rule);
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px 24px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
     @media (max-width: 560px) {
       .row {
         grid-template-columns: 1fr;
@@ -443,35 +273,15 @@
       }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        transition: none !important;
-      }
-    }
     .print-note {
       display: none;
     }
 
-    /* Print in light, without the toggle, whatever mode is on screen, and point to the résumé. */
+    /* Print without the toggle, and point to the résumé. site.css makes it light. */
     @media print {
       .print-note {
         display: block;
         color: var(--muted);
-      }
-
-      :root:not(#print) {
-        color-scheme: light;
-        --paper: #fff;
-        --ink: #161616;
-        --muted: #6b6b6b;
-        --rule: #dcdcd8;
-        --blood: #8c1c24;
-        --underline: #dba8ab;
-        --aureo-1: #2f8f7f;
-        --aureo-2: #b04f62;
-        --aureo-3: #8f7f2f;
-        --aureo-4: #337a9d;
-        --aureo-5: #4f5fbf;
       }
 
       :root:not(#print) [data-brand="linkedin"] {
@@ -486,7 +296,6 @@
         filter: none;
       }
     }
-
   </style>
 </head>
 <body class="h-card">
@@ -561,8 +370,8 @@
   </main>
 
   <footer>
-    <small>© <time datetime="2009">2009</time>–<time datetime="2026">2026</time> Jeffrey Louden</small>
-    <span><span class="p-locality">Washington, D.C.</span> <span class="sep">/</span> <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a></span>
+    <small>© <time datetime="2009">2009</time>–<time datetime="2026">2026</time> <a href="/">Jeffrey Louden</a></small>
+    <span><span class="p-locality">Washington, D.C.</span> <span class="sep">/</span> <a href="/log">Log</a> <span class="sep">/</span> <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a></span>
   </footer>
 
   <script>
@@ -635,7 +444,7 @@
           "@type": "ProfilePage",
           "@id": "https://jefflouden.com/#profile",
           "url": "https://jefflouden.com/",
-          "name": "Jeffrey Louden · SVP, Engineering at The Atlantic",
+          "name": "Jeffrey Louden, SVP, Engineering at The Atlantic",
           "inLanguage": "en-US",
           "dateModified": "2026-10-15T18:16:04-04:00",
           "isPartOf": { "@id": "https://jefflouden.com/#website" },

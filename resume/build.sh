@@ -14,7 +14,7 @@ if python3 -c "import pypdf" 2>/dev/null; then
 from pypdf import PdfReader, PdfWriter
 r = PdfReader("public/resume.pdf")
 w = PdfWriter(clone_from=r)
-w.add_metadata({"/Author": "Jeffrey Louden", "/Subject": "Résumé", "/Title": "Jeffrey Louden · Résumé"})
+w.add_metadata({"/Author": "Jeffrey Louden", "/Subject": "Résumé", "/Title": "Jeffrey Louden’s résumé"})
 w.write("public/resume.pdf")
 PY
 else

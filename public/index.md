@@ -22,5 +22,8 @@ I build teams and things.
 - LinkedIn: https://www.linkedin.com/in/jeffreylouden/
 - Résumé (PDF): https://jefflouden.com/resume.pdf
 - Contact card (vCard): https://jefflouden.com/jeffrey-louden.vcf
+- Log (things I like and the odd note): https://jefflouden.com/log
 
-Washington, D.C. · © 2009–2026 Jeffrey Louden · https://jefflouden.com/
+© 2009–2026 Jeffrey Louden, Washington, D.C.
+
+https://jefflouden.com/

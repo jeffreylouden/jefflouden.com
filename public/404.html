@@ -3,31 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Not found · Jeffrey Louden</title>
+  <title>Not found</title>
   <meta name="robots" content="noindex">
   <meta name="color-scheme" content="light dark">
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="stylesheet" href="/site.css">
   <style>
-    @font-face { font-family: 'Instrument Sans'; src: url('/fonts/instrument-sans.woff2') format('woff2'); font-weight: 400 600; font-display: swap; }
-    @font-face { font-family: 'Newsreader'; src: url('/fonts/newsreader.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-    :root { --paper: #f7f7f5; --ink: #161616; --muted: #6b6b6b; --blood: #8c1c24; --underline: #dba8ab; color-scheme: light; }
-    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --blood: #d25a63; --underline: #6e3237; } }
-    :root[data-theme="dark"] { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --blood: #d25a63; --underline: #6e3237; }
-    *, *::before, *::after { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
-    body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-    ::selection { background: var(--blood); color: var(--paper); }
-    h1, p { margin: 0; }
-    /* The same column as the home page. */
-    main { max-width: 720px; margin: 0 auto; padding: clamp(48px, 12vw, 136px) 24px 96px; display: grid; gap: clamp(40px, 7vw, 64px); }
-    h1 { font-size: 15px; font-weight: 500; }
+    /* Shared styles live in site.css. These are this page's own. */
     .note { display: grid; gap: 20px; }
-    .muted { color: var(--muted); }
-    .line { font-family: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif; font-size: clamp(21px, 3.2vw, 26px); line-height: 1.35; letter-spacing: -0.005em; max-width: 30ch; text-wrap: pretty; }
-    a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--underline) 75%, transparent); text-decoration-thickness: 1px; text-underline-offset: 3px; opacity: 0.8; transition: opacity 0.2s, text-decoration-color 0.2s; }
-    a:hover, a:focus-visible { text-decoration-color: var(--underline); opacity: 1; }
-    a:focus-visible { outline: 2px solid var(--blood); outline-offset: 3px; border-radius: 2px; }
+    .line { font-family: var(--serif); font-size: clamp(21px, 3.2vw, 26px); line-height: 1.35; letter-spacing: -0.005em; max-width: 30ch; text-wrap: pretty; }
   </style>
 </head>
 <body>
@@ -41,5 +26,10 @@
       <p><a href="/">Get back to the house</a></p>
     </div>
   </main>
+
+  <footer>
+    <small>© <time datetime="2009">2009</time>–<time datetime="2026">2026</time> <a href="/">Jeffrey Louden</a></small>
+    <span><span class="p-locality">Washington, D.C.</span> <span class="sep">/</span> <a href="/log">Log</a> <span class="sep">/</span> <a href="https://github.com/jeffreylouden/jefflouden.com" rel="noopener">Source</a></span>
+  </footer>
 </body>
 </html>
