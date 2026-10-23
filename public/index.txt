@@ -1,0 +1,34 @@
+
+   █       ▄▀  ▄▀                   █                 █
+   █  ▄▄  ▄█▄ ▄█▄ ▄ ▄  ▄▄  ▄   ▄    █     ▄▄  ▄  ▄  ▄▄█  ▄▄  ▄▄▄
+   █ █  █  █   █  █▀  █  █ █   █    █    █  █ █  █ █  █ █  █ █  █
+█  █ █▀▀▀  █   █  █   █▀▀▀  █ █     █    █  █ █  █ █  █ █▀▀▀ █  █
+▀▄▄▀ ▀▄▄▀  █   █  █   ▀▄▄▀   █      █▄▄▄ ▀▄▄▀ ▀▄▄█ ▀▄▄█ ▀▄▄▀ █  █
+                            ▄▀
+
+  SVP, Engineering at The Atlantic
+  I build teams and things.
+
+  WORK
+
+  2025 – Now    The Atlantic                      SVP, Engineering
+  2022 – Now    Existential Engineering Company   Founder, built Aureo
+  2021 – 2022   TIME                              VP, Software Engineering
+  2020          Lyft                              Engineering Manager II
+  Earlier       The New York Times, Nest and Google, The New Yorker,
+                Obama for America
+
+  CONTACT
+
+  email      jeff@jefflouden.com
+  github     https://github.com/jeffreylouden
+  linkedin   https://www.linkedin.com/in/jeffreylouden/
+  résumé     https://jefflouden.com/resume.pdf
+  vcard      curl -O https://jefflouden.com/jeffrey-louden.vcf
+  markdown   curl -H "Accept: text/markdown" https://jefflouden.com/
+  source     https://github.com/jeffreylouden/jefflouden.com
+
+  Washington, D.C.   © 2009–2026 Jeffrey Louden
+
+  You came in through the back door. We left it unlocked for you.
+

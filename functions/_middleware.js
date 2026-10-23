@@ -1,5 +1,6 @@
 // Markdown for agents: requests for the home page that send
 // `Accept: text/markdown` get public/index.md instead of HTML.
+// Terminals (`curl jefflouden.com`) get public/index.txt.
 // Everything else falls through to the static site, with a fresh CSP nonce.
 // Only "/" and "/index.html" reach this function (see public/_routes.json).
 
@@ -43,20 +44,28 @@ function csp(nonce) {
 function withHeaders(response, extra) {
   const res = new Response(response.body, response);
   for (const [k, v] of Object.entries({ ...SECURITY, ...extra })) res.headers.set(k, v);
-  res.headers.append('Vary', 'Accept');
+  res.headers.append('Vary', 'Accept, User-Agent');
   return res;
 }
 
-export async function onRequest({ request, next, env }) {
-  const wantsMarkdown = /\btext\/markdown\b/i.test(request.headers.get('Accept') || '');
+// Command-line HTTP clients, not text browsers like lynx, which want HTML.
+const TERMINAL = /^(curl|wget|httpie|xh)\//i;
 
-  if (wantsMarkdown) {
-    const md = await env.ASSETS.fetch(new URL('/index.md', request.url));
-    if (md.ok) {
-      const body = await md.text();
-      return withHeaders(new Response(request.method === 'HEAD' ? null : body), {
+export async function onRequest({ request, next, env }) {
+  const accept = request.headers.get('Accept') || '';
+  const wantsMarkdown = /\btext\/markdown\b/i.test(accept);
+  const isTerminal = TERMINAL.test(request.headers.get('User-Agent') || '') && !/\btext\/html\b/i.test(accept);
+
+  if (wantsMarkdown || isTerminal) {
+    const file = await env.ASSETS.fetch(new URL(wantsMarkdown ? '/index.md' : '/index.txt', request.url));
+    if (file.ok) {
+      const body = await file.text();
+      return withHeaders(new Response(request.method === 'HEAD' ? null : body), wantsMarkdown ? {
         'Content-Type': 'text/markdown; charset=utf-8',
         'x-markdown-tokens': String(Math.ceil(body.length / 4)),
+        'Link': LINK,
+      } : {
+        'Content-Type': 'text/plain; charset=utf-8',
         'Link': LINK,
       });
     }
