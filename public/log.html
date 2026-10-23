@@ -11,6 +11,7 @@
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <style>
     @font-face { font-family: 'Instrument Sans'; src: url('/fonts/instrument-sans.woff2') format('woff2'); font-weight: 400 600; font-stretch: 75% 100%; font-display: swap; }
+    @font-face { font-family: 'Newsreader'; src: url('/fonts/newsreader.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
     :root { --paper: #f7f7f5; --ink: #161616; --muted: #6b6b6b; --rule: #dcdcd8; --blood: #8c1c24; --underline: #dba8ab; color-scheme: light; }
     @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --rule: #2e2e2c; --blood: #d25a63; --underline: #6e3237; } }
     :root[data-theme="dark"] { color-scheme: dark; --paper: #111111; --ink: #ededeb; --muted: #8e8e8a; --rule: #2e2e2c; --blood: #d25a63; --underline: #6e3237; }
@@ -32,7 +33,10 @@
     .kind { color: var(--muted); font-weight: 400; font-size: 13px; padding-left: 0.5em; }
     .log p { max-width: 56ch; text-wrap: pretty; }
     .log p + p { margin-top: 2px; }
-    .what + p { color: var(--muted); }
+    .what + p, .who + p { color: var(--muted); }
+    /* Quotes are set in the intro's serif, with who said it underneath. */
+    blockquote { margin: 0; font-family: 'Newsreader', 'Iowan Old Style', Charter, Georgia, serif; font-size: 19px; line-height: 1.4; letter-spacing: -0.005em; }
+    .who { color: var(--muted); font-size: 13px; }
     a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--underline) 75%, transparent); text-decoration-thickness: 1px; text-underline-offset: 3px; opacity: 0.8; transition: opacity 0.2s, text-decoration-color 0.2s; }
     a:hover, a:focus-visible { text-decoration-color: var(--underline); opacity: 1; }
     a:focus-visible { outline: 2px solid var(--blood); outline-offset: 3px; border-radius: 2px; }
@@ -53,6 +57,7 @@
         Newest at the top. Copy this, fill it in, and delete what you don't need.
         The kind is any word: film, album, song, book, site, thing.
         A note is just the date and one <p> of text, with no title or kind.
+        A quote swaps the title for <blockquote><p>“…”</p></blockquote> and <p class="who">Who said it</p>.
 
       <li>
         <time datetime="YYYY-MM-DD">YYYY-MM-DD</time>
