@@ -64,6 +64,8 @@ def validate(value, schema, root, path='$'):
     types = {'string': str, 'integer': int, 'boolean': bool, 'array': list, 'object': dict, 'null': type(None)}
     if kind and not (isinstance(value, types[kind]) and not (kind == 'integer' and isinstance(value, bool))):
         raise BuildError(f'{path} must be a {kind}')
+    if 'minLength' in schema and len(value) < schema['minLength']:
+        raise BuildError(f'{path} must not be empty')
     if 'pattern' in schema and not re.search(schema['pattern'], value):
         raise BuildError(f'{path} ({value!r}) does not match {schema["pattern"]}')
     if kind == 'array':
@@ -91,6 +93,42 @@ def load(name):
     schema = json.loads((SRC / f'{name}.schema.json').read_text(encoding='utf-8'))
     validate(data, schema, schema, name)
     return data
+
+
+# Photos. The log's JPEGs are checked here with no image library: the build
+# reads their size from the frame header and refuses any that still carry
+# metadata (EXIF, XMP or IPTC, where a phone keeps the place a photo was taken).
+
+LOG_IMAGES = PUBLIC / 'images' / 'log'
+IMAGE_MAX_SIDE = 1600
+IMAGE_MAX_BYTES = 600_000
+
+
+def jpeg_info(data):
+    """Returns (width, height, has_metadata) for a baseline or progressive JPEG."""
+    if data[:2] != b'\xff\xd8':
+        raise BuildError('not a JPEG')
+    pos, size, metadata = 2, None, False
+    while pos + 4 <= len(data):
+        if data[pos] != 0xFF:
+            raise BuildError('a broken JPEG')
+        marker = data[pos + 1]
+        if marker == 0xFF:
+            pos += 1
+            continue
+        length = int.from_bytes(data[pos + 2:pos + 4], 'big')
+        if marker in (0xE1, 0xED):
+            metadata = True
+        if marker in (0xC0, 0xC1, 0xC2, 0xC3, 0xC5, 0xC6, 0xC7, 0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF):
+            height = int.from_bytes(data[pos + 5:pos + 7], 'big')
+            width = int.from_bytes(data[pos + 7:pos + 9], 'big')
+            size = (width, height)
+        if marker == 0xDA:
+            break
+        pos += 2 + length
+    if not size:
+        raise BuildError('a JPEG with no frame size')
+    return size[0], size[1], metadata
 
 
 # Templates.
@@ -246,6 +284,7 @@ class Site:
         dates = [e['date'] for e in self.log['entries']]
         if dates != sorted(dates, reverse=True):
             raise BuildError('log entries must be newest first')
+        self.check_images()
         styles = (SRC / 'templates' / 'index.html').read_text(encoding='utf-8')
         for brand in {o['brand'] for o in self.orgs.values()} | {l['brand'] for l in self.links if 'brand' in l}:
             if f'[data-brand="{brand}"]' not in styles:
@@ -253,10 +292,38 @@ class Site:
         # Jeff doesn't use semicolons in his writing, and titles never use a separator dot.
         copy = [self.p[k] for k in ('bio', 'resumeBio', 'summary', 'description', 'personDescription', 'about')]
         copy += [r.get(k, '') for r in self.roles for k in ('title', 'summary', 'resume')]
-        copy += [e.get(k, '') for e in self.log['entries'] for k in ('title', 'text', 'quote', 'who')]
+        copy += [e.get(k, '') for e in self.log['entries'] for k in ('title', 'text', 'quote', 'who', 'place')]
+        copy += [e['image']['alt'] for e in self.log['entries'] if 'image' in e]
         for s in copy:
             if ';' in s or '·' in s:
                 raise BuildError(f'no semicolons or middle dots in the copy: {s!r}')
+
+    def check_images(self):
+        self.images = {}
+        for e in self.log['entries']:
+            if 'image' not in e:
+                continue
+            src = e['image']['src']
+            path = PUBLIC / src
+            if not path.is_file():
+                raise BuildError(f'log photo public/{src} is missing')
+            data = path.read_bytes()
+            if len(data) > IMAGE_MAX_BYTES:
+                raise BuildError(f'public/{src} is {len(data) // 1000} KB, over {IMAGE_MAX_BYTES // 1000}. Prepare it with scripts/log_photo.py')
+            try:
+                width, height, metadata = jpeg_info(data)
+            except BuildError as err:
+                raise BuildError(f'public/{src} is {err}') from None
+            if metadata:
+                raise BuildError(f'public/{src} still carries metadata, which can hold where it was taken. Prepare it with scripts/log_photo.py')
+            if max(width, height) > IMAGE_MAX_SIDE:
+                raise BuildError(f'public/{src} is {width}x{height}, over {IMAGE_MAX_SIDE}px. Prepare it with scripts/log_photo.py')
+            self.images[src] = (width, height)
+        if LOG_IMAGES.is_dir():
+            for path in sorted(LOG_IMAGES.iterdir()):
+                src = path.relative_to(PUBLIC).as_posix()
+                if src not in self.images:
+                    raise BuildError(f'public/{src} is in no log entry. Delete it or add its entry')
 
     def names(self, role):
         return join_and(self.orgs[k]['name'] for k in role['orgs'])
@@ -454,8 +521,14 @@ class Site:
             elif e['kind'] != 'note':
                 title = f'<a href="{attr(e["url"])}">{esc(e["title"])}</a>' if e.get('url') else esc(e['title'])
                 lines.append(f'<p class="what">{title}</p>')
+            if e.get('image'):
+                src = e['image']['src']
+                width, height = self.images[src]
+                lines.append(f'<img src="/{src}" alt="{attr(e["image"]["alt"])}" width="{width}" height="{height}" loading="lazy" decoding="async">')
             if e.get('text'):
                 lines.append(f'<p>{html(e["text"])}</p>')
+            if e.get('place'):
+                lines.append(f'<p class="place">{esc(e["place"])}</p>')
             body = '\n'.join(f'  {l}' for l in lines)
             items.append(f'<li data-kind="{attr(e["kind"])}" data-date="{e["date"]}">\n{body}\n</li>')
         return template('log.html', {**self.base, 'entries': '\n'.join(items)})

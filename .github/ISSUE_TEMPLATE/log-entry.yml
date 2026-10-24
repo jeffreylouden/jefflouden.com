@@ -1,0 +1,55 @@
+# Jeff's form for the log at jefflouden.com/log. Submitting it runs
+# .github/workflows/log-entry.yml, which adds the entry and publishes it.
+# The labels below are the headings scripts/log_entry.py reads, so rename them
+# there too. Kind must stay first: the workflow knows the form by it.
+name: Log entry
+description: Add something to jefflouden.com/log
+title: Log entry
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [movie, album, song, book, site, thing, quote, note]
+    validations:
+      required: true
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: For a movie, album, song, book, site or thing. Leave empty for a quote or a note.
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      description: Where the title links, if anywhere.
+      placeholder: https://
+  - type: textarea
+    id: quote
+    attributes:
+      label: Quote
+      description: For a quote, without the quotation marks.
+  - type: input
+    id: who
+    attributes:
+      label: Who said it
+  - type: textarea
+    id: text
+    attributes:
+      label: Your words
+      description: One line. Needed for everything but a quote.
+  - type: textarea
+    id: photo
+    attributes:
+      label: Photo
+      description: Optional. Drop or paste one photo here. It is resized and its metadata, including where it was taken, is removed.
+  - type: input
+    id: alt
+    attributes:
+      label: What the photo shows
+      description: Needed with a photo, for anyone who can't see it.
+  - type: input
+    id: place
+    attributes:
+      label: Place
+      description: Optional, shown under the entry. A city or a neighborhood, never an address.

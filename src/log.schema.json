@@ -21,7 +21,9 @@
               "date": { "$ref": "#/$defs/date" },
               "title": { "type": "string" },
               "url": { "type": "string", "pattern": "^https?://" },
-              "text": { "type": "string" }
+              "text": { "type": "string" },
+              "image": { "$ref": "#/$defs/image" },
+              "place": { "$ref": "#/$defs/place" }
             }
           },
           {
@@ -34,7 +36,8 @@
               "date": { "$ref": "#/$defs/date" },
               "quote": { "description": "Without the quotation marks. The page adds them.", "type": "string" },
               "who": { "type": "string" },
-              "text": { "type": "string" }
+              "text": { "type": "string" },
+              "place": { "$ref": "#/$defs/place" }
             }
           },
           {
@@ -45,7 +48,9 @@
             "properties": {
               "kind": { "const": "note" },
               "date": { "$ref": "#/$defs/date" },
-              "text": { "type": "string" }
+              "text": { "type": "string" },
+              "image": { "$ref": "#/$defs/image" },
+              "place": { "$ref": "#/$defs/place" }
             }
           }
         ]
@@ -53,6 +58,17 @@
     }
   },
   "$defs": {
-    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }
+    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "image": {
+      "description": "A photo in public/images/log/, prepared by scripts/log_photo.py: a JPEG at most 1600px on its long side, with no metadata (so no location). The build reads its size.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["src", "alt"],
+      "properties": {
+        "src": { "type": "string", "pattern": "^images/log/[a-z0-9][a-z0-9-]*\\.jpg$" },
+        "alt": { "description": "What the photo shows, for anyone who can't see it.", "type": "string", "minLength": 1 }
+      }
+    },
+    "place": { "description": "Where, as Jeff wants it said (a city or a neighborhood, never an address). Shown quietly under the entry.", "type": "string", "minLength": 1 }
   }
 }
