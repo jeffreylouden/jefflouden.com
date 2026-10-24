@@ -1,6 +1,7 @@
+# Built by build.py from src/templates/_headers and src/site.json.
 # The home page gets these from functions/_middleware.js instead, with a
-# per-response CSP nonce in place of the hash below. That hash is the 404
-# page's one inline script: edit that script and the hash must change too.
+# per-response CSP nonce in place of the hashes, which build.py computes
+# from every inline script on the static pages.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

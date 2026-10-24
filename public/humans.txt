@@ -1,7 +1,7 @@
 Developer:      Jeffrey Louden (SVP, Engineering at The Atlantic)
 Contact:        jeff [at] jefflouden [dot] com
-Linkedin:       https://www.linkedin.com/in/jeffreylouden/
 GitHub:         https://github.com/jeffreylouden
+LinkedIn:       https://www.linkedin.com/in/jeffreylouden/
 Location:       Washington, D.C., United States
 From:           Louisville, Kentucky, United States
 

@@ -1,0 +1,29 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "{{name}}",
+    "identifier": "did:web:jefflouden.com"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:jefflouden.com:profile:jeffrey-louden",
+      "displayName": "{{name}}: profile",
+      "description": "Plain-language professional profile of {{name}} ({{alternate_name}}), {{summary}}.",
+      "type": "text/markdown",
+      "url": "https://jefflouden.com/llms.txt",
+      "representativeQueries": [
+        {{profile_queries}}
+      ]
+    },
+    {
+      "identifier": "urn:air:jefflouden.com:page:home",
+      "displayName": "jefflouden.com home page (Markdown)",
+      "description": "The jefflouden.com home page as Markdown. Also served at https://jefflouden.com/ to requests that send Accept: text/markdown.",
+      "type": "text/markdown",
+      "url": "https://jefflouden.com/index.md",
+      "representativeQueries": [
+        {{home_queries}}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "./log.schema.json",
+  "entries": [
+    {
+      "kind": "movie",
+      "date": "2026-10-23",
+      "title": "You Can See Everything",
+      "url": "https://www.imdb.com/title/tt45368240",
+      "text": "See. It. Immediately."
+    },
+    {
+      "kind": "site",
+      "date": "2026-10-23",
+      "title": "Hundred Rabbits",
+      "url": "https://100r.co/site/home.html",
+      "text": "What lovely humans. Each year I envy them a little more, and wish I could run away to build things on a boat too."
+    }
+  ]
+}

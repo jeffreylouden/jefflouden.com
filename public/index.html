@@ -1,5 +1,6 @@
 <!doctype html>
 <!-- Whatever you do, don't read the source. -->
+<!-- Built by build.py from src/. Edit there, not here. -->
 <html lang="en-US" prefix="og: https://ogp.me/ns# profile: https://ogp.me/ns/profile#">
 <head>
   <meta charset="utf-8">
@@ -436,12 +437,7 @@
           "dateModified": "2026-10-15T18:16:04-04:00",
           "isPartOf": { "@id": "https://jefflouden.com/#website" },
           "mainEntity": { "@id": "https://jefflouden.com/#person" },
-          "primaryImageOfPage": {
-            "@type": "ImageObject",
-            "url": "https://jefflouden.com/og.png",
-            "width": 1200,
-            "height": 630
-          }
+          "primaryImageOfPage": { "@type": "ImageObject", "url": "https://jefflouden.com/og.png", "width": 1200, "height": 630 }
         },
         {
           "@type": "WebSite",
@@ -477,7 +473,7 @@
             { "@type": "Organization", "name": "TIME", "url": "https://time.com", "sameAs": ["https://www.wikidata.org/wiki/Q43297", "https://en.wikipedia.org/wiki/Time_(magazine)"] },
             { "@type": "Organization", "name": "Lyft", "url": "https://www.lyft.com", "sameAs": ["https://www.wikidata.org/wiki/Q17077936", "https://en.wikipedia.org/wiki/Lyft"] },
             { "@type": "Organization", "name": "The New York Times", "url": "https://www.nytimes.com", "sameAs": ["https://www.wikidata.org/wiki/Q9684", "https://en.wikipedia.org/wiki/The_New_York_Times"] },
-            { "@type": "Organization", "name": "Nest Labs", "url": "https://nest.com", "sameAs": ["https://www.wikidata.org/wiki/Q2119882", "https://en.wikipedia.org/wiki/Google_Nest"] },
+            { "@type": "Organization", "name": "Nest", "legalName": "Nest Labs", "url": "https://nest.com", "sameAs": ["https://www.wikidata.org/wiki/Q2119882", "https://en.wikipedia.org/wiki/Google_Nest"] },
             { "@type": "Organization", "name": "Google", "url": "https://about.google", "sameAs": ["https://www.wikidata.org/wiki/Q95", "https://en.wikipedia.org/wiki/Google"] },
             { "@type": "Organization", "name": "The New Yorker", "url": "https://www.newyorker.com", "sameAs": ["https://www.wikidata.org/wiki/Q217305", "https://en.wikipedia.org/wiki/The_New_Yorker"] },
             { "@type": "Organization", "name": "Obama for America", "url": "https://barackobama.com/", "sameAs": ["https://www.wikidata.org/wiki/Q4858123", "https://en.wikipedia.org/wiki/Barack_Obama_2012_presidential_campaign"] }
@@ -497,7 +493,12 @@
             "addressCountry": "US"
           },
           "birthDate": "1983-01-07",
-          "subjectOf": { "@type": "DigitalDocument", "name": "Jeffrey Louden résumé", "url": "https://jefflouden.com/resume.pdf", "encodingFormat": "application/pdf" },
+          "subjectOf": {
+            "@type": "DigitalDocument",
+            "name": "Jeffrey Louden résumé",
+            "url": "https://jefflouden.com/resume.pdf",
+            "encodingFormat": "application/pdf"
+          },
           "sameAs": [
             "https://github.com/jeffreylouden",
             "https://www.linkedin.com/in/jeffreylouden/",
@@ -516,7 +517,7 @@
           "@id": "https://existential.engineering/#organization",
           "name": "Existential Engineering Company",
           "legalName": "Existential Engineering Company LLC",
-          "url": "https://existential.engineering/",
+          "url": "https://existential.engineering",
           "founder": { "@id": "https://jefflouden.com/#person" },
           "foundingDate": "2022-07"
         },

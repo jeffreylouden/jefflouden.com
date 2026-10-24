@@ -1,0 +1,46 @@
+# Built by build.py from src/templates/_headers and src/site.json.
+# The home page gets these from functions/_middleware.js instead, with a
+# per-response CSP nonce in place of the hashes, which build.py computes
+# from every inline script on the static pages.
+/*
+  {{security_headers}}
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/*.png
+  Cache-Control: public, max-age=604800
+
+/*.jpg
+  Cache-Control: public, max-age=604800
+
+/llms.txt
+  Content-Type: text/markdown; charset=utf-8
+  Access-Control-Allow-Origin: *
+
+/index.md
+  Content-Type: text/markdown; charset=utf-8
+  Access-Control-Allow-Origin: *
+
+/index.txt
+  Content-Type: text/plain; charset=utf-8
+  Access-Control-Allow-Origin: *
+
+/.well-known/ai-catalog.json
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *
+
+# Web Key Directory (direct method): the OpenPGP key for jeff@, so
+# `gpg --locate-keys jeff@jefflouden.com` finds it. The spec asks for CORS.
+/.well-known/openpgpkey/*
+  Content-Type: application/octet-stream
+  Access-Control-Allow-Origin: *
+
+/jeffrey-louden.vcf
+  Content-Type: text/vcard; charset=utf-8
+  Content-Disposition: attachment; filename="jeffrey-louden.vcf"
+
+# A short URL, but a descriptive name when someone saves it.
+/resume.pdf
+  Content-Disposition: inline; filename="jeffrey-louden-resume.pdf"

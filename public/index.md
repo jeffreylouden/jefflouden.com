@@ -10,10 +10,10 @@ I build teams and things.
 - **Existential Engineering Company** (2022 – Now): Founder. Built Aureo (https://aureo.audio). https://existential.engineering
 - **TIME** (2021 – 2022): VP, Software Engineering. https://time.com
 - **Lyft** (2020): Engineering Manager II, Memberships. https://www.lyft.com
-- **The New York Times** (2015 – 2020): Director of Technology, NYT Cooking. https://www.nytimes.com
-- **Nest and Google** (2014 – 2015): Senior Web Developer. Joined Nest just before Google acquired it, and stayed on at Google. https://about.google
+- **The New York Times** (2015 – 2020): Director of Technology, NYT Cooking. Led a 25-person engineering team. NYT Cooking became a $20 million subscription product and won two Webby Awards and the 2019 James Beard Award for Publication of the Year. https://www.nytimes.com
+- **Nest and Google** (2014 – 2015): Senior Web Developer. Joined Nest Labs just before Google acquired it, and stayed on at Google. https://about.google
 - **The New Yorker** (2013): Director of Engineering. https://www.newyorker.com
-- **Obama for America** (2011 – 2013): Lead Software Engineer. https://barackobama.com/
+- **Obama for America** (2011 – 2013): Lead Software Engineer, BarackObama.com. https://barackobama.com/
 
 ## Contact
 

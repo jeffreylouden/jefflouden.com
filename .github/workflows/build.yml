@@ -1,0 +1,12 @@
+# Fails when a built file in public/ no longer matches src/, when the data
+# breaks its schema, or when security.txt is close to expiring.
+name: Build
+on:
+  push:
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 build.py --check

@@ -1,0 +1,201 @@
+<!doctype html>
+<!--
+  Source for public/resume.pdf, built by build.py from src/templates/resume.html
+  and src/site.json. Edit those, then render the PDF with resume/build.sh.
+  One US Letter page, same type and palette as jefflouden.com.
+-->
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <title>{{name}}’s résumé</title>
+  <meta name="author" content="{{name}}">
+  <meta name="description" content="Résumé of {{name}}, {{headline}}.">
+  <style>
+    @font-face {
+      font-family: 'Instrument Sans';
+      src: url('../public/fonts/instrument-sans.woff2') format('woff2');
+      font-weight: 400 600;
+     
+    }
+    @font-face {
+      font-family: 'Newsreader';
+      src: url('../public/fonts/newsreader.woff2') format('woff2');
+      font-weight: 400;
+    }
+
+    :root {
+      --ink: #161616;
+      --muted: #6b6b6b;
+      --rule: #dcdcd8;
+      --underline: #dba8ab;
+      --sans: 'Instrument Sans', Helvetica, Arial, sans-serif;
+      --serif: 'Newsreader', Georgia, serif;
+    }
+
+    @page {
+      size: Letter;
+      margin: 0.55in 0.75in 0.45in;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 9.4pt;
+      line-height: 1.45;
+    }
+
+    h1, h2, h3, p, ol, ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    ol, ul {
+      list-style: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--underline);
+      text-decoration-thickness: 0.6pt;
+      text-underline-offset: 2pt;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24pt;
+      padding-bottom: 14pt;
+      border-bottom: 0.6pt solid var(--rule);
+    }
+
+    h1 {
+      font-size: 17pt;
+      font-weight: 500;
+      line-height: 1.1;
+    }
+
+    .role-line {
+      color: var(--muted);
+      font-size: 10pt;
+      margin-top: 3pt;
+    }
+
+    .contact {
+      text-align: right;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .contact a {
+      color: var(--ink);
+    }
+
+    .intro {
+      font-family: var(--serif);
+      font-size: 13pt;
+      line-height: 1.35;
+      margin: 14pt 0 16pt;
+      max-width: 34em;
+    }
+
+    h2 {
+      font-size: 7.6pt;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 9pt;
+    }
+
+    section + section {
+      margin-top: 14pt;
+    }
+
+    .rows {
+      display: grid;
+      gap: 8pt;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 7.2em 1fr;
+      gap: 0 14pt;
+      break-inside: avoid;
+    }
+
+    .years {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .org {
+      font-weight: 500;
+    }
+
+    .title {
+      color: var(--muted);
+    }
+
+    .detail {
+      margin-top: 3pt;
+    }
+
+    footer {
+      margin-top: 14pt;
+      padding-top: 8pt;
+      border-top: 0.6pt solid var(--rule);
+      color: var(--muted);
+      font-size: 8pt;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>{{name}}</h1>
+      <p class="role-line">{{headline}}</p>
+    </div>
+    <p class="contact">
+      {{location}}<br>
+      <a href="mailto:{{email}}">{{email}}</a><br>
+      <a href="https://jefflouden.com/">jefflouden.com</a>
+    </p>
+  </header>
+
+  <p class="intro">{{bio}}</p>
+
+  <section>
+    <h2>Work</h2>
+    <ol class="rows">
+      {{work}}
+    </ol>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <ol class="rows">
+      {{education}}
+    </ol>
+  </section>
+
+  <footer>
+    <span>{{name}}</span>
+    <span>Current version always at <a href="https://jefflouden.com/resume.pdf">jefflouden.com/resume.pdf</a></span>
+  </footer>
+</body>
+</html>
