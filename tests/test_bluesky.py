@@ -25,18 +25,19 @@ def with_entries(*new):
 
 
 class FakeBluesky:
-    """Answers createSession, uploadBlob and createRecord, and keeps what it was sent."""
+    """Answers createSession, listRecords, uploadBlob and createRecord, and keeps what it was sent."""
 
-    def __init__(self, fail=None):
-        self.calls, self.fail = [], fail
+    def __init__(self, fail=None, existing=()):
+        self.calls, self.fail, self.existing = [], fail, list(existing)
 
     def __call__(self, request, timeout):
-        method = request.full_url.rsplit('/', 1)[-1]
+        method = request.full_url.rsplit('/', 1)[-1].split('?')[0]
         self.calls.append((method, request))
         if method == self.fail:
             raise urllib.error.HTTPError(request.full_url, 400, 'Bad Request', {}, io.BytesIO(b'{"error":"InvalidRequest"}'))
         answers = {
             'com.atproto.server.createSession': {'accessJwt': 'jwt', 'did': 'did:plc:me'},
+            'com.atproto.repo.listRecords': {'records': [{'uri': 'at://x', 'value': v} for v in self.existing]},
             'com.atproto.repo.uploadBlob': {'blob': {'$type': 'blob', 'ref': {'$link': 'cid'}, 'mimeType': 'image/jpeg', 'size': 1}},
             'com.atproto.repo.createRecord': {'uri': f'at://did:plc:me/app.bsky.feed.post/rkey{len(self.calls)}'},
         }
@@ -80,37 +81,34 @@ class Compose(unittest.TestCase):
         raw = text.encode('utf-8')
         return [(raw[f['index']['byteStart']:f['index']['byteEnd']].decode(), f['features'][0]['uri']) for f in facets]
 
-    def test_a_thing(self):
+    def test_a_thing_is_its_title_and_words_only(self):
         text, facets = bluesky_post.compose(LOG['entries'][0], '2026-10-23-you-can-see-everything')
-        self.assertEqual(text, 'You Can See Everything\n\nSee. It. Immediately.\n\nSan Francisco\n\njefflouden.com/log')
-        self.assertEqual(self.links(text, facets), [
-            ('You Can See Everything', 'https://www.imdb.com/title/tt45368240'),
-            ('jefflouden.com/log', 'https://jefflouden.com/log#2026-10-23-you-can-see-everything'),
-        ])
+        self.assertEqual(text, 'You Can See Everything\n\nSee. It. Immediately.')
+        self.assertEqual(self.links(text, facets), [('You Can See Everything', 'https://www.imdb.com/title/tt45368240')])
 
     def test_a_quote_and_a_bare_photo(self):
-        text, _ = bluesky_post.compose({'kind': 'quote', 'date': 'd', 'quote': 'Less, but better.', 'who': 'Dieter Rams'}, 'a')
-        self.assertEqual(text, '“Less, but better.”\nDieter Rams\n\njefflouden.com/log')
-        text, _ = bluesky_post.compose({'kind': 'photo', 'date': 'd', 'image': {'src': 's', 'alt': 'a'}, 'place': 'San Francisco'}, 'a')
-        self.assertEqual(text, 'San Francisco\n\njefflouden.com/log')
+        text, _ = bluesky_post.compose({'kind': 'quote', 'date': 'd', 'quote': 'Less, but better.', 'who': 'Dieter Rams', 'place': 'Berlin'}, 'a')
+        self.assertEqual(text, '“Less, but better.”\nDieter Rams')
+        text, facets = bluesky_post.compose({'kind': 'photo', 'date': 'd', 'url': 'https://u', 'image': {'src': 's', 'alt': 'a'}, 'place': 'San Francisco'}, 'a')
+        self.assertEqual((text, facets), ('', []))
 
     def test_offsets_count_bytes(self):
         text, facets = bluesky_post.compose({'kind': 'book', 'date': 'd', 'title': 'Ünïcode ✨', 'url': 'https://u', 'text': 'é'}, 'a')
         self.assertEqual(self.links(text, facets)[0], ('Ünïcode ✨', 'https://u'))
 
     def test_long_words_give_way(self):
-        text, facets = bluesky_post.compose({'kind': 'note', 'date': 'd', 'text': 'word ' * 100, 'place': 'Brooklyn'}, 'a')
-        self.assertLessEqual(len(text), bluesky_post.LIMIT)
-        self.assertIn('…\n\nBrooklyn\n\njefflouden.com/log', text)
-        self.assertEqual(self.links(text, facets), [('jefflouden.com/log', 'https://jefflouden.com/log#a')])
+        text, facets = bluesky_post.compose({'kind': 'book', 'date': 'd', 'title': 'T', 'url': 'https://u', 'text': 'word ' * 100}, 'a')
+        self.assertEqual(len(text), bluesky_post.LIMIT)
+        self.assertTrue(text.startswith('T\n\nword') and text.endswith('…'))
+        self.assertEqual(self.links(text, facets), [('T', 'https://u')])
 
 
 class Post(unittest.TestCase):
     def test_posts_text_and_signs_in_once(self):
         bsky = FakeBluesky()
         urls = bluesky_post.post([(LOG['entries'][0], 'a'), (LOG['entries'][1], 'b')], 'did:plc:me', 'pw', bsky)
-        self.assertEqual([m for m, _ in bsky.calls], ['com.atproto.server.createSession', 'com.atproto.repo.createRecord', 'com.atproto.repo.createRecord'])
-        self.assertEqual(urls, ['https://bsky.app/profile/jefflouden.com/post/rkey2', 'https://bsky.app/profile/jefflouden.com/post/rkey3'])
+        self.assertEqual([m for m, _ in bsky.calls], ['com.atproto.server.createSession', 'com.atproto.repo.listRecords', 'com.atproto.repo.createRecord', 'com.atproto.repo.createRecord'])
+        self.assertEqual(urls, ['https://bsky.app/profile/jefflouden.com/post/rkey3', 'https://bsky.app/profile/jefflouden.com/post/rkey4'])
         self.assertEqual(bsky.calls[1][1].get_header('Authorization'), 'Bearer jwt')
         record = bsky.records()[0]
         self.assertEqual(record['$type'], 'app.bsky.feed.post')
@@ -130,6 +128,19 @@ class Post(unittest.TestCase):
         image = bsky.records()[0]['embed']['images'][0]
         self.assertEqual(image['alt'], photo['image']['alt'])
         self.assertEqual(set(image['aspectRatio']), {'width', 'height'})
+
+    def test_whats_already_posted_is_skipped(self):
+        text, _ = bluesky_post.compose(LOG['entries'][0], 'a')
+        bsky = FakeBluesky(existing=[{'text': text}])
+        urls = bluesky_post.post([(LOG['entries'][0], 'a'), (LOG['entries'][1], 'b')], 'did:plc:me', 'pw', bsky)
+        self.assertEqual(len(urls), 1)
+        self.assertEqual([r['text'].split('\n')[0] for r in bsky.records()], ['Hundred Rabbits'])
+
+    def test_a_photo_already_posted_matches_on_its_description(self):
+        photo = {'kind': 'photo', 'date': 'd', 'image': {'src': 'images/log/x.jpg', 'alt': 'Two candles'}}
+        bsky = FakeBluesky(existing=[{'text': '', 'embed': {'$type': 'app.bsky.embed.images', 'images': [{'alt': 'Two candles'}]}}])
+        self.assertEqual(bluesky_post.post([(photo, 'p')], 'did:plc:me', 'pw', bsky), [])
+        self.assertEqual(bsky.records(), [])
 
     def test_a_refusal_says_what_happened(self):
         with self.assertRaisesRegex(bluesky_post.PostError, 'createRecord.*400'):

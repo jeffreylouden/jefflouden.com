@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""Posts new log entries to Bluesky as @jefflouden.com. The site stays the
-original: each post carries the entry's words, its photo and place, and a
-link back to the entry on jefflouden.com/log.
+"""Posts new log entries to Bluesky as @jefflouden.com, kept plain: a
+title (linked when it has a link) or a quote and who said it, Jeff's words,
+and a photo with its description. No place, date or link back to the site.
 
     BLUESKY_APP_PASSWORD=... python3 scripts/bluesky_post.py --before REF --after REF
 
 It compares src/log.json at two commits and posts the entries that are new
 at the second (by their permalink id) and dated within the last week, oldest
 first and at most five, so an edit or a rename never floods the account.
-Without BLUESKY_APP_PASSWORD it posts nothing and says so. With --recent in
+It skips any entry already among the account's latest 100 posts (same text
+and photo description), so a repeat run never posts twice. With --recent in
 place of --before it posts every entry from the last week, for catching up by
-hand from the workflow's Run workflow button. Standard library
-only, like build.py.
+hand from the workflow's Run workflow button. Without BLUESKY_APP_PASSWORD it
+posts nothing and says so. Standard library only, like build.py.
 """
 
 import argparse
@@ -21,6 +22,7 @@ import os
 import subprocess
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -78,10 +80,10 @@ class Text:
         return ''.join(self.parts)
 
 
-def compose(e, anchor, root='https://jefflouden.com'):
-    """The post's text and link facets for one entry: what it is, Jeff's words,
-    the place, then a link back to the entry. His words give way first."""
-    permalink = f'{root}/log#{anchor}'
+def compose(e, anchor):
+    """The post's text and link facets for one entry, kept plain: what it is
+    (a title, linked when it has a link, or a quote and who said it) and Jeff's
+    words. A photo carries its picture instead. His words give way first."""
 
     def build_text(words):
         t = Text()
@@ -97,8 +99,6 @@ def compose(e, anchor, root='https://jefflouden.com'):
         elif e.get('title'):
             block(build.plain(e['title']), e.get('url'))
         block(words)
-        block(e.get('place', ''))
-        block('jefflouden.com/log', permalink)
         return t
 
     words = build.plain(e.get('text', ''))
@@ -112,12 +112,16 @@ def compose(e, anchor, root='https://jefflouden.com'):
     return str(t), t.facets
 
 
-def call(method, open_url, token=None, body=None, data=None, content_type='application/json'):
+def call(method, open_url, token=None, body=None, data=None, content_type='application/json', query=None):
     headers = {'Content-Type': content_type}
     if token:
         headers['Authorization'] = f'Bearer {token}'
-    payload = data if data is not None else json.dumps(body).encode('utf-8')
-    request = urllib.request.Request(f'{PDS}/xrpc/{method}', data=payload, headers=headers, method='POST')
+    url = f'{PDS}/xrpc/{method}'
+    if query is not None:
+        request = urllib.request.Request(f'{url}?{urllib.parse.urlencode(query)}', headers=headers, method='GET')
+    else:
+        payload = data if data is not None else json.dumps(body).encode('utf-8')
+        request = urllib.request.Request(url, data=payload, headers=headers, method='POST')
     try:
         with open_url(request, timeout=60) as res:
             return json.loads(res.read())
@@ -128,13 +132,34 @@ def call(method, open_url, token=None, body=None, data=None, content_type='appli
         raise PostError(f'Could not reach Bluesky: {e.reason}') from None
 
 
+def fingerprint(text, alt):
+    """What makes two posts the same here: their text and their photo's description."""
+    return (text.strip(), alt or '')
+
+
+def already_posted(did, token, open_url):
+    """Fingerprints of the account's latest 100 posts, so nothing goes up twice."""
+    found = call('com.atproto.repo.listRecords', open_url, token,
+                 query={'repo': did, 'collection': 'app.bsky.feed.post', 'limit': 100})
+    seen = set()
+    for item in found.get('records', []):
+        record = item['value']
+        images = record.get('embed', {}).get('images', [])
+        seen.add(fingerprint(record.get('text', ''), images[0].get('alt') if images else None))
+    return seen
+
+
 def post(entries, identifier, password, open_url=urllib.request.urlopen, now=None):
-    """Posts each (entry, anchor) and returns their bsky.app URLs."""
+    """Posts each (entry, anchor) not already on Bluesky and returns their bsky.app URLs."""
     session = call('com.atproto.server.createSession', open_url, body={'identifier': identifier, 'password': password})
     token, did = session['accessJwt'], session['did']
+    seen = already_posted(did, token, open_url)
     urls = []
     for e, anchor in entries:
         text, facets = compose(e, anchor)
+        if fingerprint(text, e.get('image', {}).get('alt')) in seen:
+            print(f'Already on Bluesky, skipped: {anchor}')
+            continue
         record = {
             '$type': 'app.bsky.feed.post',
             'text': text,
