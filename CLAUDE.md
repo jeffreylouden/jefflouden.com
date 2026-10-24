@@ -42,7 +42,8 @@ When asked to sync:
    - `roles`: one entry per title, newest first, with `start`/`end` as `YYYY-MM` (`null` while current), `location`, `summary` (factual, for llms.txt and index.md) and `resume` (the résumé's short line). A role names its organizations by key. A role that built something names it in `built` (Existential built Aureo)
    - `organizations`: name, `url`, `brand`, and the Wikidata QID and English Wikipedia article (look the QID up, never guess it). A new organization's `brand` needs a `data-brand` rule in its true brand color in the brand block of `src/templates/index.html`, black brands use `ink`
    - `education`: school, credential, years, and `onResume` (`false` keeps it in the workbook but off the résumé and llms.txt). Education is not shown on the site
-   - `links`: the profiles Jeff controls, each a `rel="me"` link and a JSON-LD `sameAs` (add his Bluesky or other profiles as they come to exist). `onPage` lists it under Contact
+   - `links`: the profiles Jeff controls, each a `rel="me"` link and a JSON-LD `sameAs` (add other profiles as they come to exist). `onPage` lists it under Contact
+   - `atprotoDid`: his Bluesky account ID, which the build writes to `.well-known/atproto-did` so `@jefflouden.com` is his handle. Copy it from Bluesky (Settings, Account, Handle), never guess it
    - `catalog`: the AI catalog's representative queries, if they change
    - `updated`: a full ISO 8601 datetime with offset, like `2026-10-15T18:16:04-04:00`, since Search Console rejects a bare date
 3. Run `python3 build.py`. It fails loudly on anything that breaks the schema, and checks that the JSON-LD parses and index.txt stays under 80 columns. Read the diff.
