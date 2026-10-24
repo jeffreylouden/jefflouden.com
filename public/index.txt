@@ -22,7 +22,6 @@
 
   email      jeff@jefflouden.com
   github     https://github.com/jeffreylouden
-  bluesky    https://bsky.app/profile/jefflouden.com
   linkedin   https://www.linkedin.com/in/jeffreylouden/
   résumé     https://jefflouden.com/resume.pdf
   vcard      curl -O https://jefflouden.com/jeffrey-louden.vcf
