@@ -111,8 +111,6 @@ def entry_from(fields, today):
     elif kind == 'photo':
         if not photo:
             raise EntryError('A photo needs a picture in Photo')
-        if url and not title:
-            raise EntryError('A Link needs a Title to hang on')
         if title:
             entry['title'] = title
         if url:

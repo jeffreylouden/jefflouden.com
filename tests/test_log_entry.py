@@ -137,7 +137,6 @@ class Form(unittest.TestCase):
             'a photo from anywhere else': {'Kind': 'note', 'Your words': 'y', 'Photo': '![x](https://evil.example/x.jpg)', 'What the photo shows': 'a'},
             'a two-line place': {'Kind': 'note', 'Your words': 'y', 'Place': 'a\nb'},
             'a photo with no picture': {'Kind': 'photo', 'Title': 'x'},
-            'a photo with a link but no title': {'Kind': 'photo', 'Link': 'https://example.com', 'Photo': 'https://github.com/user-attachments/assets/abc', 'What the photo shows': 'a'},
         }
         for name, fields in cases.items():
             with self.subTest(name), self.assertRaises(log_entry.EntryError):
@@ -271,6 +270,26 @@ class Add(Sandbox):
         log_entry.add(entry, fetch=lambda url: phone_photo())
         page = self.site().log_html()
         self.assertIn('<li data-kind="photo" data-date="2026-10-24">\n        <img src="/images/log/2026-10-24-two-candles.jpg" alt="Two candles" width="1200" height="1600" loading="lazy" decoding="async">\n        <p class="place">San Francisco</p>\n      </li>', page)
+
+    @unittest.skipUnless(Image, 'needs Pillow')
+    def test_a_linked_photo_with_no_title_links_the_photo(self):
+        entry = log_entry.entry_from(log_entry.parse_form(form(**{
+            'Kind': 'photo', 'Link': 'https://www.gerhard-richter.com/', 'Photo': 'https://github.com/user-attachments/assets/abc', 'What the photo shows': 'Two candles',
+        })), '2026-10-24')
+        log_entry.add(entry, fetch=lambda url: phone_photo())
+        page = self.site().log_html()
+        self.assertIn('<a class="photo" href="https://www.gerhard-richter.com/"><img src="/images/log/2026-10-24-two-candles.jpg" alt="Two candles"', page)
+        self.assertNotIn('class="what"', page.split('data-date="2026-10-24"')[1].split('</li>')[0])
+
+    @unittest.skipUnless(Image, 'needs Pillow')
+    def test_a_linked_photo_with_a_title_links_the_title(self):
+        entry = log_entry.entry_from(log_entry.parse_form(form(**{
+            'Kind': 'photo', 'Title': 'Zwei Kerzen', 'Link': 'https://www.gerhard-richter.com/', 'Photo': 'https://github.com/user-attachments/assets/abc', 'What the photo shows': 'Two candles',
+        })), '2026-10-24')
+        log_entry.add(entry, fetch=lambda url: phone_photo())
+        page = self.site().log_html()
+        self.assertIn('<p class="what"><a href="https://www.gerhard-richter.com/">Zwei Kerzen</a></p>', page)
+        self.assertNotIn('class="photo"', page)
 
     @unittest.skipUnless(Image, 'needs Pillow')
     def test_photo_names_never_collide(self):

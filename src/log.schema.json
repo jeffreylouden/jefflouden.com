@@ -27,7 +27,7 @@
             }
           },
           {
-            "description": "A photo: the picture is the entry, with an optional title (linked or not), words and place.",
+            "description": "A photo: the picture is the entry, with an optional title, link, words and place. The link goes on the title, or on the photo when there's no title.",
             "type": "object",
             "additionalProperties": false,
             "required": ["kind", "date", "image"],
