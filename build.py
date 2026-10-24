@@ -149,12 +149,11 @@ def attr(s):
     return esc(s).replace('"', '&quot;')
 
 
-def html(s, rel=None):
-    rel = f' rel="{rel}"' if rel else ''
+def html(s):
     parts, pos = [], 0
     for m in LINK.finditer(s):
         parts.append(esc(s[pos:m.start()]))
-        parts.append(f'<a href="{attr(m.group(2))}"{rel}>{esc(m.group(1))}</a>')
+        parts.append(f'<a href="{attr(m.group(2))}">{esc(m.group(1))}</a>')
         pos = m.end()
     parts.append(esc(s[pos:]))
     return ''.join(parts)
@@ -265,11 +264,11 @@ class Site:
     def org_id(self, key):
         return self.orgs[key].get('id', f'https://jefflouden.com/#org-{key}')
 
-    def org_links(self, role, rel=None, brand=True):
+    def org_links(self, role, brand=True):
         out = []
         for key in role['orgs']:
             o = self.orgs[key]
-            extra = (f' rel="{rel}"' if rel else '') + (f' data-brand="{o["brand"]}"' if brand else '')
+            extra = f' data-brand="{o["brand"]}"' if brand else ''
             out.append(f'<a href="{attr(o["url"])}"{extra}>{esc(o["name"])}</a>')
         return join_and(out)
 
@@ -302,13 +301,13 @@ class Site:
                     lockup = SRC / 'partials' / f'{role["built"]}.html'
                     if lockup.exists():
                         mark = partial(role['built'], self.base)
-                        link = f'<a class="{role["built"]}" href="{attr(product["url"])}" rel="noopener" aria-label="{attr(product["name"])}">{mark}</a>'
-                        titles.append(f'<p class="title built">{html(role["title"], "noopener")}, built {link}</p>')
+                        link = f'<a class="{role["built"]}" href="{attr(product["url"])}" aria-label="{attr(product["name"])}">{mark}</a>'
+                        titles.append(f'<p class="title built">{html(role["title"])}, built {link}</p>')
                     else:
-                        titles.append(f'<p class="title">{html(role["title"], "noopener")}, built <a href="{attr(product["url"])}" rel="noopener">{esc(product["name"])}</a></p>')
+                        titles.append(f'<p class="title">{html(role["title"])}, built <a href="{attr(product["url"])}">{esc(product["name"])}</a></p>')
                 else:
-                    titles.append(f'<p class="title">{html(role["title"], "noopener")}</p>')
-            body = '\n'.join(['<div>', f'  <p class="org">{self.org_links(last, "noopener")}</p>'] + [f'  {t}' for t in titles] + ['</div>'])
+                    titles.append(f'<p class="title">{html(role["title"])}</p>')
+            body = '\n'.join(['<div>', f'  <p class="org">{self.org_links(last)}</p>'] + [f'  {t}' for t in titles] + ['</div>'])
             rows.append('\n'.join([
                 '<li class="row">',
                 f'  <span class="years">{years_html(first["start"], last["end"])}</span>',
@@ -316,7 +315,7 @@ class Site:
                 '</li>',
             ]))
         if earlier:
-            items = '\n'.join(f'    <li>{self.org_links(r, "noopener")}</li>' for r in earlier)
+            items = '\n'.join(f'    <li>{self.org_links(r)}</li>' for r in earlier)
             rows.append(f'<li class="row">\n  <span class="years">Earlier</span>\n  <ul>\n{items}\n  </ul>\n</li>')
         return '\n'.join(rows)
 
@@ -423,7 +422,7 @@ class Site:
         for l in self.links:
             if l['onPage']:
                 brand = f' data-brand="{l["brand"]}"' if l.get('brand') else ''
-                contact.append(f'<li><a class="u-url" href="{attr(l["url"])}" rel="me noopener"{brand}>{esc(l["label"])}</a></li>')
+                contact.append(f'<li><a class="u-url" href="{attr(l["url"])}" rel="me"{brand}>{esc(l["label"])}</a></li>')
         share = f'{self.p["bio"]} {self.p["summary"]}.'
         return template('index.html', {
             **self.base,
@@ -652,10 +651,10 @@ def dump_json(value, level=0, inline_items=False):
     return json.dumps(value, ensure_ascii=False)
 
 
-def security_txt_expiry():
-    text = (PUBLIC / '.well-known' / 'security.txt').read_text(encoding='utf-8')
+def security_txt_expiry(text, now=None):
+    now = now or datetime.datetime.now(datetime.timezone.utc)
     expires = datetime.datetime.fromisoformat(re.search(r'^Expires: (\S+)', text, re.M).group(1).replace('Z', '+00:00'))
-    left = (expires - datetime.datetime.now(datetime.timezone.utc)).days
+    left = (expires - now).days
     if left < 90:
         raise BuildError(f'public/.well-known/security.txt expires in {left} days. Push Expires forward a year.')
 
@@ -687,7 +686,7 @@ def build():
     for path, text in out.items():
         if path != 'functions/_middleware.js' and '·' in text:
             raise BuildError(f'{path} has a middle dot')
-    security_txt_expiry()
+    security_txt_expiry((PUBLIC / '.well-known' / 'security.txt').read_text(encoding='utf-8'))
     return out
 
 
