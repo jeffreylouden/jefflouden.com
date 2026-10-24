@@ -278,7 +278,6 @@ class Site:
             'url': self.p['url'],
             'location': self.p['location']['display'],
             'year': self.year,
-            'bluesky': next(l['url'] for l in self.links if l['url'].startswith('https://bsky.app/')),
         }
 
     def check(self):

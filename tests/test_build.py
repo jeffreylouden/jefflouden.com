@@ -85,8 +85,7 @@ class Templates(unittest.TestCase):
             build.render('{{nope}}', {})
 
     def test_footer_partial(self):
-        out = build.partial('footer', {'name': 'N', 'location': 'L', 'year': 2031, 'bluesky': 'https://bsky.app/profile/b'})
-        self.assertIn('<a href="https://bsky.app/profile/b">Bluesky</a>', out)
+        out = build.partial('footer', {'name': 'N', 'location': 'L', 'year': 2031})
         self.assertIn('<time datetime="2031">2031</time>', out)
         self.assertIn('<span class="p-locality">L</span>', out)
 
