@@ -749,6 +749,7 @@ def build():
     out['public/sitemap.xml'] = site.sitemap_xml()
     out['public/.well-known/ai-catalog.json'] = site.ai_catalog()
     out['public/jeffrey-louden.vcf'] = site.vcard()
+    out['public/.well-known/atproto-did'] = site.p['atprotoDid']
     out['resume/resume.html'] = site.resume_html()
     out['public/_headers'] = site.headers([out['public/404.html'], out['public/log.html']])
     out['functions/_middleware.js'] = site.middleware((ROOT / 'functions/_middleware.js').read_text(encoding='utf-8'))

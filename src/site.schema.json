@@ -15,7 +15,7 @@
     "profile": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "givenName", "familyName", "alternateName", "username", "email", "url", "birthDate", "bio", "resumeBio", "summary", "description", "personDescription", "about", "occupation", "knowsAbout", "location", "hometown"],
+      "required": ["name", "givenName", "familyName", "alternateName", "username", "email", "url", "birthDate", "bio", "resumeBio", "summary", "description", "personDescription", "about", "occupation", "knowsAbout", "location", "hometown", "atprotoDid"],
       "properties": {
         "name": { "type": "string" },
         "givenName": { "type": "string" },
@@ -45,7 +45,8 @@
             "countryName": { "type": "string" }
           }
         },
-        "hometown": { "type": "string" }
+        "hometown": { "type": "string" },
+        "atprotoDid": { "description": "Jeff's Bluesky account ID. build.py writes it to .well-known/atproto-did, which verifies @jefflouden.com as his handle. Copy it from Bluesky, never guess it: a wrong one hands the domain's handle to someone else.", "type": "string", "pattern": "^did:(plc:[a-z2-7]{24}|web:[a-z0-9.-]+)$" }
       }
     },
     "organizations": {

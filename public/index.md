@@ -19,6 +19,7 @@ I build teams and things.
 
 - Email: jeff@jefflouden.com
 - GitHub: https://github.com/jeffreylouden
+- Bluesky: https://bsky.app/profile/jefflouden.com
 - LinkedIn: https://www.linkedin.com/in/jeffreylouden/
 - Résumé (PDF): https://jefflouden.com/resume.pdf
 - Contact card (vCard): https://jefflouden.com/jeffrey-louden.vcf

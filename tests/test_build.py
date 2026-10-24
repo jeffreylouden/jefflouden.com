@@ -113,6 +113,8 @@ class Schema(unittest.TestCase):
             'a boolean as a year': lambda s: s['education'][0].update(start=True),
             'an http org url': lambda s: s['organizations']['time'].update(url='http://time.com'),
             'a guessed QID': lambda s: s['organizations']['time'].update(wikidata='43297'),
+            'a Bluesky handle instead of its ID': lambda s: s['profile'].update(atprotoDid='jefflouden.com'),
+            'a truncated Bluesky ID': lambda s: s['profile'].update(atprotoDid='did:plc:su56nbldex3r5p5'),
         }
         for name, change in cases.items():
             with self.subTest(name), self.assertRaises(build.BuildError):
@@ -261,6 +263,13 @@ class Headers(unittest.TestCase):
         build.security_txt_expiry(text, datetime.datetime(2027, 7, 1, tzinfo=utc))
         with self.assertRaises(build.BuildError):
             build.security_txt_expiry(text, datetime.datetime(2027, 8, 1, tzinfo=utc))
+
+
+class Bluesky(unittest.TestCase):
+    def test_the_handle_file_holds_only_the_id(self):
+        out = build.build()
+        self.assertEqual(out['public/.well-known/atproto-did'], SITE['profile']['atprotoDid'])
+        self.assertRegex(out['public/_headers'], r'/\.well-known/atproto-did\n  Content-Type: text/plain')
 
 
 class Committed(unittest.TestCase):
