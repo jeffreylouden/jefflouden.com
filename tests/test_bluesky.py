@@ -89,8 +89,10 @@ class Compose(unittest.TestCase):
     def test_a_quote_and_a_bare_photo(self):
         text, _ = bluesky_post.compose({'kind': 'quote', 'date': 'd', 'quote': 'Less, but better.', 'who': 'Dieter Rams', 'place': 'Berlin'}, 'a')
         self.assertEqual(text, '“Less, but better.”\nDieter Rams')
-        text, facets = bluesky_post.compose({'kind': 'photo', 'date': 'd', 'url': 'https://u', 'image': {'src': 's', 'alt': 'a'}, 'place': 'San Francisco'}, 'a')
-        self.assertEqual((text, facets), ('', []))
+        text, facets = bluesky_post.compose({'kind': 'photo', 'date': 'd', 'url': 'https://u', 'image': {'src': 's', 'alt': 'Two candles'}, 'place': 'San Francisco'}, 'a')
+        self.assertEqual((text, facets), ('Two candles', []))
+        text, _ = bluesky_post.compose({'kind': 'photo', 'date': 'd', 'text': 'Stood here a while.', 'image': {'src': 's', 'alt': 'Two candles'}}, 'a')
+        self.assertEqual(text, 'Stood here a while.')
 
     def test_offsets_count_bytes(self):
         text, facets = bluesky_post.compose({'kind': 'book', 'date': 'd', 'title': 'Ünïcode ✨', 'url': 'https://u', 'text': 'é'}, 'a')
@@ -138,7 +140,7 @@ class Post(unittest.TestCase):
 
     def test_a_photo_already_posted_matches_on_its_description(self):
         photo = {'kind': 'photo', 'date': 'd', 'image': {'src': 'images/log/x.jpg', 'alt': 'Two candles'}}
-        bsky = FakeBluesky(existing=[{'text': '', 'embed': {'$type': 'app.bsky.embed.images', 'images': [{'alt': 'Two candles'}]}}])
+        bsky = FakeBluesky(existing=[{'text': 'Two candles', 'embed': {'$type': 'app.bsky.embed.images', 'images': [{'alt': 'Two candles'}]}}])
         self.assertEqual(bluesky_post.post([(photo, 'p')], 'did:plc:me', 'pw', bsky), [])
         self.assertEqual(bsky.records(), [])
 
