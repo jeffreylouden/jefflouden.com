@@ -1,9 +1,8 @@
 # Publishes a "Log entry" issue: adds it to src/log.json (with its photo
-# prepared into public/images/log/), rebuilds, tests, pushes to main, posts
-# it to Bluesky (when the BLUESKY_APP_PASSWORD secret is set), and closes the
-# issue. Only open issues Jeff opens from that form (its body starts with the
-# Kind field) run it. On a problem it comments with what to fix, and editing
-# the issue runs it again.
+# prepared into public/images/log/), rebuilds, tests, pushes to main, and
+# closes the issue. Only open issues Jeff opens from that form (its body
+# starts with the Kind field) run it. On a problem it comments with what to
+# fix, and editing the issue runs it again.
 name: Log entry
 on:
   issues:
@@ -58,24 +57,7 @@ jobs:
           git add src/log.json public
           git commit -m "$MESSAGE" -m "From #$ISSUE."
           git push origin HEAD:main
-      # The entry is live by now, so a Bluesky problem is reported, never fatal.
-      - id: bluesky
-        continue-on-error: true
-        env:
-          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
-        run: python3 scripts/bluesky_post.py --before HEAD~1 --after HEAD 2> bluesky-error.txt
-      - env:
-          POSTS: ${{ steps.bluesky.outputs.posts }}
-          BLUESKY: ${{ steps.bluesky.outcome }}
-        run: |
-          {
-            echo "On the log: https://jefflouden.com/log ($(git rev-parse --short HEAD))"
-            if [ -n "$POSTS" ]; then echo; echo "On Bluesky: $POSTS"; fi
-            if [ "$BLUESKY" = failure ]; then
-              echo; echo "It didn't go out on Bluesky:"; echo; echo '```'; tail -n 5 bluesky-error.txt; echo '```'
-            fi
-          } > closing.md
-          gh issue close "$ISSUE" --repo "$GITHUB_REPOSITORY" --comment "$(cat closing.md)"
+          gh issue close "$ISSUE" --repo "$GITHUB_REPOSITORY" --comment "On the log: https://jefflouden.com/log ($(git rev-parse --short HEAD))"
       - if: failure()
         run: |
           {

@@ -1,6 +1,6 @@
 {
   "$schema": "./site.schema.json",
-  "updated": "2026-10-24T12:31:44-04:00",
+  "updated": "2026-10-24T14:01:00-04:00",
   "profile": {
     "name": "Jeffrey Louden",
     "givenName": "Jeffrey",
@@ -25,8 +25,7 @@
       "country": "US",
       "countryName": "United States"
     },
-    "hometown": "Louisville, Kentucky, United States",
-    "atprotoDid": "did:plc:su56nbldex3r5p5vb24zsp5n"
+    "hometown": "Louisville, Kentucky, United States"
   },
   "organizations": {
     "atlantic": {
@@ -185,7 +184,6 @@
   ],
   "links": [
     { "label": "GitHub", "url": "https://github.com/jeffreylouden", "brand": "ink", "onPage": true, "removeAtExit": false },
-    { "label": "Bluesky", "url": "https://bsky.app/profile/jefflouden.com", "brand": "bluesky", "onPage": true, "removeAtExit": false },
     { "label": "LinkedIn", "url": "https://www.linkedin.com/in/jeffreylouden/", "brand": "linkedin", "onPage": true, "removeAtExit": true },
     { "label": "Wikidata", "url": "https://www.wikidata.org/wiki/Q141728742", "onPage": false, "removeAtExit": false }
   ],

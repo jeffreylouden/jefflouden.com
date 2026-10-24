@@ -239,7 +239,7 @@ def dates_long(start, end):
 def entry_ids(entries):
     """A stable anchor per log entry: its date and a slug of what it is. Numbered
     from the oldest, so a new entry never renames an old one. The page, the feed
-    and the Bluesky posts all use these."""
+    use these."""
     ids, seen = {}, {}
     for i in reversed(range(len(entries))):
         e = entries[i]
@@ -800,7 +800,6 @@ def build():
     out['public/sitemap.xml'] = site.sitemap_xml()
     out['public/.well-known/ai-catalog.json'] = site.ai_catalog()
     out['public/jeffrey-louden.vcf'] = site.vcard()
-    out['public/.well-known/atproto-did'] = site.p['atprotoDid']
     out['resume/resume.html'] = site.resume_html()
     out['public/_headers'] = site.headers([out['public/404.html'], out['public/log.html']])
     out['functions/_middleware.js'] = site.middleware((ROOT / 'functions/_middleware.js').read_text(encoding='utf-8'))

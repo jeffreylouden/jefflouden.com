@@ -1,7 +1,6 @@
 Developer:      Jeffrey Louden (SVP, Engineering at The Atlantic)
 Contact:        jeff [at] jefflouden [dot] com
 GitHub:         https://github.com/jeffreylouden
-Bluesky:        https://bsky.app/profile/jefflouden.com
 LinkedIn:       https://www.linkedin.com/in/jeffreylouden/
 Location:       Washington, D.C., United States
 From:           Louisville, Kentucky, United States

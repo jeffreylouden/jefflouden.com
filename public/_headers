@@ -41,11 +41,6 @@
   Content-Type: application/json
   Access-Control-Allow-Origin: *
 
-# Verifies @jefflouden.com as Jeff's Bluesky handle.
-/.well-known/atproto-did
-  Content-Type: text/plain; charset=utf-8
-  Access-Control-Allow-Origin: *
-
 # Web Key Directory (direct method): the OpenPGP key for jeff@, so
 # `gpg --locate-keys jeff@jefflouden.com` finds it. The spec asks for CORS.
 /.well-known/openpgpkey/*
