@@ -12,13 +12,15 @@ import json
 import re
 import sys
 import unittest
+from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build  # noqa: E402
+from fixtures import LOG  # noqa: E402
 
 SITE = json.loads((build.SRC / 'site.json').read_text(encoding='utf-8'))
-LOG = json.loads((build.SRC / 'log.json').read_text(encoding='utf-8'))
 SITE_SCHEMA = json.loads((build.SRC / 'site.schema.json').read_text(encoding='utf-8'))
 LOG_SCHEMA = json.loads((build.SRC / 'log.schema.json').read_text(encoding='utf-8'))
 
@@ -29,7 +31,9 @@ def site(change=None, log_change=None):
         change(s)
     if log_change:
         log_change(l)
-    return build.Site(s, l)
+    # The sample log uses no photos, so the real ones in public/images/log/ are no concern here.
+    with mock.patch.object(build, 'LOG_IMAGES', build.PUBLIC / 'images' / 'no-such-folder'):
+        return build.Site(s, l)
 
 
 class Helpers(unittest.TestCase):
