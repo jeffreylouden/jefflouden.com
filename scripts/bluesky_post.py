@@ -83,7 +83,8 @@ class Text:
 def compose(e, anchor):
     """The post's text and link facets for one entry, kept plain: what it is
     (a title, linked when it has a link, or a quote and who said it) and Jeff's
-    words. A photo carries its picture instead. His words give way first."""
+    words, or a photo's description when it has neither. His words give way
+    first."""
 
     def build_text(words):
         t = Text()
@@ -99,6 +100,10 @@ def compose(e, anchor):
         elif e.get('title'):
             block(build.plain(e['title']), e.get('url'))
         block(words)
+        # A photo with nothing else to say carries its description as its text
+        # (a textless photo post didn't show on Jeff's profile).
+        if not str(t) and e.get('image'):
+            block(build.plain(e['image']['alt']))
         return t
 
     words = build.plain(e.get('text', ''))
