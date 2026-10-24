@@ -9,8 +9,7 @@ on:
     branches: [main]
     paths: [src/log.json]
   # Run by hand to post every entry from the last week (oldest first, at most
-  # five), for catching up. It doesn't know what's already on Bluesky, so it
-  # can post an entry twice.
+  # five), for catching up. Entries already on Bluesky are skipped.
   workflow_dispatch:
 permissions:
   contents: read
