@@ -201,7 +201,7 @@ class Pages(unittest.TestCase):
             ]
         s = site(log_change=add)
         page = s.log_html()
-        self.assertIn('<li data-kind="quote" data-date="2026-10-25">\n        <blockquote><p>“Make it work.”</p></blockquote>\n        <p class="who">Kent Beck</p>\n        <p>Still true.</p>\n      </li>', page)
+        self.assertIn('<li id="2026-10-25-make-it-work" data-kind="quote" data-date="2026-10-25">\n        <blockquote><p>“Make it work.”</p></blockquote>\n        <p class="who">Kent Beck</p>\n        <p>Still true.</p>\n      </li>', page)
         self.assertIn('<p>A <a href="https://example.com">link</a> &amp; more.</p>', page)
         self.assertIn('<p class="what">No link</p>', page)
         self.assertIn('<lastmod>2026-10-25</lastmod>', s.sitemap_xml())
@@ -263,6 +263,49 @@ class Headers(unittest.TestCase):
         build.security_txt_expiry(text, datetime.datetime(2027, 7, 1, tzinfo=utc))
         with self.assertRaises(build.BuildError):
             build.security_txt_expiry(text, datetime.datetime(2027, 8, 1, tzinfo=utc))
+
+
+class Feed(unittest.TestCase):
+    ATOM = '{http://www.w3.org/2005/Atom}'
+
+    def feed(self, s):
+        import xml.etree.ElementTree as ET
+        return ET.fromstring(s.log_feed())
+
+    def test_the_feed_is_atom_with_one_entry_per_log_entry(self):
+        s = site()
+        feed = self.feed(s)
+        self.assertEqual(feed.tag, self.ATOM + 'feed')
+        entries = feed.findall(self.ATOM + 'entry')
+        self.assertEqual(len(entries), len(LOG['entries']))
+        self.assertEqual(feed.find(self.ATOM + 'updated').text, '2026-10-23T00:00:00Z')
+        first = entries[0]
+        self.assertEqual(first.find(self.ATOM + 'title').text, 'You Can See Everything')
+        self.assertEqual(first.find(self.ATOM + 'link').get('href'), 'https://jefflouden.com/log#2026-10-23-you-can-see-everything')
+        self.assertIn('San Francisco', first.find(self.ATOM + 'content').text)
+
+    def test_titles_for_each_kind(self):
+        def add(l):
+            l['entries'][:0] = [
+                {'kind': 'quote', 'date': '2026-10-25', 'quote': 'Less, but [better](https://example.com).', 'who': 'Dieter Rams'},
+                {'kind': 'note', 'date': '2026-10-24', 'text': 'First frost.'},
+            ]
+        titles = [e.find(self.ATOM + 'title').text for e in self.feed(site(log_change=add)).findall(self.ATOM + 'entry')]
+        self.assertEqual(titles[:2], ['“Less, but better.”', 'First frost.'])
+
+    def test_ids_are_unique_and_never_shift(self):
+        twice = lambda l: l['entries'].insert(0, {'kind': 'note', 'date': '2026-10-24', 'text': 'Same.'})
+        before = site(log_change=twice).entry_ids()
+        after = site(log_change=lambda l: (twice(l), twice(l))).entry_ids()
+        self.assertEqual(len(set(after)), len(after))
+        self.assertEqual(after[1:], before)  # the older entries kept their ids
+        self.assertEqual(after[:2], ['2026-10-24-same-2', '2026-10-24-same'])
+
+    def test_the_log_page_carries_the_anchors_and_announces_the_feed(self):
+        page = site().log_html()
+        self.assertIn('<li id="2026-10-23-hundred-rabbits" data-kind="site"', page)
+        self.assertIn('<link rel="alternate" type="application/atom+xml" href="/log.xml"', page)
+        self.assertIn('href="/log.xml"', site().index_html())
 
 
 class Bluesky(unittest.TestCase):
