@@ -22,7 +22,7 @@ body:
     id: link
     attributes:
       label: Link
-      description: Where the title links, if anywhere.
+      description: Where the title links, if anywhere. For a photo with no title, the photo itself links.
       placeholder: https://
   - type: textarea
     id: quote

@@ -524,7 +524,11 @@ class Site:
             if e.get('image'):
                 src = e['image']['src']
                 width, height = self.images[src]
-                lines.append(f'<img src="/{src}" alt="{attr(e["image"]["alt"])}" width="{width}" height="{height}" loading="lazy" decoding="async">')
+                img = f'<img src="/{src}" alt="{attr(e["image"]["alt"])}" width="{width}" height="{height}" loading="lazy" decoding="async">'
+                # With no title to carry it, a link goes on the photo itself.
+                if e.get('url') and not e.get('title'):
+                    img = f'<a class="photo" href="{attr(e["url"])}">{img}</a>'
+                lines.append(img)
             if e.get('text'):
                 lines.append(f'<p>{html(e["text"])}</p>')
             if e.get('place'):
