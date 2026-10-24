@@ -53,3 +53,9 @@ body:
     attributes:
       label: Place
       description: Optional, shown under the entry. A city or a neighborhood, never an address.
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      description: Optional. Leave empty for today. It isn't shown, it only places the entry in the list.
+      placeholder: YYYY-MM-DD
