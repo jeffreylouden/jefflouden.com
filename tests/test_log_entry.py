@@ -269,7 +269,7 @@ class Add(Sandbox):
         })), '2026-10-24')
         log_entry.add(entry, fetch=lambda url: phone_photo())
         page = self.site().log_html()
-        self.assertIn('<li data-kind="photo" data-date="2026-10-24">\n        <img src="/images/log/2026-10-24-two-candles.jpg" alt="Two candles" width="1200" height="1600" loading="lazy" decoding="async">\n        <p class="place">San Francisco</p>\n      </li>', page)
+        self.assertIn('<li id="2026-10-24-two-candles" data-kind="photo" data-date="2026-10-24">\n        <img src="/images/log/2026-10-24-two-candles.jpg" alt="Two candles" width="1200" height="1600" loading="lazy" decoding="async">\n        <p class="place">San Francisco</p>\n      </li>', page)
 
     @unittest.skipUnless(Image, 'needs Pillow')
     def test_a_linked_photo_with_no_title_links_the_photo(self):
@@ -290,6 +290,16 @@ class Add(Sandbox):
         page = self.site().log_html()
         self.assertIn('<p class="what"><a href="https://www.gerhard-richter.com/">Zwei Kerzen</a></p>', page)
         self.assertNotIn('class="photo"', page)
+
+    @unittest.skipUnless(Image, 'needs Pillow')
+    def test_the_feed_points_photos_at_the_site(self):
+        entry = log_entry.entry_from(log_entry.parse_form(form(**{
+            'Kind': 'photo', 'Photo': 'https://github.com/user-attachments/assets/abc', 'What the photo shows': 'Two candles',
+        })), '2026-10-24')
+        log_entry.add(entry, fetch=lambda url: phone_photo())
+        feed = self.site().log_feed()
+        self.assertIn('src="https://jefflouden.com/images/log/2026-10-24-two-candles.jpg"', feed)
+        self.assertNotIn('src="/images', feed)
 
     @unittest.skipUnless(Image, 'needs Pillow')
     def test_photo_names_never_collide(self):

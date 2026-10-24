@@ -236,6 +236,21 @@ def dates_long(start, end):
     return f'{month_long(start)} to {"present" if end is None else month_long(end)}'
 
 
+def entry_ids(entries):
+    """A stable anchor per log entry: its date and a slug of what it is. Numbered
+    from the oldest, so a new entry never renames an old one. The page, the feed
+    and the Bluesky posts all use these."""
+    ids, seen = {}, {}
+    for i in reversed(range(len(entries))):
+        e = entries[i]
+        what = e.get('title') or e.get('quote') or e.get('image', {}).get('alt') or e.get('text', '')
+        words = re.sub(r'[^a-z0-9]+', '-', plain(what).lower()).strip('-')[:40].rstrip('-') or e['kind']
+        base = f'{e["date"]}-{words}'
+        seen[base] = seen.get(base, 0) + 1
+        ids[i] = base if seen[base] == 1 else f'{base}-{seen[base]}'
+    return [ids[i] for i in range(len(entries))]
+
+
 # The site.
 
 class Site:
@@ -511,31 +526,66 @@ class Site:
 
     # The log and the 404 page.
 
+    def entry_ids(self):
+        return entry_ids(self.log['entries'])
+
+    def entry_lines(self, e, root=''):
+        """An entry's inner HTML. The feed passes the site's root so its links work anywhere."""
+        lines = []
+        if e['kind'] == 'quote':
+            lines.append(f'<blockquote><p>“{html(e["quote"])}”</p></blockquote>')
+            lines.append(f'<p class="who">{html(e["who"])}</p>')
+        elif e.get('title'):
+            title = f'<a href="{attr(e["url"])}">{esc(e["title"])}</a>' if e.get('url') else esc(e['title'])
+            lines.append(f'<p class="what">{title}</p>')
+        if e.get('image'):
+            src = e['image']['src']
+            width, height = self.images[src]
+            img = f'<img src="{root}/{src}" alt="{attr(e["image"]["alt"])}" width="{width}" height="{height}" loading="lazy" decoding="async">'
+            # With no title to carry it, a link goes on the photo itself.
+            if e.get('url') and not e.get('title'):
+                img = f'<a class="photo" href="{attr(e["url"])}">{img}</a>'
+            lines.append(img)
+        if e.get('text'):
+            lines.append(f'<p>{html(e["text"])}</p>')
+        if e.get('place'):
+            lines.append(f'<p class="place">{esc(e["place"])}</p>')
+        return lines
+
     def log_html(self):
         items = []
-        for e in self.log['entries']:
-            lines = []
-            if e['kind'] == 'quote':
-                lines.append(f'<blockquote><p>“{html(e["quote"])}”</p></blockquote>')
-                lines.append(f'<p class="who">{html(e["who"])}</p>')
-            elif e.get('title'):
-                title = f'<a href="{attr(e["url"])}">{esc(e["title"])}</a>' if e.get('url') else esc(e['title'])
-                lines.append(f'<p class="what">{title}</p>')
-            if e.get('image'):
-                src = e['image']['src']
-                width, height = self.images[src]
-                img = f'<img src="/{src}" alt="{attr(e["image"]["alt"])}" width="{width}" height="{height}" loading="lazy" decoding="async">'
-                # With no title to carry it, a link goes on the photo itself.
-                if e.get('url') and not e.get('title'):
-                    img = f'<a class="photo" href="{attr(e["url"])}">{img}</a>'
-                lines.append(img)
-            if e.get('text'):
-                lines.append(f'<p>{html(e["text"])}</p>')
-            if e.get('place'):
-                lines.append(f'<p class="place">{esc(e["place"])}</p>')
-            body = '\n'.join(f'  {l}' for l in lines)
-            items.append(f'<li data-kind="{attr(e["kind"])}" data-date="{e["date"]}">\n{body}\n</li>')
+        for e, anchor in zip(self.log['entries'], self.entry_ids()):
+            body = '\n'.join(f'  {l}' for l in self.entry_lines(e))
+            items.append(f'<li id="{anchor}" data-kind="{attr(e["kind"])}" data-date="{e["date"]}">\n{body}\n</li>')
         return template('log.html', {**self.base, 'entries': '\n'.join(items)})
+
+    def log_feed(self):
+        """The log as an Atom feed. Every date is the day an entry was added, so the
+        feed only changes when the log does."""
+        root = self.p['url'].rstrip('/')
+        entries = []
+        for e, anchor in list(zip(self.log['entries'], self.entry_ids()))[:50]:
+            if e['kind'] == 'quote':
+                title = f'“{plain(e["quote"])}”'
+            else:
+                title = plain(e.get('title') or e.get('image', {}).get('alt') or e.get('text', ''))
+            content = ''.join(self.entry_lines(e, root))
+            related = f'\n  <link rel="related" href="{attr(e["url"])}"/>' if e.get('url') else ''
+            entries.append(f'''<entry>
+  <id>tag:jefflouden.com,{e["date"]}:log/{anchor}</id>
+  <title>{esc(title)}</title>
+  <link rel="alternate" type="text/html" href="{root}/log#{anchor}"/>{related}
+  <published>{e["date"]}T00:00:00Z</published>
+  <updated>{e["date"]}T00:00:00Z</updated>
+  <content type="html">{esc(content)}</content>
+</entry>''')
+        newest = max((e['date'] for e in self.log['entries']), default=self.home_lastmod)
+        return template('log.xml', {
+            **self.base,
+            'root': root,
+            'updated': f'{newest}T00:00:00Z',
+            'entries': '\n'.join(entries),
+        })
 
     def not_found_html(self):
         return template('404.html', self.base)
@@ -741,6 +791,7 @@ def build():
     out = {}
     out['public/404.html'] = site.not_found_html()
     out['public/log.html'] = site.log_html()
+    out['public/log.xml'] = site.log_feed()
     out['public/index.html'] = site.index_html()
     out['public/index.md'] = site.index_md()
     out['public/index.txt'] = site.index_txt()
