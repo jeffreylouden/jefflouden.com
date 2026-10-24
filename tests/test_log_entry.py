@@ -18,8 +18,10 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(ROOT / 'scripts'))
 import build  # noqa: E402
+from fixtures import LOG  # noqa: E402
 import log_entry  # noqa: E402
 
 try:
@@ -28,7 +30,6 @@ except ImportError:
     Image = None
 
 SITE = json.loads((build.SRC / 'site.json').read_text(encoding='utf-8'))
-LOG = json.loads((build.SRC / 'log.json').read_text(encoding='utf-8'))
 
 
 def form(**fields):
