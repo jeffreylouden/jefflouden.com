@@ -1,0 +1,20 @@
+# {{name}}
+
+> {{about}}
+
+Canonical profile: {{url}}
+Contact: {{email}}
+
+## Work
+
+{{work}}
+
+## Education
+
+{{education}}
+
+## Contact
+
+- Résumé (PDF): https://jefflouden.com/resume.pdf
+- Contact card (vCard): https://jefflouden.com/jeffrey-louden.vcf
+{{links}}

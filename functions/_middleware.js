@@ -13,6 +13,13 @@ const LINK = [
 ].join(', ');
 
 // _headers does not apply to Function responses, so repeat what "/" needs.
+// SECURITY is the same set as `/*` in _headers, and csp() the same policy
+// with a per-response nonce where that one carries the static pages' script
+// hashes. Cloudflare reads the nonce from this header and stamps it on the
+// scripts it injects at the edge (bot detection, Web Analytics), so they run
+// without 'unsafe-inline'.
+// build.py writes everything between these two lines from src/site.json.
+// BEGIN GENERATED
 const SECURITY = {
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
@@ -22,10 +29,6 @@ const SECURITY = {
   'Cross-Origin-Opener-Policy': 'same-origin',
 };
 
-// The same policy as `/*` in _headers, with a per-response nonce where that
-// one carries the 404 page's script hash. Cloudflare reads the nonce from
-// this header and stamps it on the scripts it injects at the edge (bot
-// detection, Web Analytics), so they run without 'unsafe-inline'.
 function csp(nonce) {
   return [
     "default-src 'self'",
@@ -40,6 +43,7 @@ function csp(nonce) {
     'upgrade-insecure-requests',
   ].join('; ');
 }
+// END GENERATED
 
 function withHeaders(response, extra) {
   const res = new Response(response.body, response);

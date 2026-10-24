@@ -1,0 +1,225 @@
+{
+  "$schema": "./site.schema.json",
+  "updated": "2026-10-15T18:16:04-04:00",
+  "profile": {
+    "name": "Jeffrey Louden",
+    "givenName": "Jeffrey",
+    "familyName": "Louden",
+    "alternateName": "Jeff Louden",
+    "username": "jeffreylouden",
+    "email": "jeff@jefflouden.com",
+    "url": "https://jefflouden.com/",
+    "birthDate": "1983-01-07",
+    "bio": "I build teams and things.",
+    "resumeBio": "I build teams and things: engineering organizations that are diverse, inclusive, and kind, and that ship high-quality products quickly.",
+    "summary": "SVP, Engineering at The Atlantic and founder of Existential Engineering Company",
+    "description": "Jeffrey Louden (Jeff Louden) is SVP, Engineering at The Atlantic and founder of Existential Engineering Company. Previously TIME, Lyft, The New York Times and Google.",
+    "personDescription": "Engineering executive. SVP, Engineering at The Atlantic and founder of Existential Engineering Company.",
+    "about": "Jeffrey Louden (also Jeff Louden) is an engineering executive based in Washington, D.C. He is SVP, Engineering at The Atlantic and the founder of Existential Engineering Company, where he built Aureo.",
+    "occupation": "Senior Vice President, Engineering",
+    "knowsAbout": ["Software engineering", "Engineering leadership", "Digital publishing", "Product development"],
+    "location": {
+      "display": "Washington, D.C.",
+      "locality": "Washington",
+      "region": "DC",
+      "country": "US",
+      "countryName": "United States"
+    },
+    "hometown": "Louisville, Kentucky, United States"
+  },
+  "organizations": {
+    "atlantic": {
+      "name": "The Atlantic",
+      "url": "https://www.theatlantic.com",
+      "brand": "atlantic",
+      "wikidata": "Q1542536",
+      "wikipedia": "The_Atlantic"
+    },
+    "existential": {
+      "name": "Existential Engineering Company",
+      "legalName": "Existential Engineering Company LLC",
+      "url": "https://existential.engineering",
+      "brand": "existential",
+      "id": "https://existential.engineering/#organization",
+      "foundingDate": "2022-07",
+      "founder": true
+    },
+    "time": {
+      "name": "TIME",
+      "url": "https://time.com",
+      "brand": "time",
+      "wikidata": "Q43297",
+      "wikipedia": "Time_(magazine)"
+    },
+    "lyft": {
+      "name": "Lyft",
+      "url": "https://www.lyft.com",
+      "brand": "lyft",
+      "wikidata": "Q17077936",
+      "wikipedia": "Lyft"
+    },
+    "nyt": {
+      "name": "The New York Times",
+      "url": "https://www.nytimes.com",
+      "brand": "ink",
+      "wikidata": "Q9684",
+      "wikipedia": "The_New_York_Times"
+    },
+    "nest": {
+      "name": "Nest",
+      "legalName": "Nest Labs",
+      "url": "https://nest.com",
+      "brand": "nest",
+      "wikidata": "Q2119882",
+      "wikipedia": "Google_Nest"
+    },
+    "google": {
+      "name": "Google",
+      "url": "https://about.google",
+      "brand": "google",
+      "wikidata": "Q95",
+      "wikipedia": "Google"
+    },
+    "newyorker": {
+      "name": "The New Yorker",
+      "url": "https://www.newyorker.com",
+      "brand": "ink",
+      "wikidata": "Q217305",
+      "wikipedia": "The_New_Yorker"
+    },
+    "ofa": {
+      "name": "Obama for America",
+      "url": "https://barackobama.com/",
+      "brand": "ink",
+      "wikidata": "Q4858123",
+      "wikipedia": "Barack_Obama_2012_presidential_campaign"
+    }
+  },
+  "products": {
+    "aureo": {
+      "name": "Aureo",
+      "url": "https://aureo.audio",
+      "publisher": "existential"
+    }
+  },
+  "roles": [
+    {
+      "orgs": ["atlantic"],
+      "title": "SVP, Engineering",
+      "start": "2025-10",
+      "end": null,
+      "location": "Washington, D.C.",
+      "resume": "Lead The Atlantic's 30+ person Engineering and QA organization."
+    },
+    {
+      "orgs": ["existential"],
+      "title": "Founder",
+      "start": "2022-07",
+      "end": null,
+      "built": "aureo",
+      "summary": "Built [Aureo](https://aureo.audio).",
+      "resume": "Built [Aureo](https://aureo.audio), a studio gear and plugin catalog, and the open-source catalog behind it."
+    },
+    {
+      "orgs": ["time"],
+      "title": "VP, Software Engineering",
+      "start": "2021-03",
+      "end": "2022-07",
+      "location": "New York, remote",
+      "resume": "Led TIME's 12-person core software engineering team and its technical strategy."
+    },
+    {
+      "orgs": ["lyft"],
+      "title": "Engineering Manager II, Memberships",
+      "start": "2020-05",
+      "end": "2020-11",
+      "location": "San Francisco Bay Area",
+      "resume": "Led the 10-person team behind Lyft Pink, Lyft's subscription. Started its core platform team and led integrations with Bikes, Scooters and Rentals and partnerships with Grubhub+ and Chase."
+    },
+    {
+      "orgs": ["nyt"],
+      "title": "Director of Technology, [NYT Cooking](https://cooking.nytimes.com)",
+      "start": "2015-06",
+      "end": "2020-01",
+      "summary": "Led a 25-person engineering team. NYT Cooking became a $20 million subscription product and won two Webby Awards and the 2019 James Beard Award for Publication of the Year.",
+      "resume": "Led NYT Cooking's 25-person team and built the paywall behind its $20M subscription. Cooking won two Webbys and a James Beard Award. Founding member of the Women in Tech task force."
+    },
+    {
+      "orgs": ["nest", "google"],
+      "title": "Senior Web Developer",
+      "start": "2014-03",
+      "end": "2015-05",
+      "summary": "Joined Nest Labs just before Google acquired it, and stayed on at Google.",
+      "resume": "Joined Nest just before Google acquired it, and stayed on at Google."
+    },
+    {
+      "orgs": ["newyorker"],
+      "title": "Director of Engineering",
+      "start": "2013-02",
+      "end": "2013-12"
+    },
+    {
+      "orgs": ["ofa"],
+      "title": "Lead Software Engineer, BarackObama.com",
+      "start": "2011-09",
+      "end": "2013-01"
+    }
+  ],
+  "education": [
+    {
+      "school": "Berklee Online",
+      "parent": "Berklee College of Music",
+      "credential": "Certificate, Music Technology and Production",
+      "start": 2005,
+      "end": 2007,
+      "onResume": true
+    },
+    {
+      "school": "Florida State University",
+      "credential": "B.S., Information Studies",
+      "start": 2001,
+      "end": 2005,
+      "onResume": true
+    }
+  ],
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/jeffreylouden", "brand": "ink", "onPage": true, "removeAtExit": false },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/jeffreylouden/", "brand": "linkedin", "onPage": true, "removeAtExit": true },
+    { "label": "Wikidata", "url": "https://www.wikidata.org/wiki/Q141728742", "onPage": false, "removeAtExit": false }
+  ],
+  "catalog": {
+    "profile": [
+      "who is Jeffrey Louden",
+      "what does Jeff Louden do at The Atlantic",
+      "Jeffrey Louden work history",
+      "how to contact Jeff Louden"
+    ],
+    "home": [
+      "Jeffrey Louden personal website",
+      "who founded Existential Engineering Company",
+      "who built Aureo"
+    ]
+  },
+  "security": {
+    "headers": {
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
+      "Strict-Transport-Security": "max-age=15552000; includeSubDomains",
+      "X-Frame-Options": "DENY",
+      "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+      "Cross-Origin-Opener-Policy": "same-origin"
+    },
+    "csp": [
+      "default-src 'self'",
+      "script-src 'self' {scripts} https://static.cloudflareinsights.com",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self'",
+      "connect-src 'self' https://cloudflareinsights.com",
+      "object-src 'none'",
+      "base-uri 'none'",
+      "form-action 'none'",
+      "frame-ancestors 'none'",
+      "upgrade-insecure-requests"
+    ]
+  }
+}

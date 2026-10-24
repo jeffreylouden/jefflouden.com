@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "jefflouden.com site data",
+  "description": "Everything about Jeff that more than one page repeats. build.py checks site.json against this before it writes anything.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["updated", "profile", "organizations", "products", "roles", "education", "links", "catalog", "security"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "updated": {
+      "description": "When the home page last changed, as a full ISO 8601 datetime with offset (Search Console rejects a bare date). Feeds dateModified and the sitemap.",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]\\d{2}:\\d{2}$"
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "givenName", "familyName", "alternateName", "username", "email", "url", "birthDate", "bio", "resumeBio", "summary", "description", "personDescription", "about", "occupation", "knowsAbout", "location", "hometown"],
+      "properties": {
+        "name": { "type": "string" },
+        "givenName": { "type": "string" },
+        "familyName": { "type": "string" },
+        "alternateName": { "type": "string" },
+        "username": { "type": "string" },
+        "email": { "type": "string", "pattern": "^[^@\\s]+@[^@\\s]+$" },
+        "url": { "type": "string", "pattern": "^https://.+/$" },
+        "birthDate": { "$ref": "#/$defs/date" },
+        "bio": { "description": "The one-line intro on the site.", "type": "string" },
+        "resumeBio": { "description": "The longer intro on the résumé.", "type": "string" },
+        "summary": { "description": "The current roles as one phrase, reused in the share text and the AI catalog.", "type": "string" },
+        "description": { "description": "The meta description.", "type": "string" },
+        "personDescription": { "description": "The JSON-LD Person description.", "type": "string" },
+        "about": { "description": "The opening line of llms.txt.", "type": "string" },
+        "occupation": { "description": "The current title spelled out, for JSON-LD.", "type": "string" },
+        "knowsAbout": { "type": "array", "items": { "type": "string" } },
+        "location": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["display", "locality", "region", "country", "countryName"],
+          "properties": {
+            "display": { "type": "string" },
+            "locality": { "type": "string" },
+            "region": { "type": "string" },
+            "country": { "type": "string", "pattern": "^[A-Z]{2}$" },
+            "countryName": { "type": "string" }
+          }
+        },
+        "hometown": { "type": "string" }
+      }
+    },
+    "organizations": {
+      "description": "Every organization a role names, keyed by a short id.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "url", "brand"],
+        "properties": {
+          "name": { "type": "string" },
+          "legalName": { "type": "string" },
+          "url": { "type": "string", "pattern": "^https://" },
+          "brand": { "description": "The data-brand underline. Each value needs a rule in the home page's brand block. Black brands use ink.", "type": "string" },
+          "id": { "description": "The JSON-LD @id, when the organization has its own. Defaults to https://jefflouden.com/#org-<key>.", "type": "string" },
+          "foundingDate": { "type": "string" },
+          "founder": { "description": "Jeff founded it.", "type": "boolean" },
+          "wikidata": { "description": "The Wikidata QID. Look it up, never guess it.", "type": "string", "pattern": "^Q\\d+$" },
+          "wikipedia": { "description": "The English Wikipedia article name.", "type": "string" }
+        }
+      }
+    },
+    "products": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "url", "publisher"],
+        "properties": {
+          "name": { "type": "string" },
+          "url": { "type": "string", "pattern": "^https://" },
+          "publisher": { "description": "An organizations key.", "type": "string" }
+        }
+      }
+    },
+    "roles": {
+      "description": "Newest first, one per title. Consecutive roles at the same organization share a row on the home page. Text fields may hold [text](url) links.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["orgs", "title", "start", "end"],
+        "properties": {
+          "orgs": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "title": { "type": "string" },
+          "start": { "$ref": "#/$defs/month" },
+          "end": { "description": "null while current.", "oneOf": [{ "$ref": "#/$defs/month" }, { "type": "null" }] },
+          "location": { "type": "string" },
+          "built": { "description": "A products key, shown beside the title.", "type": "string" },
+          "summary": { "description": "A factual line for llms.txt and index.md.", "type": "string" },
+          "resume": { "description": "The résumé's line for this role.", "type": "string" }
+        }
+      }
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["school", "credential", "start", "end", "onResume"],
+        "properties": {
+          "school": { "type": "string" },
+          "parent": { "type": "string" },
+          "credential": { "type": "string" },
+          "start": { "type": "integer" },
+          "end": { "type": "integer" },
+          "onResume": { "description": "false keeps it here but off the résumé and llms.txt.", "type": "boolean" }
+        }
+      }
+    },
+    "links": {
+      "description": "Profiles Jeff controls. Every one is a rel=\"me\" link and a JSON-LD sameAs.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "url", "onPage", "removeAtExit"],
+        "properties": {
+          "label": { "type": "string" },
+          "url": { "type": "string", "pattern": "^https://" },
+          "brand": { "type": "string" },
+          "onPage": { "description": "Listed under Contact.", "type": "boolean" },
+          "removeAtExit": { "description": "Dropped everywhere once Jeff closes his LinkedIn account.", "type": "boolean" }
+        }
+      }
+    },
+    "catalog": {
+      "description": "Representative queries for .well-known/ai-catalog.json.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile", "home"],
+      "properties": {
+        "profile": { "type": "array", "items": { "type": "string" } },
+        "home": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "security": {
+      "description": "Headers for _headers and functions/_middleware.js. {scripts} in the CSP becomes the inline script hashes or the per-response nonce.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["headers", "csp"],
+      "properties": {
+        "headers": { "type": "object", "additionalProperties": { "type": "string" } },
+        "csp": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "$defs": {
+    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "month": { "type": "string", "pattern": "^\\d{4}-(0[1-9]|1[0-2])$" }
+  }
+}

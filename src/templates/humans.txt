@@ -1,0 +1,13 @@
+Developer:      {{name}} ({{headline}})
+Contact:        {{email_spoken}}
+{{links}}
+Location:       {{location}}, {{country}}
+From:           {{hometown}}
+
+/* SITE */
+Language:       English
+Doctype:        HTML5
+IDE:            vim
+Standards:      HTML5, CSS3, schema.org JSON-LD
+Fonts:          Instrument Sans, Newsreader (SIL OFL)
+Last update:    {{last_update}}

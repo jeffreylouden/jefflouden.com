@@ -1,0 +1,29 @@
+
+   █       ▄▀  ▄▀                   █                 █
+   █  ▄▄  ▄█▄ ▄█▄ ▄ ▄  ▄▄  ▄   ▄    █     ▄▄  ▄  ▄  ▄▄█  ▄▄  ▄▄▄
+   █ █  █  █   █  █▀  █  █ █   █    █    █  █ █  █ █  █ █  █ █  █
+█  █ █▀▀▀  █   █  █   █▀▀▀  █ █     █    █  █ █  █ █  █ █▀▀▀ █  █
+▀▄▄▀ ▀▄▄▀  █   █  █   ▀▄▄▀   █      █▄▄▄ ▀▄▄▀ ▀▄▄█ ▀▄▄█ ▀▄▄▀ █  █
+                            ▄▀
+
+  {{headline}}
+  {{bio}}
+
+  WORK
+
+{{work}}
+
+  CONTACT
+
+  email      {{email}}
+{{links}}
+  résumé     https://jefflouden.com/resume.pdf
+  vcard      curl -O https://jefflouden.com/jeffrey-louden.vcf
+  markdown   curl -H "Accept: text/markdown" https://jefflouden.com/
+  log        https://jefflouden.com/log
+  source     https://github.com/jeffreylouden/jefflouden.com
+
+  {{location}}   © 2009–{{year}} {{name}}
+
+  You came in through the back door. We left it unlocked for you.
+

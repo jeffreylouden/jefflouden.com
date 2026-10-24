@@ -1,0 +1,20 @@
+# Fails when a built file in public/ no longer matches src/, when the data
+# breaks its schema, when security.txt is close to expiring, or when a test
+# of the build or the middleware fails.
+name: Build
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: python3 build.py --check
+      - run: python3 -m unittest discover tests
+      - run: node --check functions/_middleware.js
+      - run: node --test tests/middleware.test.mjs
