@@ -236,6 +236,21 @@ def dates_long(start, end):
     return f'{month_long(start)} to {"present" if end is None else month_long(end)}'
 
 
+def entry_ids(entries):
+    """A stable anchor per log entry: its date and a slug of what it is. Numbered
+    from the oldest, so a new entry never renames an old one. The page, the feed
+    and the Bluesky posts all use these."""
+    ids, seen = {}, {}
+    for i in reversed(range(len(entries))):
+        e = entries[i]
+        what = e.get('title') or e.get('quote') or e.get('image', {}).get('alt') or e.get('text', '')
+        words = re.sub(r'[^a-z0-9]+', '-', plain(what).lower()).strip('-')[:40].rstrip('-') or e['kind']
+        base = f'{e["date"]}-{words}'
+        seen[base] = seen.get(base, 0) + 1
+        ids[i] = base if seen[base] == 1 else f'{base}-{seen[base]}'
+    return [ids[i] for i in range(len(entries))]
+
+
 # The site.
 
 class Site:
@@ -263,6 +278,7 @@ class Site:
             'url': self.p['url'],
             'location': self.p['location']['display'],
             'year': self.year,
+            'bluesky': next(l['url'] for l in self.links if l['url'].startswith('https://bsky.app/')),
         }
 
     def check(self):
@@ -512,17 +528,7 @@ class Site:
     # The log and the 404 page.
 
     def entry_ids(self):
-        """A stable anchor per entry: its date and a slug of what it is. Numbered
-        from the oldest, so a new entry never renames an old one."""
-        ids, seen = {}, {}
-        for i in reversed(range(len(self.log['entries']))):
-            e = self.log['entries'][i]
-            what = e.get('title') or e.get('quote') or e.get('image', {}).get('alt') or e.get('text', '')
-            words = re.sub(r'[^a-z0-9]+', '-', plain(what).lower()).strip('-')[:40].rstrip('-') or e['kind']
-            base = f'{e["date"]}-{words}'
-            seen[base] = seen.get(base, 0) + 1
-            ids[i] = base if seen[base] == 1 else f'{base}-{seen[base]}'
-        return [ids[i] for i in range(len(self.log['entries']))]
+        return entry_ids(self.log['entries'])
 
     def entry_lines(self, e, root=''):
         """An entry's inner HTML. The feed passes the site's root so its links work anywhere."""

@@ -1,0 +1,26 @@
+# Posts new log entries to Bluesky when they reach main any way but the
+# "Log entry" form (a merge, a chat entry from the daily reminder, a hand
+# edit). The form's workflow posts its own entries, because a push made with
+# the workflow's token never starts another workflow. Without the
+# BLUESKY_APP_PASSWORD secret it posts nothing.
+name: Bluesky
+on:
+  push:
+    branches: [main]
+    paths: [src/log.json]
+permissions:
+  contents: read
+concurrency:
+  group: bluesky
+  cancel-in-progress: false
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - env:
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          BEFORE: ${{ github.event.before }}
+        run: python3 scripts/bluesky_post.py --before "$BEFORE" --after "$GITHUB_SHA"
