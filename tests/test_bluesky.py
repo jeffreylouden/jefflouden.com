@@ -65,6 +65,11 @@ class NewEntries(unittest.TestCase):
     def test_no_history_posts_nothing(self):
         self.assertEqual(bluesky_post.new_entries(None, with_entries({'kind': 'note', 'date': '2026-10-25', 'text': 'x'}), '2026-10-25'), [])
 
+    def test_catching_up_posts_the_last_week(self):
+        found = bluesky_post.new_entries({'entries': []}, LOG, '2026-10-25')
+        self.assertEqual([a for _, a in found], ['2026-10-23-hundred-rabbits', '2026-10-23-you-can-see-everything'])
+        self.assertEqual(bluesky_post.new_entries({'entries': []}, LOG, '2026-11-15'), [])
+
     def test_at_most_five(self):
         after = with_entries(*[{'kind': 'note', 'date': '2026-10-25', 'text': f'n{i}'} for i in range(8)])
         self.assertEqual(len(bluesky_post.new_entries(LOG, after, '2026-10-25')), bluesky_post.MAX_POSTS)

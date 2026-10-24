@@ -8,7 +8,9 @@ link back to the entry on jefflouden.com/log.
 It compares src/log.json at two commits and posts the entries that are new
 at the second (by their permalink id) and dated within the last week, oldest
 first and at most five, so an edit or a rename never floods the account.
-Without BLUESKY_APP_PASSWORD it posts nothing and says so. Standard library
+Without BLUESKY_APP_PASSWORD it posts nothing and says so. With --recent in
+place of --before it posts every entry from the last week, for catching up by
+hand from the workflow's Run workflow button. Standard library
 only, like build.py.
 """
 
@@ -155,12 +157,17 @@ def post(entries, identifier, password, open_url=urllib.request.urlopen, now=Non
 
 def main():
     args = argparse.ArgumentParser()
-    args.add_argument('--before', required=True)
+    args.add_argument('--before', help='the commit to compare against')
     args.add_argument('--after', required=True)
+    args.add_argument('--recent', action='store_true',
+                      help='post every entry from the last week, as if none were posted yet (a manual catch-up, so mind repeats)')
     args = args.parse_args()
     today = datetime.datetime.now(ZoneInfo('America/New_York')).date().isoformat()
     after = log_at(args.after)
-    entries = new_entries(log_at(args.before), after, today) if after else []
+    if not args.recent and not args.before:
+        sys.exit('Give --before, or --recent to post the last week')
+    before = {'entries': []} if args.recent else log_at(args.before)
+    entries = new_entries(before, after, today) if after else []
     if not entries:
         print('No new log entries to post.')
         return
