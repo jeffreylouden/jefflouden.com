@@ -15,6 +15,15 @@
       "title": "Hundred Rabbits",
       "url": "https://100r.co/site/home.html",
       "text": "What lovely humans. Each year I envy them a little more, and wish I could run away to build things on a boat too."
+    },
+    {
+      "kind": "photo",
+      "date": "2026-10-20",
+      "image": {
+        "src": "images/log/2026-10-20-gerhard-richter-zwei-kerzen-two-candles.jpg",
+        "alt": "Gerhard Richter Zwei Kerzen (Two Candles), 1982"
+      },
+      "place": "San Francisco"
     }
   ]
 }
