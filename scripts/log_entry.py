@@ -207,6 +207,8 @@ def commit_message(entry):
         return f'Add a quote from {entry["who"]} to the log'
     if entry['kind'] == 'note':
         return 'Add a note to the log'
+    if entry['kind'] == 'photo' and 'title' not in entry:
+        return 'Add a photo to the log'
     return f'Add {entry["kind"]} entry for \'{entry["title"]}\''
 
 

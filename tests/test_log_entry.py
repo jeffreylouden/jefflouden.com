@@ -186,6 +186,8 @@ class Form(unittest.TestCase):
         self.assertEqual(log_entry.commit_message({'kind': 'movie', 'title': 'Alien'}), "Add movie entry for 'Alien'")
         self.assertEqual(log_entry.commit_message({'kind': 'quote', 'who': 'Dieter Rams'}), 'Add a quote from Dieter Rams to the log')
         self.assertEqual(log_entry.commit_message({'kind': 'note'}), 'Add a note to the log')
+        self.assertEqual(log_entry.commit_message({'kind': 'photo'}), 'Add a photo to the log')
+        self.assertEqual(log_entry.commit_message({'kind': 'photo', 'title': 'Zwei Kerzen'}), "Add photo entry for 'Zwei Kerzen'")
 
     def test_slug(self):
         self.assertEqual(log_entry.slug('You Can See Everything!'), 'you-can-see-everything')
@@ -213,6 +215,27 @@ class Add(Sandbox):
         self.assertEqual(dates[1], ('2026-10-23', 'Same day as the first two'))
         self.assertEqual(dates[-1], ('2026-01-01', 'Oldest'))
         self.site()  # still newest first, so the build takes it
+
+    @unittest.skipUnless(Image, 'needs Pillow')
+    def test_the_script_runs_start_to_finish_for_every_kind(self):
+        photo = {'Photo': 'https://github.com/user-attachments/assets/abc', 'What the photo shows': 'Two candles'}
+        forms = {
+            'photo': {'Kind': 'photo', **photo, 'Place': 'San Francisco'},
+            'photo with a title': {'Kind': 'photo', 'Title': 'Zwei Kerzen', **photo},
+            'movie': {'Kind': 'movie', 'Title': 'Alien', 'Your words': 'In space.'},
+            'thing with a photo': {'Kind': 'thing', 'Title': 'A lamp', 'Your words': 'Warm.', **photo},
+            'quote': {'Kind': 'quote', 'Quote': 'Less, but better.', 'Who said it': 'Dieter Rams'},
+            'note': {'Kind': 'note', 'Your words': 'First frost.', 'Date': '2026-10-20'},
+        }
+        output = self.tmp / 'github_output'
+        for name, fields in forms.items():
+            with self.subTest(name):
+                output.write_text('')
+                env = {'ISSUE_BODY': form(**fields), 'GITHUB_OUTPUT': str(output)}
+                with mock.patch.dict('os.environ', env), mock.patch.object(log_entry, 'download', lambda url, token=None: phone_photo()), mock.patch('sys.stdout', io.StringIO()):
+                    log_entry.main()
+                self.assertRegex(output.read_text(), r'^message=Add .+\n$')
+        self.site()
 
     def test_an_entry_that_breaks_the_schema_writes_nothing(self):
         before = self.log.read_text(encoding='utf-8')
