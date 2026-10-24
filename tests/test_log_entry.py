@@ -12,6 +12,7 @@ import shutil
 import sys
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
 from unittest import mock
 
@@ -95,6 +96,27 @@ class Form(unittest.TestCase):
         self.assertEqual(entry['image'], {'src': 'images/log/2026-10-24-frost-on-a-car-window.jpg', 'alt': 'Frost on a car window'})
         self.assertEqual(entry['_photo_url'], 'https://github.com/user-attachments/assets/0a1b2c3d-4e5f-6789-abcd-ef0123456789')
 
+    def test_photo(self):
+        # Issue #28 as Jeff wrote it, with the kind he meant.
+        entry = log_entry.entry_from(log_entry.parse_form(form(**{
+            'Kind': 'photo',
+            'Photo': '<img width="1251" height="1668" alt="Gerhard Richter Zwei Kerzen (Two Candles), 1982" src="https://github.com/user-attachments/assets/4c1e210b-b47b-4cfd-8843-6b652449a212" />',
+            'What the photo shows': 'Gerhard Richter Zwei Kerzen (Two Candles), 1982',
+            'Place': 'San Francisco',
+        })), '2026-10-24')
+        self.assertEqual(entry['kind'], 'photo')
+        self.assertEqual(entry['image'], {'src': 'images/log/2026-10-24-gerhard-richter-zwei-kerzen-two-candles.jpg', 'alt': 'Gerhard Richter Zwei Kerzen (Two Candles), 1982'})
+        self.assertEqual(entry['place'], 'San Francisco')
+        self.assertNotIn('title', entry)
+        self.assertNotIn('text', entry)
+
+    def test_photo_with_a_title_and_words(self):
+        entry = log_entry.entry_from(log_entry.parse_form(form(**{
+            'Kind': 'photo', 'Title': 'Zwei Kerzen', 'Link': 'https://example.com/richter', 'Your words': 'Stood here a while.',
+            'Photo': 'https://github.com/user-attachments/assets/abc', 'What the photo shows': 'Two candles',
+        })), '2026-10-24')
+        self.assertEqual((entry['title'], entry['url'], entry['text']), ('Zwei Kerzen', 'https://example.com/richter', 'Stood here a while.'))
+
     def test_mistakes(self):
         cases = {
             'no kind': {},
@@ -107,10 +129,42 @@ class Form(unittest.TestCase):
             'a photo with no description': {'Kind': 'note', 'Your words': 'y', 'Photo': 'https://github.com/user-attachments/assets/abc'},
             'a photo from anywhere else': {'Kind': 'note', 'Your words': 'y', 'Photo': '![x](https://evil.example/x.jpg)', 'What the photo shows': 'a'},
             'a two-line place': {'Kind': 'note', 'Your words': 'y', 'Place': 'a\nb'},
+            'a photo with no picture': {'Kind': 'photo', 'Title': 'x'},
+            'a photo with a link but no title': {'Kind': 'photo', 'Link': 'https://example.com', 'Photo': 'https://github.com/user-attachments/assets/abc', 'What the photo shows': 'a'},
         }
         for name, fields in cases.items():
             with self.subTest(name), self.assertRaises(log_entry.EntryError):
                 log_entry.entry_from(log_entry.parse_form(form(**fields)), '2026-10-24')
+
+    def test_download_tries_without_the_token_first(self):
+        calls = []
+
+        class Res(io.BytesIO):
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                pass
+
+        def open_url(request, timeout):
+            calls.append(request)
+            if len(calls) == 1:
+                raise urllib.error.HTTPError(request.full_url, 404, 'Not Found', {}, None)
+            return Res(b'photo')
+
+        url = 'https://github.com/user-attachments/assets/abc'
+        self.assertEqual(log_entry.download(url, 'tok', open_url), b'photo')
+        self.assertIsNone(calls[0].get_header('Authorization'))
+        # Unredirected, so a redirect to GitHub's storage host never carries it.
+        self.assertEqual(calls[1].unredirected_hdrs.get('Authorization'), 'Bearer tok')
+        self.assertNotIn('Authorization', calls[1].headers)
+
+    def test_download_refused_says_so(self):
+        def open_url(request, timeout):
+            raise urllib.error.HTTPError(request.full_url, 403, 'Forbidden', {}, None)
+
+        with self.assertRaisesRegex(log_entry.EntryError, '403'):
+            log_entry.download('https://github.com/user-attachments/assets/abc', 'tok', open_url)
 
     def test_commit_messages(self):
         self.assertEqual(log_entry.commit_message({'kind': 'movie', 'title': 'Alien'}), "Add movie entry for 'Alien'")
@@ -156,6 +210,15 @@ class Add(Sandbox):
         self.assertNotIn(b'Phone maker', data)
         page = self.site().log_html()
         self.assertIn('<img src="/images/log/2026-10-24-frost-on-a-car-window.jpg" alt="Frost on a car window" width="1200" height="1600" loading="lazy" decoding="async">', page)
+
+    @unittest.skipUnless(Image, 'needs Pillow')
+    def test_a_photo_on_its_own(self):
+        entry = log_entry.entry_from(log_entry.parse_form(form(**{
+            'Kind': 'photo', 'Photo': 'https://github.com/user-attachments/assets/abc', 'What the photo shows': 'Two candles', 'Place': 'San Francisco',
+        })), '2026-10-24')
+        log_entry.add(entry, fetch=lambda url: phone_photo())
+        page = self.site().log_html()
+        self.assertIn('<li data-kind="photo" data-date="2026-10-24">\n        <img src="/images/log/2026-10-24-two-candles.jpg" alt="Two candles" width="1200" height="1600" loading="lazy" decoding="async">\n        <p class="place">San Francisco</p>\n      </li>', page)
 
     @unittest.skipUnless(Image, 'needs Pillow')
     def test_photo_names_never_collide(self):

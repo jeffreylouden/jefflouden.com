@@ -518,7 +518,7 @@ class Site:
             if e['kind'] == 'quote':
                 lines.append(f'<blockquote><p>“{html(e["quote"])}”</p></blockquote>')
                 lines.append(f'<p class="who">{html(e["who"])}</p>')
-            elif e['kind'] != 'note':
+            elif e.get('title'):
                 title = f'<a href="{attr(e["url"])}">{esc(e["title"])}</a>' if e.get('url') else esc(e['title'])
                 lines.append(f'<p class="what">{title}</p>')
             if e.get('image'):

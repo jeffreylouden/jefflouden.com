@@ -27,6 +27,21 @@
             }
           },
           {
+            "description": "A photo: the picture is the entry, with an optional title (linked or not), words and place.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "date", "image"],
+            "properties": {
+              "kind": { "const": "photo" },
+              "date": { "$ref": "#/$defs/date" },
+              "title": { "type": "string" },
+              "url": { "type": "string", "pattern": "^https?://" },
+              "text": { "type": "string" },
+              "image": { "$ref": "#/$defs/image" },
+              "place": { "$ref": "#/$defs/place" }
+            }
+          },
+          {
             "description": "A quote, with who said it underneath.",
             "type": "object",
             "additionalProperties": false,
