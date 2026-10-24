@@ -33,7 +33,7 @@ LOG = json.loads((build.SRC / 'log.json').read_text(encoding='utf-8'))
 
 def form(**fields):
     """An issue body as GitHub writes one from the form."""
-    labels = ['Kind', 'Title', 'Link', 'Quote', 'Who said it', 'Your words', 'Photo', 'What the photo shows', 'Place']
+    labels = ['Kind', 'Title', 'Link', 'Quote', 'Who said it', 'Your words', 'Photo', 'What the photo shows', 'Place', 'Date']
     return '\n\n'.join(f'### {label}\n\n{fields.get(label, "_No response_")}' for label in labels)
 
 
@@ -95,6 +95,12 @@ class Form(unittest.TestCase):
         })), '2026-10-24')
         self.assertEqual(entry['image'], {'src': 'images/log/2026-10-24-frost-on-a-car-window.jpg', 'alt': 'Frost on a car window'})
         self.assertEqual(entry['_photo_url'], 'https://github.com/user-attachments/assets/0a1b2c3d-4e5f-6789-abcd-ef0123456789')
+
+    def test_a_backdated_photo_is_named_for_its_day(self):
+        entry = log_entry.entry_from(log_entry.parse_form(form(**{
+            'Kind': 'photo', 'Date': '10/20/2026', 'Photo': 'https://github.com/user-attachments/assets/abc', 'What the photo shows': 'Frost',
+        })), '2026-10-24')
+        self.assertEqual((entry['date'], entry['image']['src']), ('2026-10-20', 'images/log/2026-10-20-frost.jpg'))
 
     def test_photo(self):
         # Issue #28 as Jeff wrote it, with the kind he meant.
@@ -166,10 +172,22 @@ class Form(unittest.TestCase):
         with self.assertRaisesRegex(log_entry.EntryError, '403'):
             log_entry.download('https://github.com/user-attachments/assets/abc', 'tok', open_url)
 
+    def test_dates(self):
+        for value in ['', None, '2026-10-24']:
+            self.assertEqual(log_entry.parse_date(value, '2026-10-24'), '2026-10-24')
+        for value in ['2026-10-20', '10/20/2026', '10/20/26', 'Oct 20 2026', 'October 20, 2026', 'Oct. 20, 2026', '20 Oct 2026']:
+            with self.subTest(value):
+                self.assertEqual(log_entry.parse_date(value, '2026-10-24'), '2026-10-20')
+        for value in ['2026-10-25', 'last Tuesday', '2026-13-01']:
+            with self.subTest(value), self.assertRaises(log_entry.EntryError):
+                log_entry.parse_date(value, '2026-10-24')
+
     def test_commit_messages(self):
         self.assertEqual(log_entry.commit_message({'kind': 'movie', 'title': 'Alien'}), "Add movie entry for 'Alien'")
         self.assertEqual(log_entry.commit_message({'kind': 'quote', 'who': 'Dieter Rams'}), 'Add a quote from Dieter Rams to the log')
         self.assertEqual(log_entry.commit_message({'kind': 'note'}), 'Add a note to the log')
+        self.assertEqual(log_entry.commit_message({'kind': 'photo'}), 'Add a photo to the log')
+        self.assertEqual(log_entry.commit_message({'kind': 'photo', 'title': 'Zwei Kerzen'}), "Add photo entry for 'Zwei Kerzen'")
 
     def test_slug(self):
         self.assertEqual(log_entry.slug('You Can See Everything!'), 'you-can-see-everything')
@@ -185,6 +203,39 @@ class Add(Sandbox):
         self.assertEqual(len(log['entries']), len(LOG['entries']) + 1)
         page = self.site().log_html()
         self.assertIn('<p class="what">Piranesi</p>\n        <p>A house of tides.</p>\n        <p class="place">Washington, D.C.</p>', page)
+
+    def test_a_backdated_entry_goes_above_the_others_from_its_day(self):
+        def add(date, title):
+            log_entry.add(log_entry.entry_from(log_entry.parse_form(form(**{'Kind': 'book', 'Title': title, 'Your words': 'x', 'Date': date})), '2026-10-30'))
+        add('2026-10-30', 'Today')
+        add('2026-10-23', 'Same day as the first two')
+        add('2026-01-01', 'Oldest')
+        dates = [(e['date'], e.get('title')) for e in json.loads(self.log.read_text(encoding='utf-8'))['entries']]
+        self.assertEqual(dates[0], ('2026-10-30', 'Today'))
+        self.assertEqual(dates[1], ('2026-10-23', 'Same day as the first two'))
+        self.assertEqual(dates[-1], ('2026-01-01', 'Oldest'))
+        self.site()  # still newest first, so the build takes it
+
+    @unittest.skipUnless(Image, 'needs Pillow')
+    def test_the_script_runs_start_to_finish_for_every_kind(self):
+        photo = {'Photo': 'https://github.com/user-attachments/assets/abc', 'What the photo shows': 'Two candles'}
+        forms = {
+            'photo': {'Kind': 'photo', **photo, 'Place': 'San Francisco'},
+            'photo with a title': {'Kind': 'photo', 'Title': 'Zwei Kerzen', **photo},
+            'movie': {'Kind': 'movie', 'Title': 'Alien', 'Your words': 'In space.'},
+            'thing with a photo': {'Kind': 'thing', 'Title': 'A lamp', 'Your words': 'Warm.', **photo},
+            'quote': {'Kind': 'quote', 'Quote': 'Less, but better.', 'Who said it': 'Dieter Rams'},
+            'note': {'Kind': 'note', 'Your words': 'First frost.', 'Date': '2026-10-20'},
+        }
+        output = self.tmp / 'github_output'
+        for name, fields in forms.items():
+            with self.subTest(name):
+                output.write_text('')
+                env = {'ISSUE_BODY': form(**fields), 'GITHUB_OUTPUT': str(output)}
+                with mock.patch.dict('os.environ', env), mock.patch.object(log_entry, 'download', lambda url, token=None: phone_photo()), mock.patch('sys.stdout', io.StringIO()):
+                    log_entry.main()
+                self.assertRegex(output.read_text(), r'^message=Add .+\n$')
+        self.site()
 
     def test_an_entry_that_breaks_the_schema_writes_nothing(self):
         before = self.log.read_text(encoding='utf-8')

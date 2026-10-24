@@ -63,6 +63,27 @@ def one_line(value, label):
     return value
 
 
+DATE_FORMATS = ['%Y-%m-%d', '%m/%d/%Y', '%m/%d/%y', '%b %d %Y', '%B %d %Y', '%b %d, %Y', '%B %d, %Y', '%d %b %Y', '%d %B %Y']
+
+
+def parse_date(value, today):
+    """The day an entry is for: empty means today, never the future."""
+    if not value:
+        return today
+    text = ' '.join(value.replace('.', ' ').split())
+    for fmt in DATE_FORMATS:
+        try:
+            day = datetime.datetime.strptime(text, fmt).date().isoformat()
+            break
+        except ValueError:
+            continue
+    else:
+        raise EntryError(f'Date should look like {today}, not {value!r}')
+    if day > today:
+        raise EntryError(f'Date {day} is still to come')
+    return day
+
+
 def entry_from(fields, today):
     kind = (fields.get('Kind') or '').strip().lower()
     if kind not in KINDS:
@@ -78,7 +99,8 @@ def entry_from(fields, today):
     if text:
         text = ' '.join(text.split())
 
-    entry = {'kind': kind, 'date': today}
+    date = parse_date(one_line(fields.get('Date'), 'Date'), today)
+    entry = {'kind': kind, 'date': date}
     if kind == 'quote':
         if not quote or not who:
             raise EntryError('A quote needs the Quote and Who said it')
@@ -116,7 +138,7 @@ def entry_from(fields, today):
         match = PHOTO_URL.search(photo)
         if not match:
             raise EntryError('Photo should be a picture dropped into the field')
-        name = f'{today}-{slug(title or alt)}'
+        name = f'{date}-{slug(title or alt)}'
         n, base = 2, name
         while (build.LOG_IMAGES / f'{name}.jpg').exists():
             name, n = f'{base}-{n}', n + 1
@@ -160,7 +182,10 @@ def add(entry, fetch=None):
     entry = dict(entry)
     photo_url = entry.pop('_photo_url', None)
     log = json.loads(LOG.read_text(encoding='utf-8'))
-    log['entries'].insert(0, entry)
+    # Newest first. A backdated entry goes above the others from its day.
+    entries = log['entries']
+    at = next((i for i, e in enumerate(entries) if e['date'] <= entry['date']), len(entries))
+    entries.insert(at, entry)
     schema = json.loads((build.SRC / 'log.schema.json').read_text(encoding='utf-8'))
     try:
         build.validate(log, schema, schema, 'log')
@@ -182,6 +207,8 @@ def commit_message(entry):
         return f'Add a quote from {entry["who"]} to the log'
     if entry['kind'] == 'note':
         return 'Add a note to the log'
+    if entry['kind'] == 'photo' and 'title' not in entry:
+        return 'Add a photo to the log'
     return f'Add {entry["kind"]} entry for \'{entry["title"]}\''
 
 
