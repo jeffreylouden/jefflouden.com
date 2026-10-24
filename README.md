@@ -9,6 +9,8 @@ The pages are built from `src/` by `build.py`, which needs only Python 3:
 - `python3 build.py` writes whatever changed into `public/` (and `resume/resume.html`), and `python3 build.py --check` fails if anything is stale
 - `python3 -m unittest discover tests` tests the build and `node --test tests/middleware.test.mjs` the Cloudflare middleware, with nothing to install
 
+To add to the log, open a new issue with the "Log entry" form. It takes a photo too, and publishes itself. `scripts/log_photo.py` (needs Pillow) prepares a photo by hand.
+
 The built files are committed, so the site works, and can be edited by hand, without the build. After changing the résumé, render its PDF with `resume/build.sh`.
 
 **Please support free and open-source software.**
