@@ -4,9 +4,8 @@
     python3 build.py           write every page that changed
     python3 build.py --check   change nothing, and fail if any page is stale
 
-The facts live in src/site.json and src/log.json, checked against the schemas
-beside them. The page shells live in src/templates, the pieces they share in
-src/partials. The built files are committed, so the site keeps working, and
+The facts live in src/site.json, checked against the schema beside it. The
+page shells live in src/templates, the pieces they share in src/partials. The built files are committed, so the site keeps working, and
 stays editable by hand, without this script. It uses only the Python standard
 library so it should still run in 20 years.
 
@@ -93,42 +92,6 @@ def load(name):
     schema = json.loads((SRC / f'{name}.schema.json').read_text(encoding='utf-8'))
     validate(data, schema, schema, name)
     return data
-
-
-# Photos. The log's JPEGs are checked here with no image library: the build
-# reads their size from the frame header and refuses any that still carry
-# metadata (EXIF, XMP or IPTC, where a phone keeps the place a photo was taken).
-
-LOG_IMAGES = PUBLIC / 'images' / 'log'
-IMAGE_MAX_SIDE = 1600
-IMAGE_MAX_BYTES = 600_000
-
-
-def jpeg_info(data):
-    """Returns (width, height, has_metadata) for a baseline or progressive JPEG."""
-    if data[:2] != b'\xff\xd8':
-        raise BuildError('not a JPEG')
-    pos, size, metadata = 2, None, False
-    while pos + 4 <= len(data):
-        if data[pos] != 0xFF:
-            raise BuildError('a broken JPEG')
-        marker = data[pos + 1]
-        if marker == 0xFF:
-            pos += 1
-            continue
-        length = int.from_bytes(data[pos + 2:pos + 4], 'big')
-        if marker in (0xE1, 0xED):
-            metadata = True
-        if marker in (0xC0, 0xC1, 0xC2, 0xC3, 0xC5, 0xC6, 0xC7, 0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF):
-            height = int.from_bytes(data[pos + 5:pos + 7], 'big')
-            width = int.from_bytes(data[pos + 7:pos + 9], 'big')
-            size = (width, height)
-        if marker == 0xDA:
-            break
-        pos += 2 + length
-    if not size:
-        raise BuildError('a JPEG with no frame size')
-    return size[0], size[1], metadata
 
 
 # Templates.
@@ -236,26 +199,11 @@ def dates_long(start, end):
     return f'{month_long(start)} to {"present" if end is None else month_long(end)}'
 
 
-def entry_ids(entries):
-    """A stable anchor per log entry: its date and a slug of what it is. Numbered
-    from the oldest, so a new entry never renames an old one. The page, the feed
-    use these."""
-    ids, seen = {}, {}
-    for i in reversed(range(len(entries))):
-        e = entries[i]
-        what = e.get('title') or e.get('quote') or e.get('image', {}).get('alt') or e.get('text', '')
-        words = re.sub(r'[^a-z0-9]+', '-', plain(what).lower()).strip('-')[:40].rstrip('-') or e['kind']
-        base = f'{e["date"]}-{words}'
-        seen[base] = seen.get(base, 0) + 1
-        ids[i] = base if seen[base] == 1 else f'{base}-{seen[base]}'
-    return [ids[i] for i in range(len(entries))]
-
-
 # The site.
 
 class Site:
-    def __init__(self, site, log):
-        self.site, self.log = site, log
+    def __init__(self, site):
+        self.site = site
         self.p = site['profile']
         self.orgs = site['organizations']
         self.products = site['products']
@@ -268,8 +216,6 @@ class Site:
         self.headline = f'{self.job_title} at {self.job_org}'
         self.title = f'{self.p["name"]}, {self.headline}'
         self.year = datetime.date.today().year
-        entries = log['entries']
-        self.log_lastmod = entries[0]['date'] if entries else site['updated'][:10]
         self.home_lastmod = site['updated'][:10]
         self.base = {
             'name': self.p['name'],
@@ -296,10 +242,6 @@ class Site:
         for key, product in self.products.items():
             if product['publisher'] not in self.orgs:
                 raise BuildError(f'products.{key} has an unknown publisher')
-        dates = [e['date'] for e in self.log['entries']]
-        if dates != sorted(dates, reverse=True):
-            raise BuildError('log entries must be newest first')
-        self.check_images()
         styles = (SRC / 'templates' / 'index.html').read_text(encoding='utf-8')
         for brand in {o['brand'] for o in self.orgs.values()} | {l['brand'] for l in self.links if 'brand' in l}:
             if f'[data-brand="{brand}"]' not in styles:
@@ -307,38 +249,9 @@ class Site:
         # Jeff doesn't use semicolons in his writing, and titles never use a separator dot.
         copy = [self.p[k] for k in ('bio', 'resumeBio', 'summary', 'description', 'personDescription', 'about')]
         copy += [r.get(k, '') for r in self.roles for k in ('title', 'summary', 'resume')]
-        copy += [e.get(k, '') for e in self.log['entries'] for k in ('title', 'text', 'quote', 'who', 'place')]
-        copy += [e['image']['alt'] for e in self.log['entries'] if 'image' in e]
         for s in copy:
             if ';' in s or '·' in s:
                 raise BuildError(f'no semicolons or middle dots in the copy: {s!r}')
-
-    def check_images(self):
-        self.images = {}
-        for e in self.log['entries']:
-            if 'image' not in e:
-                continue
-            src = e['image']['src']
-            path = PUBLIC / src
-            if not path.is_file():
-                raise BuildError(f'log photo public/{src} is missing')
-            data = path.read_bytes()
-            if len(data) > IMAGE_MAX_BYTES:
-                raise BuildError(f'public/{src} is {len(data) // 1000} KB, over {IMAGE_MAX_BYTES // 1000}. Prepare it with scripts/log_photo.py')
-            try:
-                width, height, metadata = jpeg_info(data)
-            except BuildError as err:
-                raise BuildError(f'public/{src} is {err}') from None
-            if metadata:
-                raise BuildError(f'public/{src} still carries metadata, which can hold where it was taken. Prepare it with scripts/log_photo.py')
-            if max(width, height) > IMAGE_MAX_SIDE:
-                raise BuildError(f'public/{src} is {width}x{height}, over {IMAGE_MAX_SIDE}px. Prepare it with scripts/log_photo.py')
-            self.images[src] = (width, height)
-        if LOG_IMAGES.is_dir():
-            for path in sorted(LOG_IMAGES.iterdir()):
-                src = path.relative_to(PUBLIC).as_posix()
-                if src not in self.images:
-                    raise BuildError(f'public/{src} is in no log entry. Delete it or add its entry')
 
     def names(self, role):
         return join_and(self.orgs[k]['name'] for k in role['orgs'])
@@ -524,68 +437,7 @@ class Site:
             'jsonld': self.jsonld(),
         })
 
-    # The log and the 404 page.
-
-    def entry_ids(self):
-        return entry_ids(self.log['entries'])
-
-    def entry_lines(self, e, root=''):
-        """An entry's inner HTML. The feed passes the site's root so its links work anywhere."""
-        lines = []
-        if e['kind'] == 'quote':
-            lines.append(f'<blockquote><p>“{html(e["quote"])}”</p></blockquote>')
-            lines.append(f'<p class="who">{html(e["who"])}</p>')
-        elif e.get('title'):
-            title = f'<a href="{attr(e["url"])}">{esc(e["title"])}</a>' if e.get('url') else esc(e['title'])
-            lines.append(f'<p class="what">{title}</p>')
-        if e.get('image'):
-            src = e['image']['src']
-            width, height = self.images[src]
-            img = f'<img src="{root}/{src}" alt="{attr(e["image"]["alt"])}" width="{width}" height="{height}" loading="lazy" decoding="async">'
-            # With no title to carry it, a link goes on the photo itself.
-            if e.get('url') and not e.get('title'):
-                img = f'<a class="photo" href="{attr(e["url"])}">{img}</a>'
-            lines.append(img)
-        if e.get('text'):
-            lines.append(f'<p>{html(e["text"])}</p>')
-        if e.get('place'):
-            lines.append(f'<p class="place">{esc(e["place"])}</p>')
-        return lines
-
-    def log_html(self):
-        items = []
-        for e, anchor in zip(self.log['entries'], self.entry_ids()):
-            body = '\n'.join(f'  {l}' for l in self.entry_lines(e))
-            items.append(f'<li id="{anchor}" data-kind="{attr(e["kind"])}" data-date="{e["date"]}">\n{body}\n</li>')
-        return template('log.html', {**self.base, 'entries': '\n'.join(items)})
-
-    def log_feed(self):
-        """The log as an Atom feed. Every date is the day an entry was added, so the
-        feed only changes when the log does."""
-        root = self.p['url'].rstrip('/')
-        entries = []
-        for e, anchor in list(zip(self.log['entries'], self.entry_ids()))[:50]:
-            if e['kind'] == 'quote':
-                title = f'“{plain(e["quote"])}”'
-            else:
-                title = plain(e.get('title') or e.get('image', {}).get('alt') or e.get('text', ''))
-            content = ''.join(self.entry_lines(e, root))
-            related = f'\n  <link rel="related" href="{attr(e["url"])}"/>' if e.get('url') else ''
-            entries.append(f'''<entry>
-  <id>tag:jefflouden.com,{e["date"]}:log/{anchor}</id>
-  <title>{esc(title)}</title>
-  <link rel="alternate" type="text/html" href="{root}/log#{anchor}"/>{related}
-  <published>{e["date"]}T00:00:00Z</published>
-  <updated>{e["date"]}T00:00:00Z</updated>
-  <content type="html">{esc(content)}</content>
-</entry>''')
-        newest = max((e['date'] for e in self.log['entries']), default=self.home_lastmod)
-        return template('log.xml', {
-            **self.base,
-            'root': root,
-            'updated': f'{newest}T00:00:00Z',
-            'entries': '\n'.join(entries),
-        })
+    # The 404 page.
 
     def not_found_html(self):
         return template('404.html', self.base)
@@ -664,11 +516,11 @@ class Site:
             'links': '\n'.join(links),
             'country': self.p['location']['countryName'],
             'hometown': self.p['hometown'],
-            'last_update': max(self.home_lastmod, self.log_lastmod),
+            'last_update': self.home_lastmod,
         })
 
     def sitemap_xml(self):
-        return template('sitemap.xml', {'home_lastmod': self.home_lastmod, 'log_lastmod': self.log_lastmod})
+        return template('sitemap.xml', {'home_lastmod': self.home_lastmod})
 
     def ai_catalog(self):
         q = lambda items: ',\n'.join(json.dumps(i, ensure_ascii=False) for i in items)
@@ -787,11 +639,9 @@ def security_txt_expiry(text, now=None):
 
 
 def build():
-    site = Site(load('site'), load('log'))
+    site = Site(load('site'))
     out = {}
     out['public/404.html'] = site.not_found_html()
-    out['public/log.html'] = site.log_html()
-    out['public/log.xml'] = site.log_feed()
     out['public/index.html'] = site.index_html()
     out['public/index.md'] = site.index_md()
     out['public/index.txt'] = site.index_txt()
@@ -801,7 +651,7 @@ def build():
     out['public/.well-known/ai-catalog.json'] = site.ai_catalog()
     out['public/jeffrey-louden.vcf'] = site.vcard()
     out['resume/resume.html'] = site.resume_html()
-    out['public/_headers'] = site.headers([out['public/404.html'], out['public/log.html']])
+    out['public/_headers'] = site.headers([out['public/404.html']])
     out['functions/_middleware.js'] = site.middleware((ROOT / 'functions/_middleware.js').read_text(encoding='utf-8'))
 
     # Checks on what came out.
