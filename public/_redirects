@@ -1,2 +1,6 @@
 # The résumé moved to the shorter /resume.pdf; keep the old link working.
 /jeffrey-louden-resume.pdf /resume.pdf 301
+
+# The log is gone. Send old links to it home.
+/log / 301
+/log/ / 301
