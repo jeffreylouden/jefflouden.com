@@ -14,8 +14,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      # Only the photo tool and its tests need Pillow. build.py needs nothing.
-      - run: pip install pillow
       - run: python3 build.py --check
       - run: python3 -m unittest discover tests
       - run: node --check functions/_middleware.js

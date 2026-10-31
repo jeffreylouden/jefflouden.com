@@ -7,8 +7,4 @@
       <image:loc>https://jefflouden.com/og.png</image:loc>
     </image:image>
   </url>
-  <url>
-    <loc>https://jefflouden.com/log</loc>
-    <lastmod>{{log_lastmod}}</lastmod>
-  </url>
 </urlset>

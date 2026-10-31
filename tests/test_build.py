@@ -1,7 +1,7 @@
 """Tests for build.py. Run with `python3 -m unittest discover tests`.
 
-They build from copies of the real src/site.json and src/log.json, changed
-where a test needs it, so they never write to public/.
+They build from a copy of the real src/site.json, changed where a test needs
+it, so they never write to public/.
 """
 
 import base64
@@ -12,28 +12,20 @@ import json
 import re
 import sys
 import unittest
-from unittest import mock
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build  # noqa: E402
-from fixtures import LOG  # noqa: E402
 
 SITE = json.loads((build.SRC / 'site.json').read_text(encoding='utf-8'))
 SITE_SCHEMA = json.loads((build.SRC / 'site.schema.json').read_text(encoding='utf-8'))
-LOG_SCHEMA = json.loads((build.SRC / 'log.schema.json').read_text(encoding='utf-8'))
 
 
-def site(change=None, log_change=None):
-    s, l = copy.deepcopy(SITE), copy.deepcopy(LOG)
+def site(change=None):
+    s = copy.deepcopy(SITE)
     if change:
         change(s)
-    if log_change:
-        log_change(l)
-    # The sample log uses no photos, so the real ones in public/images/log/ are no concern here.
-    with mock.patch.object(build, 'LOG_IMAGES', build.PUBLIC / 'images' / 'no-such-folder'):
-        return build.Site(s, l)
+    return build.Site(s)
 
 
 class Helpers(unittest.TestCase):
@@ -91,14 +83,11 @@ class Templates(unittest.TestCase):
 
 
 class Schema(unittest.TestCase):
-    def check(self, change=None, log_change=None):
-        s, l = copy.deepcopy(SITE), copy.deepcopy(LOG)
+    def check(self, change=None):
+        s = copy.deepcopy(SITE)
         if change:
             change(s)
-        if log_change:
-            log_change(l)
         build.validate(s, SITE_SCHEMA, SITE_SCHEMA, 'site')
-        build.validate(l, LOG_SCHEMA, LOG_SCHEMA, 'log')
 
     def test_real_data_passes(self):
         self.check()
@@ -118,18 +107,6 @@ class Schema(unittest.TestCase):
             with self.subTest(name), self.assertRaises(build.BuildError):
                 self.check(change)
 
-    def test_log_shapes(self):
-        add = lambda entry: lambda l: l['entries'].insert(0, entry)
-        self.check(log_change=add({'kind': 'quote', 'date': '2026-10-24', 'quote': 'Q', 'who': 'W'}))
-        self.check(log_change=add({'kind': 'note', 'date': '2026-10-24', 'text': 'T'}))
-        for bad in [
-            {'kind': 'quote', 'date': '2026-10-24', 'quote': 'Q'},
-            {'kind': 'note', 'date': '2026-10-24', 'text': 'T', 'title': 'x'},
-            {'kind': 'podcast', 'date': '2026-10-24', 'title': 'x', 'text': 'T'},
-            {'kind': 'site', 'date': '24 October', 'title': 'x', 'text': 'T'},
-        ]:
-            with self.subTest(bad), self.assertRaises(build.BuildError):
-                self.check(log_change=add(bad))
 
 
 class CrossChecks(unittest.TestCase):
@@ -148,9 +125,6 @@ class CrossChecks(unittest.TestCase):
             with self.subTest(name), self.assertRaises(build.BuildError):
                 site(change)
 
-    def test_log_out_of_order(self):
-        with self.assertRaises(build.BuildError):
-            site(log_change=lambda l: l['entries'].append({'kind': 'note', 'date': '2099-01-01', 'text': 'x'}))
 
 
 class Pages(unittest.TestCase):
@@ -190,21 +164,6 @@ class Pages(unittest.TestCase):
         txt = site().index_txt()
         self.assertIn('  Earlier       The New York Times, Nest and Google, The New Yorker,\n                Obama for America\n', txt)
 
-    def test_log_entries(self):
-        def add(l):
-            l['entries'][:0] = [
-                {'kind': 'quote', 'date': '2026-10-25', 'quote': 'Make it work.', 'who': 'Kent Beck', 'text': 'Still true.'},
-                {'kind': 'note', 'date': '2026-10-24', 'text': 'A [link](https://example.com) & more.'},
-                {'kind': 'book', 'date': '2026-10-24', 'title': 'No link', 'text': 'Fine.'},
-            ]
-        s = site(log_change=add)
-        page = s.log_html()
-        self.assertIn('<li id="2026-10-25-make-it-work" data-kind="quote" data-date="2026-10-25">\n        <blockquote><p>“Make it work.”</p></blockquote>\n        <p class="who">Kent Beck</p>\n        <p>Still true.</p>\n      </li>', page)
-        self.assertIn('<p>A <a href="https://example.com">link</a> &amp; more.</p>', page)
-        self.assertIn('<p class="what">No link</p>', page)
-        self.assertIn('<lastmod>2026-10-25</lastmod>', s.sitemap_xml())
-        self.assertIn('Last update:    2026-10-25', s.humans_txt())
-
     def test_removing_linkedin_removes_it_everywhere(self):
         s = site(lambda s: s.update(links=[l for l in s['links'] if not l['removeAtExit']]))
         for name, text in [('index.html', s.index_html()), ('index.md', s.index_md()), ('index.txt', s.index_txt()),
@@ -235,7 +194,7 @@ class Pages(unittest.TestCase):
 class Headers(unittest.TestCase):
     def test_csp_covers_every_inline_script_on_the_static_pages(self):
         s = site()
-        pages = [s.not_found_html(), s.log_html()]
+        pages = [s.not_found_html()]
         headers = s.headers(pages)
         for page in pages:
             for script in re.findall(r'<script>(.*?)</script>', page, re.S):
@@ -261,49 +220,6 @@ class Headers(unittest.TestCase):
         build.security_txt_expiry(text, datetime.datetime(2027, 7, 1, tzinfo=utc))
         with self.assertRaises(build.BuildError):
             build.security_txt_expiry(text, datetime.datetime(2027, 8, 1, tzinfo=utc))
-
-
-class Feed(unittest.TestCase):
-    ATOM = '{http://www.w3.org/2005/Atom}'
-
-    def feed(self, s):
-        import xml.etree.ElementTree as ET
-        return ET.fromstring(s.log_feed())
-
-    def test_the_feed_is_atom_with_one_entry_per_log_entry(self):
-        s = site()
-        feed = self.feed(s)
-        self.assertEqual(feed.tag, self.ATOM + 'feed')
-        entries = feed.findall(self.ATOM + 'entry')
-        self.assertEqual(len(entries), len(LOG['entries']))
-        self.assertEqual(feed.find(self.ATOM + 'updated').text, '2026-10-23T00:00:00Z')
-        first = entries[0]
-        self.assertEqual(first.find(self.ATOM + 'title').text, 'You Can See Everything')
-        self.assertEqual(first.find(self.ATOM + 'link').get('href'), 'https://jefflouden.com/log#2026-10-23-you-can-see-everything')
-        self.assertIn('San Francisco', first.find(self.ATOM + 'content').text)
-
-    def test_titles_for_each_kind(self):
-        def add(l):
-            l['entries'][:0] = [
-                {'kind': 'quote', 'date': '2026-10-25', 'quote': 'Less, but [better](https://example.com).', 'who': 'Dieter Rams'},
-                {'kind': 'note', 'date': '2026-10-24', 'text': 'First frost.'},
-            ]
-        titles = [e.find(self.ATOM + 'title').text for e in self.feed(site(log_change=add)).findall(self.ATOM + 'entry')]
-        self.assertEqual(titles[:2], ['“Less, but better.”', 'First frost.'])
-
-    def test_ids_are_unique_and_never_shift(self):
-        twice = lambda l: l['entries'].insert(0, {'kind': 'note', 'date': '2026-10-24', 'text': 'Same.'})
-        before = site(log_change=twice).entry_ids()
-        after = site(log_change=lambda l: (twice(l), twice(l))).entry_ids()
-        self.assertEqual(len(set(after)), len(after))
-        self.assertEqual(after[1:], before)  # the older entries kept their ids
-        self.assertEqual(after[:2], ['2026-10-24-same-2', '2026-10-24-same'])
-
-    def test_the_log_page_carries_the_anchors_and_announces_the_feed(self):
-        page = site().log_html()
-        self.assertIn('<li id="2026-10-23-hundred-rabbits" data-kind="site"', page)
-        self.assertIn('<link rel="alternate" type="application/atom+xml" href="/log.xml"', page)
-        self.assertIn('href="/log.xml"', site().index_html())
 
 
 class Committed(unittest.TestCase):
