@@ -20,7 +20,11 @@
     {{> header}}
     <h1 class="intro">404</h1>
     <div class="note">
-      <p>We traced the page. It isn’t coming from inside the site.</p>
+      <p id="haunt">We traced the page. It isn’t coming from inside the site.</p>
+      <script>
+        // Each visit finds the house a little different. The first visit, and every visit without JavaScript, gets the line above.
+        (function () { var lines = ['We traced the page. It isn’t coming from inside the site.', 'Nobody’s lived at this address for years.', 'Whatever was here, it’s gone now. Probably.', 'You heard it too? It’s nothing. Go back upstairs.', 'Don’t split up. Head back to the house together.']; var n = 0; try { n = (parseInt(localStorage.getItem('haunt'), 10) + 1) % lines.length || 0; localStorage.setItem('haunt', n); } catch (e) {} document.getElementById('haunt').textContent = lines[n]; })();
+      </script>
       <p><a href="/">Get back to the house</a></p>
     </div>
   </main>
