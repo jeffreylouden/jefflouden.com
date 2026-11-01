@@ -77,6 +77,7 @@
         "properties": {
           "name": { "type": "string" },
           "url": { "type": "string", "pattern": "^https://" },
+          "description": { "description": "What it is, as the end of a sentence that starts with its name and 'is', for llms-full.txt.", "type": "string" },
           "publisher": { "description": "An organizations key.", "type": "string" }
         }
       }
@@ -137,9 +138,11 @@
       "description": "Representative queries for .well-known/ai-catalog.json.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["profile", "home"],
+      "required": ["profile", "full", "log", "home"],
       "properties": {
         "profile": { "type": "array", "items": { "type": "string" } },
+        "full": { "description": "For llms-full.txt.", "type": "array", "items": { "type": "string" } },
+        "log": { "description": "For log.md.", "type": "array", "items": { "type": "string" } },
         "home": { "type": "array", "items": { "type": "string" } }
       }
     },

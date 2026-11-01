@@ -99,6 +99,7 @@
     "aureo": {
       "name": "Aureo",
       "url": "https://aureo.audio",
+      "description": "a studio gear and plugin catalog, built on an open-source catalog of its own.",
       "publisher": "existential"
     }
   },
@@ -193,6 +194,17 @@
       "what does Jeff Louden do at The Atlantic",
       "Jeffrey Louden work history",
       "how to contact Jeff Louden"
+    ],
+    "full": [
+      "what is Jeff Louden known for",
+      "Jeffrey Louden engineering leadership experience",
+      "who built the NYT Cooking paywall",
+      "what is Aureo"
+    ],
+    "log": [
+      "what is Jeff Louden into",
+      "what has Jeff Louden shipped recently",
+      "movies Jeff Louden recommends"
     ],
     "home": [
       "Jeffrey Louden personal website",
