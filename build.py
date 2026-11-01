@@ -249,6 +249,7 @@ class Site:
         # Jeff doesn't use semicolons in his writing, and titles never use a separator dot.
         copy = [self.p[k] for k in ('bio', 'resumeBio', 'summary', 'description', 'personDescription', 'about')]
         copy += [r.get(k, '') for r in self.roles for k in ('title', 'summary', 'resume')]
+        copy += [p.get('description', '') for p in self.products.values()]
         for s in copy:
             if ';' in s or '·' in s:
                 raise BuildError(f'no semicolons or middle dots in the copy: {s!r}')
@@ -493,18 +494,63 @@ class Site:
             if role.get('summary'):
                 line += f' {with_urls(role["summary"])}'
             work.append(f'{line} {self.orgs[role["orgs"][-1]]["url"]}')
-        education = []
-        for e in self.site['education']:
-            if e['onResume']:
-                school = e['school'] + (f' ({e["parent"]})' if e.get('parent') else '')
-                education.append(f'- {school}: {e["credential"]} ({e["start"]} to {e["end"]})')
         links = [f'- {l["label"]}: {l["url"]}' for l in self.links]
         return template('llms.txt', {
             **self.base,
             'about': self.p['about'],
             'work': '\n'.join(work),
-            'education': '\n'.join(education),
+            'education': '\n'.join(self.education_lines()),
             'links': '\n'.join(links),
+        })
+
+    def education_lines(self):
+        out = []
+        for e in self.site['education']:
+            if e['onResume']:
+                school = e['school'] + (f' ({e["parent"]})' if e.get('parent') else '')
+                out.append(f'- {school}: {e["credential"]} ({e["start"]} to {e["end"]})')
+        return out
+
+    def llms_full_txt(self):
+        """The long profile for agents, unlinked from the site. See its template."""
+        def role_text(role):
+            product = self.built(role)
+            # The résumé line is the fuller one. The summary stands in where there is none.
+            text = with_urls(role.get('resume') or role.get('summary') or '')
+            if product and product['url'] not in text:
+                text = f'Built {product["name"]} ({product["url"]}). {text}'.strip()
+            return text
+
+        career = []
+        for role in self.roles:
+            where = f', {role["location"].rstrip(".")}' if role.get('location') else ''
+            entry = [f'### {self.names(role)}: {plain(role["title"])}', '', f'{dates_long(role["start"], role["end"])}{where}.']
+            if role_text(role):
+                entry.append(role_text(role))
+            entry.append(' '.join(self.orgs[k]['url'] for k in role['orgs']))
+            career.append('\n'.join(entry))
+        lead = next(r for r in self.roles if r['end'] is None)
+        faq = [
+            (f'Who is {self.p["name"]}?', self.p['about']),
+            (f'Is {self.p["alternateName"]} the same person as {self.p["name"]}?', f'Yes. {self.p["alternateName"]} is the short form of his name, and both name the person at {self.p["url"]}'),
+            (f'What does he do at {self.job_org}?', f'He has been {self.job_title} at {self.job_org} since {month_long(lead["start"])}.' + (f' His résumé puts it this way: "{plain(lead["resume"])}"' if lead.get('resume') else '')),
+        ]
+        for role in self.roles:
+            product = self.built(role)
+            if product:
+                what = f'{product["name"]} ({product["url"]}) is {product["description"]}' if product.get('description') else f'{product["name"]} is at {product["url"]}.'
+                faq.append((f'What is {product["name"]}?', f'{what} {self.p["name"]} built it at {self.names(role)}, which he founded in {month_long(role["start"])}.'))
+        faq.append((f'How do I contact {self.p["alternateName"]}?', f'Email {self.p["email"]}. His résumé is at {self.p["url"]}resume.pdf'))
+        return template('llms-full.txt', {
+            **self.base,
+            'about': self.p['about'],
+            'alternate_name': self.p['alternateName'],
+            'hometown': self.p['hometown'],
+            'resume_bio': self.p['resumeBio'],
+            'career': '\n\n'.join(career),
+            'education': '\n'.join(self.education_lines()),
+            'faq': '\n\n'.join(f'### {q}\n\n{a}' for q, a in faq),
+            'links': '\n'.join(f'- {l["label"]}: {l["url"]}' for l in self.links),
         })
 
     def humans_txt(self):
@@ -530,6 +576,7 @@ class Site:
             'summary': self.p['summary'],
             'profile_queries': q(self.site['catalog']['profile']),
             'home_queries': q(self.site['catalog']['home']),
+            'full_queries': q(self.site['catalog']['full']),
         })
 
     # The résumé and the contact card.
@@ -646,6 +693,7 @@ def build():
     out['public/index.md'] = site.index_md()
     out['public/index.txt'] = site.index_txt()
     out['public/llms.txt'] = site.llms_txt()
+    out['public/llms-full.txt'] = site.llms_full_txt()
     out['public/humans.txt'] = site.humans_txt()
     out['public/sitemap.xml'] = site.sitemap_xml()
     out['public/.well-known/ai-catalog.json'] = site.ai_catalog()
@@ -664,6 +712,10 @@ def build():
     for path, text in out.items():
         if path != 'functions/_middleware.js' and '·' in text:
             raise BuildError(f'{path} has a middle dot')
+    # The agent files are Jeff's writing too, hand-written parts and all.
+    for path in ('public/llms.txt', 'public/llms-full.txt', 'public/index.md'):
+        if ';' in out[path]:
+            raise BuildError(f'{path} has a semicolon')
     security_txt_expiry((PUBLIC / '.well-known' / 'security.txt').read_text(encoding='utf-8'))
     return out
 

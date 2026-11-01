@@ -3,6 +3,7 @@
 > {{about}}
 
 Canonical profile: {{url}}
+Full profile: {{url}}llms-full.txt
 Contact: {{email}}
 
 ## Work

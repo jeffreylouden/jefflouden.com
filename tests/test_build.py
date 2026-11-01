@@ -167,7 +167,7 @@ class Pages(unittest.TestCase):
     def test_removing_linkedin_removes_it_everywhere(self):
         s = site(lambda s: s.update(links=[l for l in s['links'] if not l['removeAtExit']]))
         for name, text in [('index.html', s.index_html()), ('index.md', s.index_md()), ('index.txt', s.index_txt()),
-                           ('llms.txt', s.llms_txt()), ('humans.txt', s.humans_txt())]:
+                           ('llms.txt', s.llms_txt()), ('llms-full.txt', s.llms_full_txt()), ('humans.txt', s.humans_txt())]:
             with self.subTest(name):
                 self.assertNotIn('linkedin.com', text)
 
@@ -180,6 +180,29 @@ class Pages(unittest.TestCase):
         profile = next(n for n in graph if n['@type'] == 'ProfilePage')
         datetime.datetime.fromisoformat(profile['dateModified'])
         self.assertEqual(profile['name'], site().title)
+
+    def test_llms_full_has_every_role_and_no_semicolons(self):
+        s = site()
+        text = s.llms_full_txt()
+        for role in SITE['roles']:
+            with self.subTest(role['title']):
+                self.assertIn(f'### {s.names(role)}: {build.plain(role["title"])}', text)
+                if role.get('resume'):
+                    self.assertIn(build.with_urls(role['resume']), text)
+        self.assertIn('### What is Aureo?\n\nAureo (https://aureo.audio) is a studio gear', text)
+        self.assertNotIn(';', text)
+        self.assertIn('Full profile: https://jefflouden.com/llms-full.txt', s.llms_txt())
+
+    def test_nothing_for_people_links_to_llms_full(self):
+        s = site()
+        for name, text in [('index.html', s.index_html()), ('404.html', s.not_found_html()), ('index.md', s.index_md()),
+                           ('index.txt', s.index_txt()), ('humans.txt', s.humans_txt()), ('sitemap.xml', s.sitemap_xml())]:
+            with self.subTest(name):
+                self.assertNotIn('llms-full', text)
+
+    def test_semicolon_in_a_product_description_fails(self):
+        with self.assertRaises(build.BuildError):
+            site(lambda s: s['products']['aureo'].update(description='a catalog; and more.'))
 
     def test_vcard(self):
         card = site().vcard()

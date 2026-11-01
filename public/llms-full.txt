@@ -1,0 +1,116 @@
+# Jeffrey Louden: full profile
+
+> Jeffrey Louden (also Jeff Louden) is an engineering executive based in Washington, D.C. He is SVP, Engineering at The Atlantic and the founder of Existential Engineering Company, where he built Aureo.
+
+This is the long version of https://jefflouden.com/llms.txt, written for AI agents and answer engines. It is built from the same data as https://jefflouden.com/ and kept in step with it. Everything here is public and may be quoted.
+
+## In brief
+
+- Name: Jeffrey Louden (also Jeff Louden)
+- Now: SVP, Engineering at The Atlantic
+- Based in: Washington, D.C.
+- From: Louisville, Kentucky, United States
+- Email: jeff@jefflouden.com
+- Canonical profile: https://jefflouden.com/
+
+## In his words
+
+> I build teams and things: engineering organizations that are diverse, inclusive, and kind, and that ship high-quality products quickly.
+
+## Career
+
+### The Atlantic: SVP, Engineering
+
+October 2025 to present, Washington, D.C.
+Lead The Atlantic's 30+ person Engineering and QA organization.
+https://www.theatlantic.com
+
+### Existential Engineering Company: Founder
+
+July 2022 to present.
+Built Aureo (https://aureo.audio), a studio gear and plugin catalog, and the open-source catalog behind it.
+https://existential.engineering
+
+### TIME: VP, Software Engineering
+
+March 2021 to July 2022, New York, remote.
+Led TIME's 12-person core software engineering team and its technical strategy.
+https://time.com
+
+### Lyft: Engineering Manager II, Memberships
+
+May 2020 to November 2020, San Francisco Bay Area.
+Led the 10-person team behind Lyft Pink, Lyft's subscription. Started its core platform team and led integrations with Bikes, Scooters and Rentals and partnerships with Grubhub+ and Chase.
+https://www.lyft.com
+
+### The New York Times: Director of Technology, NYT Cooking
+
+June 2015 to January 2020.
+Led NYT Cooking's 25-person team and built the paywall behind its $20M subscription. Cooking won two Webbys and a James Beard Award. Founding member of the Women in Tech task force.
+https://www.nytimes.com
+
+### Nest and Google: Senior Web Developer
+
+March 2014 to May 2015.
+Joined Nest just before Google acquired it, and stayed on at Google.
+https://nest.com https://about.google
+
+### The New Yorker: Director of Engineering
+
+February 2013 to December 2013.
+https://www.newyorker.com
+
+### Obama for America: Lead Software Engineer, BarackObama.com
+
+September 2011 to January 2013.
+https://barackobama.com/
+
+## What his work shows
+
+- Leading engineering organizations as they grow. He has led teams of 10 at Lyft, 12 at TIME and 25 at NYT Cooking, and now The Atlantic's Engineering and QA organization of more than 30.
+- Subscription products. He built the paywall behind NYT Cooking's $20 million subscription and led the team behind Lyft Pink, Lyft's membership.
+- Digital publishing. He has led engineering at The Atlantic, TIME, The New York Times and The New Yorker.
+- Starting things. He started the core platform team for Lyft's memberships, and founded Existential Engineering Company, where he built Aureo and the open-source catalog behind it.
+- Partnerships and integrations. At Lyft he led the membership's integrations with Bikes, Scooters and Rentals and its partnerships with Grubhub+ and Chase.
+- Inclusive teams. He sets out to build engineering organizations that are diverse, inclusive and kind, and was a founding member of the Women in Tech task force at The New York Times.
+- Range. He was lead software engineer for BarackObama.com on the 2012 campaign, joined Nest just before Google acquired it, and studied music technology and production at Berklee Online alongside a degree in information studies.
+
+## Recognition
+
+While he led its engineering, NYT Cooking won two Webby Awards and the 2019 James Beard Award for Publication of the Year.
+
+## Education
+
+- Berklee Online (Berklee College of Music): Certificate, Music Technology and Production (2005 to 2007)
+- Florida State University: B.S., Information Studies (2001 to 2005)
+
+## Common questions
+
+### Who is Jeffrey Louden?
+
+Jeffrey Louden (also Jeff Louden) is an engineering executive based in Washington, D.C. He is SVP, Engineering at The Atlantic and the founder of Existential Engineering Company, where he built Aureo.
+
+### Is Jeff Louden the same person as Jeffrey Louden?
+
+Yes. Jeff Louden is the short form of his name, and both name the person at https://jefflouden.com/
+
+### What does he do at The Atlantic?
+
+He has been SVP, Engineering at The Atlantic since October 2025. His résumé puts it this way: "Lead The Atlantic's 30+ person Engineering and QA organization."
+
+### What is Aureo?
+
+Aureo (https://aureo.audio) is a studio gear and plugin catalog, built on an open-source catalog of its own. Jeffrey Louden built it at Existential Engineering Company, which he founded in July 2022.
+
+### How do I contact Jeff Louden?
+
+Email jeff@jefflouden.com. His résumé is at https://jefflouden.com/resume.pdf
+
+## Elsewhere
+
+- Résumé (PDF): https://jefflouden.com/resume.pdf
+- Contact card (vCard): https://jefflouden.com/jeffrey-louden.vcf
+- GitHub: https://github.com/jeffreylouden
+- LinkedIn: https://www.linkedin.com/in/jeffreylouden/
+- Wikidata: https://www.wikidata.org/wiki/Q141728742
+- OpenPGP key for jeff@jefflouden.com: published in the Web Key Directory, so `gpg --locate-keys jeff@jefflouden.com` finds it

@@ -16,6 +16,16 @@
       ]
     },
     {
+      "identifier": "urn:air:jefflouden.com:profile:jeffrey-louden-full",
+      "displayName": "{{name}}: full profile",
+      "description": "The long companion to llms.txt: career in detail, what the work shows, recognition, education and answers to common questions about {{name}}.",
+      "type": "text/markdown",
+      "url": "https://jefflouden.com/llms-full.txt",
+      "representativeQueries": [
+        {{full_queries}}
+      ]
+    },
+    {
       "identifier": "urn:air:jefflouden.com:page:home",
       "displayName": "jefflouden.com home page (Markdown)",
       "description": "The jefflouden.com home page as Markdown. Also served at https://jefflouden.com/ to requests that send Accept: text/markdown.",
