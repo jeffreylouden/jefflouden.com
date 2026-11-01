@@ -80,7 +80,7 @@ const late = ['2027-01-20T01:00:00Z', 'Somebody', true, 'FA Cup'];
 test('a match day shows the gothic A, linked to the fixtures, with the kickoff in local time', () => {
   const m = on(2026, 11, 1, [liverpool]);
   assert.equal(m.attrs['aria-label'], 'Liverpool v Arsenal today at 11:30 AM, Premier League');
-  assert.equal(m.href, 'https://www.arsenal.com/fixtures/men/fixtures');
+  assert.equal(m.href, 'https://www.nytimes.com/athletic/football/team/arsenal/schedule/');
   assert.match(m.innerHTML, /accent/);
   assert.equal(on(2026, 12, 9, [madrid]).attrs['aria-label'], 'Arsenal v Real Madrid today at 3:00 PM, Champions League');
   assert.equal(on(2026, 12, 10, [madrid]), null);

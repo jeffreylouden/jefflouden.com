@@ -331,7 +331,7 @@
 
     /* On a holiday, or in the run-up to the few that earn one, a small mark sits beside the toggle (and the flashlight in
        dark mode). The script below works the dates out from rules, so nothing needs touching each year. A few link out.
-       On an Arsenal match day it is a gothic A instead. Without JavaScript, and in print, it stays hidden. */
+       On an Arsenal match day it is a gothic A instead, linked to The Athletic's schedule. Without JavaScript, and in print, it stays hidden. */
     #holiday {
       position: absolute;
       top: calc(clamp(16px, 2.5vw, 24px) - 2px);
@@ -746,7 +746,7 @@
       }
       if (game && !(hit && until === 0)) {
         hit = {
-          id: 'arsenal', url: 'https://www.arsenal.com/fixtures/men/fixtures',
+          id: 'arsenal', url: 'https://www.nytimes.com/athletic/football/team/arsenal/schedule/',
           always: (game[2] ? 'Arsenal v ' + game[1] : game[1] + ' v Arsenal') + ' today at ' +
             k.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + ', ' + game[3]
         };
