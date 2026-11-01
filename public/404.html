@@ -7,7 +7,23 @@
   <title>Not found</title>
   <meta name="robots" content="noindex">
   <meta name="color-scheme" content="light dark">
-  <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+    // The spooky days are dark only: Halloween, a Friday the 13th, and the day of a full moon (Meeus's formula, to within
+    // an hour or so, on the visitor's own clock). Nothing is saved, so the next day is back to normal.
+    var spooky = (function (d) {
+      if (d.getMonth() === 9 && d.getDate() === 31) return 'halloween';
+      if (d.getDay() === 5 && d.getDate() === 13) return 'friday13';
+      var r = Math.PI / 180, k = Math.round((d / 864e5 + 2440587.5 - 2451550.09766) / 29.530588861 - 0.5) + 0.5, i, M, N, F, t;
+      for (i = k - 1; i <= k + 1; i++) {
+        M = (2.5534 + 29.1053567 * i) * r; N = (201.5643 + 385.81693528 * i) * r; F = (160.7108 + 390.67050284 * i) * r;
+        t = new Date((2451550.09766 + 29.530588861 * i - 0.40614 * Math.sin(N) + 0.17302 * Math.sin(M) + 0.01614 * Math.sin(2 * N) + 0.01043 * Math.sin(2 * F) + 0.00734 * Math.sin(N - M) - 0.00515 * Math.sin(N + M) + 0.00209 * Math.sin(2 * M) - 2440587.5) * 864e5);
+        if (t.getFullYear() === d.getFullYear() && t.getMonth() === d.getMonth() && t.getDate() === d.getDate()) return 'moon';
+      }
+      return '';
+    })(new Date());
+    if (spooky) { document.documentElement.dataset.theme = 'dark'; document.documentElement.dataset.spooky = spooky; }
+  </script>
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="stylesheet" href="/site.css">
   <style>

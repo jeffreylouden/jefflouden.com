@@ -13,7 +13,7 @@ const html = await readFile(new URL('../public/index.html', import.meta.url), 'u
 const script = html.match(/<script>\s*(\/\/ The light and dark toggle[\s\S]*?)<\/script>/)[1];
 const holiday = script.slice(script.indexOf('// The holiday mark.'), script.indexOf('// Printing from the keyboard'));
 
-function on(y, m, d, matches = []) {
+function on(y, m, d, matches = [], spooky = '') {
   const mark = { hidden: true, attrs: {}, setAttribute(k, v) { this.attrs[k] = v; } };
   const Real = Date;
   class Clock extends Real {
@@ -21,7 +21,7 @@ function on(y, m, d, matches = []) {
   }
   const src = holiday.replace(/var matches = \(\s*[\s\S]*?\n\s*\);/, `var matches = ${JSON.stringify(matches)};`);
   assert.notEqual(src, holiday);
-  vm.runInNewContext(src, { Date: Clock, Math, document: { getElementById: () => mark } });
+  vm.runInNewContext(src, { Date: Clock, Math, document: { getElementById: () => mark, documentElement: { dataset: { spooky } } } });
   return mark.hidden ? null : mark;
 }
 
@@ -101,4 +101,52 @@ test('the page carries this season’s matches, soonest first', () => {
   const list = JSON.parse(holiday.match(/var matches = \(\s*([\s\S]*?)\n\s*\);/)[1]);
   assert.ok(list.length > 0);
   assert.deepEqual(list.map((m) => m[0]), list.map((m) => m[0]).sort());
+});
+
+test('Friday the 13th and Programmers’ Day', () => {
+  assert.equal(on(2026, 11, 13).attrs['aria-label'], 'Friday the 13th is today');
+  assert.equal(on(2026, 11, 13).href, 'https://en.wikipedia.org/wiki/Friday_the_13th');
+  assert.match(on(2026, 11, 13).innerHTML, /rotate\(-35/);
+  assert.equal(on(2026, 11, 20), null);
+  assert.equal(on(2028, 2, 29), null);
+  assert.equal(on(2026, 9, 13).attrs['aria-label'], 'Programmers’ Day is today');
+  assert.equal(on(2028, 9, 12).attrs['aria-label'], 'Programmers’ Day is today');
+});
+
+test('a full moon takes the corner only when nothing else wants it', () => {
+  const m = on(2026, 11, 24, [], 'moon');
+  assert.equal(m.attrs['aria-label'], 'Full moon tonight');
+  assert.equal(m.href, 'https://en.wikipedia.org/wiki/Full_moon');
+  assert.match(on(2026, 11, 26, [], 'moon').attrs['aria-label'], /^Thanksgiving/);
+  assert.match(on(2026, 11, 24, [['2026-11-24T20:00:00Z', 'Somebody', true, 'Champions League']], 'moon').attrs['aria-label'], /^Arsenal v Somebody/);
+});
+
+// The spooky days, worked out before paint on both pages.
+const spookySrc = await readFile(new URL('../src/partials/spooky.html', import.meta.url), 'utf8');
+function spookyOn(y, m, d) {
+  const root = { dataset: {} };
+  class Clock extends Date { constructor(...a) { super(...(a.length ? a : [y, m - 1, d, 12])); } }
+  vm.runInNewContext(spookySrc, { Date: Clock, Math, document: { documentElement: root } });
+  return root.dataset;
+}
+
+test('Halloween, a Friday the 13th and a full moon are dark only', () => {
+  assert.deepEqual({ ...spookyOn(2026, 10, 31) }, { theme: 'dark', spooky: 'halloween' });
+  assert.deepEqual({ ...spookyOn(2026, 11, 13) }, { theme: 'dark', spooky: 'friday13' });
+  assert.deepEqual({ ...spookyOn(2026, 3, 3) }, { theme: 'dark', spooky: 'moon' });
+  assert.deepEqual({ ...spookyOn(2026, 11, 2) }, {});
+});
+
+test('full moons land on the right day', () => {
+  // Total lunar eclipses fall on full moons: September 7 2025 and March 3 2026 (in New York time, as these tests run).
+  for (const [y, m, d] of [[2025, 9, 7], [2026, 3, 3], [2026, 8, 28], [2026, 11, 24], [2026, 12, 23]]) {
+    assert.equal(spookyOn(y, m, d).spooky, 'moon', `${y}-${m}-${d}`);
+    assert.equal(spookyOn(y, m, d + 2).spooky, undefined, `${y}-${m}-${d + 2}`);
+  }
+});
+
+test('both pages run the spooky days before paint, and the toggle stays hidden on them', async () => {
+  const notFound = await readFile(new URL('../public/404.html', import.meta.url), 'utf8');
+  for (const page of [html, notFound]) assert.ok(page.indexOf('var spooky') > 0 && page.indexOf('var spooky') < page.indexOf('<body'));
+  assert.match(html, /if \(root\.dataset\.spooky\) return;/);
 });
