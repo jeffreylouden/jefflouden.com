@@ -4,6 +4,7 @@
 
 Canonical profile: https://jefflouden.com/
 Full profile: https://jefflouden.com/llms-full.txt
+Log: https://jefflouden.com/log.md
 Contact: jeff@jefflouden.com
 
 ## Work

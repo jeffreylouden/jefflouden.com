@@ -32,6 +32,18 @@
       ]
     },
     {
+      "identifier": "urn:air:jefflouden.com:log:jeffrey-louden",
+      "displayName": "Jeffrey Louden: log",
+      "description": "Things Jeffrey Louden likes, work he has done, quotes and notes, newest first, in his own words.",
+      "type": "text/markdown",
+      "url": "https://jefflouden.com/log.md",
+      "representativeQueries": [
+        "what is Jeff Louden into",
+        "what has Jeff Louden shipped recently",
+        "movies Jeff Louden recommends"
+      ]
+    },
+    {
       "identifier": "urn:air:jefflouden.com:page:home",
       "displayName": "jefflouden.com home page (Markdown)",
       "description": "The jefflouden.com home page as Markdown. Also served at https://jefflouden.com/ to requests that send Accept: text/markdown.",

@@ -47,6 +47,7 @@ While he led its engineering, NYT Cooking won two Webby Awards and the 2019 Jame
 
 ## Elsewhere
 
+- Log (things he likes, work he has done, in his words): {{url}}log.md
 - Résumé (PDF): {{url}}resume.pdf
 - Contact card (vCard): {{url}}jeffrey-louden.vcf
 {{links}}

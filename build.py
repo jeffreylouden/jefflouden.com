@@ -4,7 +4,8 @@
     python3 build.py           write every page that changed
     python3 build.py --check   change nothing, and fail if any page is stale
 
-The facts live in src/site.json, checked against the schema beside it. The
+The facts live in src/site.json and the log in src/log.json, each checked
+against the schema beside it. The
 page shells live in src/templates, the pieces they share in src/partials. The built files are committed, so the site keeps working, and
 stays editable by hand, without this script. It uses only the Python standard
 library so it should still run in 20 years.
@@ -202,8 +203,8 @@ def dates_long(start, end):
 # The site.
 
 class Site:
-    def __init__(self, site):
-        self.site = site
+    def __init__(self, site, log):
+        self.site, self.log = site, log
         self.p = site['profile']
         self.orgs = site['organizations']
         self.products = site['products']
@@ -237,6 +238,9 @@ class Site:
                 raise BuildError(f'roles[{i}] ends before it starts')
         if [r['start'] for r in self.roles] != sorted((r['start'] for r in self.roles), reverse=True):
             raise BuildError('roles must be newest first')
+        dates = [e['date'] for e in self.log['entries']]
+        if dates != sorted(dates, reverse=True):
+            raise BuildError('log entries must be newest first')
         if not any(r['end'] is None for r in self.roles):
             raise BuildError('no current role to take the headline from')
         for key, product in self.products.items():
@@ -250,6 +254,7 @@ class Site:
         copy = [self.p[k] for k in ('bio', 'resumeBio', 'summary', 'description', 'personDescription', 'about')]
         copy += [r.get(k, '') for r in self.roles for k in ('title', 'summary', 'resume')]
         copy += [p.get('description', '') for p in self.products.values()]
+        copy += [e.get(k, '') for e in self.log['entries'] for k in ('title', 'text', 'quote', 'who', 'shows', 'place')]
         for s in copy:
             if ';' in s or '·' in s:
                 raise BuildError(f'no semicolons or middle dots in the copy: {s!r}')
@@ -553,6 +558,38 @@ class Site:
             'links': '\n'.join(f'- {l["label"]}: {l["url"]}' for l in self.links),
         })
 
+    def log_md(self):
+        entries = []
+        for e in self.log['entries']:
+            kind = e['kind']
+            if kind == 'quote':
+                head = f'Quote from {e["who"]}'
+            elif kind == 'note':
+                head = 'Note'
+            elif kind == 'photo':
+                head = f'Photo: {e.get("title") or e["shows"]}'
+            else:
+                head = e['title']
+            day = datetime.date.fromisoformat(e['date'])
+            facts = [f'- Kind: {kind}', f'- Logged: {MONTHS[day.month - 1]} {day.day}, {day.year}']
+            if kind == 'photo' and e.get('title'):
+                facts.append(f'- Shows: {e["shows"]}')
+            if e.get('url'):
+                facts.append(f'- Link: {e["url"]}')
+            if e.get('place'):
+                facts.append(f'- Place: {e["place"]}')
+            body = [f'## {head}', '', '\n'.join(facts)]
+            if kind == 'quote':
+                body += ['', f'> “{e["quote"]}”']
+            if e.get('text'):
+                body += ['', f'In his words: {with_urls(e["text"])}']
+            entries.append('\n'.join(body))
+        return template('log.md', {
+            **self.base,
+            'short_name': self.p['alternateName'].split()[0],
+            'entries': '\n\n'.join(entries) if entries else 'Nothing logged yet.',
+        })
+
     def humans_txt(self):
         user, domain = self.p['email'].split('@')
         links = [f'{l["label"] + ":":<16}{l["url"]}' for l in self.links if l['onPage']]
@@ -577,6 +614,7 @@ class Site:
             'profile_queries': q(self.site['catalog']['profile']),
             'home_queries': q(self.site['catalog']['home']),
             'full_queries': q(self.site['catalog']['full']),
+            'log_queries': q(self.site['catalog']['log']),
         })
 
     # The résumé and the contact card.
@@ -686,7 +724,7 @@ def security_txt_expiry(text, now=None):
 
 
 def build():
-    site = Site(load('site'))
+    site = Site(load('site'), load('log'))
     out = {}
     out['public/404.html'] = site.not_found_html()
     out['public/index.html'] = site.index_html()
@@ -694,6 +732,7 @@ def build():
     out['public/index.txt'] = site.index_txt()
     out['public/llms.txt'] = site.llms_txt()
     out['public/llms-full.txt'] = site.llms_full_txt()
+    out['public/log.md'] = site.log_md()
     out['public/humans.txt'] = site.humans_txt()
     out['public/sitemap.xml'] = site.sitemap_xml()
     out['public/.well-known/ai-catalog.json'] = site.ai_catalog()
@@ -713,7 +752,7 @@ def build():
         if path != 'functions/_middleware.js' and '·' in text:
             raise BuildError(f'{path} has a middle dot')
     # The agent files are Jeff's writing too, hand-written parts and all.
-    for path in ('public/llms.txt', 'public/llms-full.txt', 'public/index.md'):
+    for path in ('public/llms.txt', 'public/llms-full.txt', 'public/log.md', 'public/index.md'):
         if ';' in out[path]:
             raise BuildError(f'{path} has a semicolon')
     security_txt_expiry((PUBLIC / '.well-known' / 'security.txt').read_text(encoding='utf-8'))

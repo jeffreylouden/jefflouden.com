@@ -7,6 +7,7 @@
 const LINK = [
   '</llms.txt>; rel="describedby"; type="text/markdown"',
   '</llms-full.txt>; rel="describedby"; type="text/markdown"',
+  '</log.md>; rel="describedby"; type="text/markdown"',
   '</index.md>; rel="alternate"; type="text/markdown"',
   '</.well-known/ai-catalog.json>; rel="ai-catalog"; type="application/json"',
   '</sitemap.xml>; rel="sitemap"; type="application/xml"',

@@ -108,6 +108,7 @@ Email jeff@jefflouden.com. His résumé is at https://jefflouden.com/resume.pdf
 
 ## Elsewhere
 
+- Log (things he likes, work he has done, in his words): https://jefflouden.com/log.md
 - Résumé (PDF): https://jefflouden.com/resume.pdf
 - Contact card (vCard): https://jefflouden.com/jeffrey-louden.vcf
 - GitHub: https://github.com/jeffreylouden

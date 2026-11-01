@@ -4,6 +4,7 @@
 
 Canonical profile: {{url}}
 Full profile: {{url}}llms-full.txt
+Log: {{url}}log.md
 Contact: {{email}}
 
 ## Work

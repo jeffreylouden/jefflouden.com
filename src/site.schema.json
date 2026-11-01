@@ -138,10 +138,11 @@
       "description": "Representative queries for .well-known/ai-catalog.json.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["profile", "full", "home"],
+      "required": ["profile", "full", "log", "home"],
       "properties": {
         "profile": { "type": "array", "items": { "type": "string" } },
         "full": { "description": "For llms-full.txt.", "type": "array", "items": { "type": "string" } },
+        "log": { "description": "For log.md.", "type": "array", "items": { "type": "string" } },
         "home": { "type": "array", "items": { "type": "string" } }
       }
     },

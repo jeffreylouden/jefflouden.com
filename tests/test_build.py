@@ -1,7 +1,7 @@
 """Tests for build.py. Run with `python3 -m unittest discover tests`.
 
-They build from a copy of the real src/site.json, changed where a test needs
-it, so they never write to public/.
+They build from copies of the real src/site.json and src/log.json, changed
+where a test needs it, so they never write to public/.
 """
 
 import base64
@@ -19,13 +19,17 @@ import build  # noqa: E402
 
 SITE = json.loads((build.SRC / 'site.json').read_text(encoding='utf-8'))
 SITE_SCHEMA = json.loads((build.SRC / 'site.schema.json').read_text(encoding='utf-8'))
+LOG = json.loads((build.SRC / 'log.json').read_text(encoding='utf-8'))
+LOG_SCHEMA = json.loads((build.SRC / 'log.schema.json').read_text(encoding='utf-8'))
 
 
-def site(change=None):
-    s = copy.deepcopy(SITE)
+def site(change=None, log_change=None):
+    s, l = copy.deepcopy(SITE), copy.deepcopy(LOG)
     if change:
         change(s)
-    return build.Site(s)
+    if log_change:
+        log_change(l)
+    return build.Site(s, l)
 
 
 class Helpers(unittest.TestCase):
@@ -107,6 +111,28 @@ class Schema(unittest.TestCase):
             with self.subTest(name), self.assertRaises(build.BuildError):
                 self.check(change)
 
+    def check_log(self, change):
+        l = copy.deepcopy(LOG)
+        change(l)
+        build.validate(l, LOG_SCHEMA, LOG_SCHEMA, 'log')
+
+    def test_log_shapes(self):
+        add = lambda e: lambda l: l['entries'].insert(0, e)
+        self.check_log(lambda l: None)
+        for good in [{'kind': 'shipped', 'date': '2026-11-01', 'title': 'T', 'text': 'W'},
+                     {'kind': 'quote', 'date': '2026-11-01', 'quote': 'Q', 'who': 'W'},
+                     {'kind': 'note', 'date': '2026-11-01', 'text': 'T'},
+                     {'kind': 'photo', 'date': '2026-11-01', 'shows': 'S'}]:
+            with self.subTest(good['kind']):
+                self.check_log(add(good))
+        for name, bad in {'an unknown kind': {'kind': 'tweet', 'date': '2026-11-01', 'title': 'T', 'text': 'W'},
+                          'a thing with no words': {'kind': 'book', 'date': '2026-11-01', 'title': 'T'},
+                          'a photo with no description': {'kind': 'photo', 'date': '2026-11-01'},
+                          'a photo file': {'kind': 'photo', 'date': '2026-11-01', 'shows': 'S', 'image': {'src': 'a.jpg', 'alt': 'a'}},
+                          'a bad date': {'kind': 'note', 'date': '2026-11', 'text': 'T'}}.items():
+            with self.subTest(name), self.assertRaises(build.BuildError):
+                self.check_log(add(bad))
+
 
 
 class CrossChecks(unittest.TestCase):
@@ -124,6 +150,16 @@ class CrossChecks(unittest.TestCase):
         for name, change in cases.items():
             with self.subTest(name), self.assertRaises(build.BuildError):
                 site(change)
+
+    def test_log_rejects(self):
+        cases = {
+            'entries out of order': lambda l: l['entries'].append({'kind': 'note', 'date': '2099-01-01', 'text': 'x'}),
+            'a semicolon in his words': lambda l: l['entries'][0].update(text='Good; great.'),
+            'a middle dot in a place': lambda l: l['entries'][0].update(place='A · B'),
+        }
+        for name, change in cases.items():
+            with self.subTest(name), self.assertRaises(build.BuildError):
+                site(log_change=change)
 
 
 
@@ -193,12 +229,26 @@ class Pages(unittest.TestCase):
         self.assertNotIn(';', text)
         self.assertIn('Full profile: https://jefflouden.com/llms-full.txt', s.llms_txt())
 
-    def test_nothing_for_people_links_to_llms_full(self):
+    def test_log_md(self):
+        def add(l):
+            l['entries'][:0] = [
+                {'kind': 'quote', 'date': '2026-11-01', 'quote': 'Q', 'who': 'W', 'text': 'Why'},
+                {'kind': 'shipped', 'date': '2026-11-01', 'title': 'A thing', 'url': 'https://example.com', 'text': 'It [works](https://example.com/w).'},
+            ]
+        text = site(log_change=add).log_md()
+        self.assertIn('## Quote from W\n\n- Kind: quote\n- Logged: November 1, 2026\n\n> “Q”\n\nIn his words: Why\n', text)
+        self.assertIn('## A thing\n\n- Kind: shipped\n- Logged: November 1, 2026\n- Link: https://example.com\n\nIn his words: It works (https://example.com/w).', text)
+        self.assertIn('## Photo: Gerhard Richter', text)
+        self.assertIn('Nothing logged yet.', site(log_change=lambda l: l.update(entries=[])).log_md())
+        self.assertIn('Log: https://jefflouden.com/log.md', site().llms_txt())
+
+    def test_nothing_for_people_links_to_the_agent_files(self):
         s = site()
         for name, text in [('index.html', s.index_html()), ('404.html', s.not_found_html()), ('index.md', s.index_md()),
                            ('index.txt', s.index_txt()), ('humans.txt', s.humans_txt()), ('sitemap.xml', s.sitemap_xml())]:
             with self.subTest(name):
                 self.assertNotIn('llms-full', text)
+                self.assertNotIn('log.md', text)
 
     def test_semicolon_in_a_product_description_fails(self):
         with self.assertRaises(build.BuildError):

@@ -55,6 +55,7 @@ test('Accept: text/markdown gets index.md', async () => {
   assert.equal(res.headers.get('x-markdown-tokens'), String(Math.ceil(body.length / 4)));
   assert.match(res.headers.get('Link'), /<\/llms\.txt>; rel="describedby"/);
   assert.match(res.headers.get('Link'), /<\/llms-full\.txt>; rel="describedby"/);
+  assert.match(res.headers.get('Link'), /<\/log\.md>; rel="describedby"/);
 });
 
 test('HEAD for Markdown has no body', async () => {
