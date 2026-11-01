@@ -264,6 +264,21 @@ class Pages(unittest.TestCase):
         self.assertEqual(base64.b64decode(photo), (build.SRC / 'vcard-photo.jpg').read_bytes())
 
 
+class Haunting(unittest.TestCase):
+    def test_404_without_javascript_shows_the_first_line(self):
+        page = site().not_found_html()
+        static = re.search(r'<p id="haunt">(.*?)</p>', page).group(1)
+        lines = re.findall(r"'([^']+)'", re.search(r'var lines = \[(.*?)\]', page).group(1))
+        self.assertGreater(len(lines), 1)
+        self.assertEqual(lines[0], static)
+        self.assertFalse(any(';' in line or '·' in line for line in lines))
+
+    def test_flashlight_stays_hidden_without_javascript(self):
+        page = site().index_html()
+        self.assertIn('<div class="flashlight" aria-hidden="true" hidden></div>', page)
+        self.assertRegex(page, r'<button id="flashlight" [^>]*hidden>')
+
+
 class Headers(unittest.TestCase):
     def test_csp_covers_every_inline_script_on_the_static_pages(self):
         s = site()
