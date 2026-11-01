@@ -204,8 +204,9 @@
       view-transition-name: theme-toggle;
     }
 
-    /* In dark mode a soft pool of light follows the pointer and the edges of the page fall into shadow.
-       On touch screens and with reduced motion it stays put. Light mode and print never see it, and without JavaScript it stays hidden. */
+    /* In dark mode a button beside the toggle turns on a flashlight: a soft pool of light follows the pointer and the edges of
+       the page fall into shadow. On touch screens and with reduced motion it stays put. It starts off, the choice is saved in
+       localStorage (flashlight), and light mode, print and no-JS never see the button or the light. */
     .flashlight {
       --x: 50%;
       --y: 40%;
@@ -213,7 +214,7 @@
       inset: 0;
       z-index: 1;
       pointer-events: none;
-      background: radial-gradient(circle 320px at var(--x) var(--y), rgb(0 0 0 / 0) 35%, rgb(0 0 0 / 0.5) 100%);
+      background: radial-gradient(circle 440px at var(--x) var(--y), rgb(0 0 0 / 0) 40%, rgb(0 0 0 / 0.06) 60%, rgb(0 0 0 / 0.16) 80%, rgb(0 0 0 / 0.28) 100%);
       opacity: 0;
       transition: opacity 0.6s;
     }
@@ -222,11 +223,53 @@
       display: none;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) .flashlight { opacity: 1; }
+    #flashlight {
+      position: absolute;
+      top: clamp(16px, 2.5vw, 24px);
+      right: calc(clamp(16px, 2.5vw, 24px) + 30px);
+      display: none;
+      background: none;
+      border: 0;
+      padding: 0;
+      color: var(--ink);
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+      z-index: 2;
     }
 
-    :root[data-theme="dark"] .flashlight { opacity: 1; }
+    #flashlight:hover,
+    #flashlight:focus-visible {
+      opacity: 1;
+    }
+
+    #flashlight:focus-visible {
+      outline: 2px solid var(--blood);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    #flashlight svg {
+      display: block;
+      width: 14px;
+      height: 14px;
+    }
+
+    #flashlight .lens {
+      transition: fill 0.3s;
+    }
+
+    #flashlight[aria-pressed="true"] .lens {
+      fill: currentColor;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) #flashlight:not([hidden]) { display: inline-flex; }
+      :root:not([data-theme="light"])[data-flashlight] .flashlight { opacity: 1; }
+    }
+
+    :root[data-theme="dark"] #flashlight:not([hidden]) { display: inline-flex; }
+    :root[data-theme="dark"][data-flashlight] .flashlight { opacity: 1; }
 
     #theme[hidden] {
       display: none;
@@ -302,6 +345,7 @@
       }
 
       #theme,
+      #flashlight,
       .flashlight {
         display: none;
       }
@@ -317,6 +361,7 @@
   <data class="u-url u-uid" value="https://jefflouden.com/"></data>
   <data class="u-photo" value="https://jefflouden.com/jeffrey-louden-square.jpg"></data>
   <div class="flashlight" aria-hidden="true" hidden></div>
+  <button id="flashlight" type="button" aria-pressed="false" aria-label="Flashlight" hidden><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round"><path class="lens" d="M3.5 1.5h9l-2.25 4.5h-4.5z"/><path d="M5.75 6h4.5v8.5h-4.5z"/><path d="M8 8.75v1.5"/></svg></button>
   <button id="theme" type="button" hidden><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.25"/><path class="half" d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
   <main>
     <p class="print-note">The full résumé is at jefflouden.com/resume.pdf</p>
@@ -420,9 +465,23 @@
       button.hidden = false;
     })();
 
-    // The flashlight follows a mouse or pen. It only shows in dark mode (see the CSS), so in light mode it moves unseen.
+    // The flashlight: a button beside the toggle, shown only in dark mode, turns it on and off and remembers the choice.
+    // The light follows a mouse or pen.
     (function () {
       var light = document.querySelector('.flashlight');
+      var button = document.getElementById('flashlight');
+      var root = document.documentElement;
+      function set(on) {
+        if (on) root.dataset.flashlight = ''; else delete root.dataset.flashlight;
+        button.setAttribute('aria-pressed', on ? 'true' : 'false');
+      }
+      try { set(localStorage.getItem('flashlight') === 'on'); } catch (e) {}
+      button.addEventListener('click', function () {
+        var on = !('flashlight' in root.dataset);
+        set(on);
+        try { if (on) localStorage.setItem('flashlight', 'on'); else localStorage.removeItem('flashlight'); } catch (e) {}
+      });
+      button.hidden = false;
       var still = window.matchMedia('(prefers-reduced-motion: reduce)');
       var frame = 0, x, y;
       document.addEventListener('pointermove', function (e) {

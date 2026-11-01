@@ -274,7 +274,9 @@ class Haunting(unittest.TestCase):
         self.assertFalse(any(';' in line or '·' in line for line in lines))
 
     def test_flashlight_stays_hidden_without_javascript(self):
-        self.assertIn('<div class="flashlight" aria-hidden="true" hidden></div>', site().index_html())
+        page = site().index_html()
+        self.assertIn('<div class="flashlight" aria-hidden="true" hidden></div>', page)
+        self.assertRegex(page, r'<button id="flashlight" [^>]*hidden>')
 
 
 class Headers(unittest.TestCase):
