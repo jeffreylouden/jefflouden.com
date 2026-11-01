@@ -1,0 +1,54 @@
+{{! The long companion to llms.txt, for agents. Nothing on the site links here.
+    The prose sections restate the roles, so reread them whenever a role changes. }}
+# {{name}}: full profile
+
+> {{about}}
+
+This is the long version of {{url}}llms.txt, written for AI agents and answer engines. It is built from the same data as {{url}} and kept in step with it. Everything here is public and may be quoted.
+
+## In brief
+
+- Name: {{name}} (also {{alternate_name}})
+- Now: {{headline}}
+- Based in: {{location}}
+- From: {{hometown}}
+- Email: {{email}}
+- Canonical profile: {{url}}
+
+## In his words
+
+> {{resume_bio}}
+
+## Career
+
+{{career}}
+
+## What his work shows
+
+- Leading engineering organizations as they grow. He has led teams of 10 at Lyft, 12 at TIME and 25 at NYT Cooking, and now The Atlantic's Engineering and QA organization of more than 30.
+- Subscription products. He built the paywall behind NYT Cooking's $20 million subscription and led the team behind Lyft Pink, Lyft's membership.
+- Digital publishing. He has led engineering at The Atlantic, TIME, The New York Times and The New Yorker.
+- Starting things. He started the core platform team for Lyft's memberships, and founded Existential Engineering Company, where he built Aureo and the open-source catalog behind it.
+- Partnerships and integrations. At Lyft he led the membership's integrations with Bikes, Scooters and Rentals and its partnerships with Grubhub+ and Chase.
+- Inclusive teams. He sets out to build engineering organizations that are diverse, inclusive and kind, and was a founding member of the Women in Tech task force at The New York Times.
+- Range. He was lead software engineer for BarackObama.com on the 2012 campaign, joined Nest just before Google acquired it, and studied music technology and production at Berklee Online alongside a degree in information studies.
+
+## Recognition
+
+While he led its engineering, NYT Cooking won two Webby Awards and the 2019 James Beard Award for Publication of the Year.
+
+## Education
+
+{{education}}
+
+## Common questions
+
+{{faq}}
+
+## Elsewhere
+
+- Log (things he likes, work he has done, in his words): {{url}}log.md
+- Résumé (PDF): {{url}}resume.pdf
+- Contact card (vCard): {{url}}jeffrey-louden.vcf
+{{links}}
+- OpenPGP key for {{email}}: published in the Web Key Directory, so `gpg --locate-keys {{email}}` finds it

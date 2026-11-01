@@ -3,6 +3,8 @@
 > Jeffrey Louden (also Jeff Louden) is an engineering executive based in Washington, D.C. He is SVP, Engineering at The Atlantic and the founder of Existential Engineering Company, where he built Aureo.
 
 Canonical profile: https://jefflouden.com/
+Full profile: https://jefflouden.com/llms-full.txt
+Log: https://jefflouden.com/log.md
 Contact: jeff@jefflouden.com
 
 ## Work

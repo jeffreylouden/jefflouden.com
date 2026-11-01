@@ -4,7 +4,7 @@ The site is plain static files in `public/`, served as is. Open `public/index.ht
 
 The pages are built from `src/` by `build.py`, which needs only Python 3:
 
-- `src/site.json` holds the facts (profile, roles, organizations, links), checked against the schema beside it
+- `src/site.json` holds the facts (profile, roles, organizations, links) and `src/log.json` the log, each checked against the schema beside it
 - `src/templates/` holds each page's shell and `src/partials/` the pieces they share
 - `python3 build.py` writes whatever changed into `public/` (and `resume/resume.html`), and `python3 build.py --check` fails if anything is stale
 - `python3 -m unittest discover tests` tests the build and `node --test tests/middleware.test.mjs` the Cloudflare middleware, with nothing to install

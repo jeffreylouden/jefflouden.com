@@ -1,0 +1,57 @@
+# Jeff's form for the log at jefflouden.com/log.md, which only agents are
+# pointed to. Submitting it runs .github/workflows/log-entry.yml, which adds
+# the entry and publishes it. The labels below are the headings
+# scripts/log_entry.py reads, so rename them there too. Kind must stay first:
+# the workflow knows the form by it.
+name: Log entry
+description: Add something to the log agents read at jefflouden.com/log.md
+title: Log entry
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [movie, album, song, book, site, thing, shipped, wrote, spoke, learned, photo, quote, note]
+    validations:
+      required: true
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: Needed for everything but a photo, a quote or a note. Optional for a photo.
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      description: Where it lives, if anywhere.
+      placeholder: https://
+  - type: input
+    id: shows
+    attributes:
+      label: What the photo shows
+      description: Needed for a photo. The picture itself isn't published, so say what's in it.
+  - type: textarea
+    id: quote
+    attributes:
+      label: Quote
+      description: For a quote, without the quotation marks.
+  - type: input
+    id: who
+    attributes:
+      label: Who said it
+  - type: textarea
+    id: text
+    attributes:
+      label: Your words
+      description: Needed for everything but a quote or a photo.
+  - type: input
+    id: place
+    attributes:
+      label: Place
+      description: Optional. A city or a neighborhood, never an address.
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      description: Optional. Leave empty for today.
+      placeholder: YYYY-MM-DD
