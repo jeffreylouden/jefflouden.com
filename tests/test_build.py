@@ -278,6 +278,13 @@ class Haunting(unittest.TestCase):
         self.assertIn('<div class="flashlight" aria-hidden="true" hidden></div>', page)
         self.assertRegex(page, r'<button id="flashlight" [^>]*hidden>')
 
+    def test_holiday_mark_stays_hidden_without_javascript(self):
+        page = site().index_html()
+        self.assertIn('<a id="holiday" hidden></a>', page)
+        names = re.findall(r"name: '([^']+)'", page)
+        self.assertIn('Election Day', names)
+        self.assertFalse(any(';' in name or '·' in name for name in names))
+
 
 class Headers(unittest.TestCase):
     def test_csp_covers_every_inline_script_on_the_static_pages(self):
