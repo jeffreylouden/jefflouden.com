@@ -46,7 +46,7 @@ jobs:
           ISSUE_BODY: ${{ github.event.issue.body }}
         run: python3 scripts/log_entry.py 2> error.txt
       - run: python3 build.py 2> error.txt
-      - run: python3 -m unittest discover tests 2> error.txt && node --test tests/middleware.test.mjs > error.txt 2>&1
+      - run: python3 -m unittest discover tests 2> error.txt && node --test tests/middleware.test.mjs tests/holiday.test.mjs > error.txt 2>&1
       - env:
           MESSAGE: ${{ steps.entry.outputs.message }}
         run: |

@@ -1,6 +1,6 @@
 # Fails when a built file in public/ no longer matches src/, when the data
 # breaks its schema, when security.txt is close to expiring, or when a test
-# of the build, the middleware or the holiday mark fails.
+# of the build, the fixtures script, the middleware or the holiday mark fails.
 name: Build
 on:
   push:

@@ -1,0 +1,50 @@
+# Refreshes Arsenal's Premier League and Champions League fixtures twice a week
+# (dates move for TV), rebuilds, tests, and opens a pull request when anything
+# changed. Cup ties are added to src/arsenal.json by hand and kept as they are.
+# Opening the pull request needs "Allow GitHub Actions to create and approve
+# pull requests" on in the repository's Actions settings.
+name: Arsenal fixtures
+on:
+  schedule:
+    - cron: '17 10 * * 1,4'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: arsenal-fixtures
+  cancel-in-progress: false
+env:
+  GH_TOKEN: ${{ github.token }}
+  BRANCH: arsenal-fixtures
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: python3 scripts/arsenal_fixtures.py
+      - run: python3 build.py
+      - run: python3 -m unittest discover tests
+      - run: node --test tests/middleware.test.mjs tests/holiday.test.mjs
+      - name: Open or update the pull request
+        run: |
+          if git diff --quiet -- src/arsenal.json; then
+            echo "No fixture changes."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -B "$BRANCH"
+          git add src/arsenal.json public
+          git commit -m "Refresh Arsenal fixtures"
+          git push --force origin "$BRANCH"
+          if [ -z "$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
+            gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$BRANCH" \
+              --title "Refresh Arsenal fixtures" \
+              --body "The weekly refresh from fixturedownload.com found new or moved Premier League or Champions League fixtures. The build check and tests passed in the run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          fi

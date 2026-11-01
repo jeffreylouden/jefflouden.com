@@ -1,5 +1,8 @@
-// Tests for the holiday mark on the home page. Run with `node --test tests/holiday.test.mjs`.
-// The page's own script runs against a stand-in for the mark and a clock set to the day under test.
+// Tests for the holiday mark (and the Arsenal match-day cannon) on the home page. Run with `node --test tests/holiday.test.mjs`.
+// The page's own script runs against a stand-in for the mark, a clock set to the day under test, and the test's own
+// list of matches, in New York time.
+
+process.env.TZ = 'America/New_York';
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -10,13 +13,15 @@ const html = await readFile(new URL('../public/index.html', import.meta.url), 'u
 const script = html.match(/<script>\s*(\/\/ The light and dark toggle[\s\S]*?)<\/script>/)[1];
 const holiday = script.slice(script.indexOf('// The holiday mark.'), script.indexOf('// Printing from the keyboard'));
 
-function on(y, m, d) {
+function on(y, m, d, matches = []) {
   const mark = { hidden: true, attrs: {}, setAttribute(k, v) { this.attrs[k] = v; } };
   const Real = Date;
   class Clock extends Real {
     constructor(...a) { super(...(a.length ? a : [y, m - 1, d, 12])); }
   }
-  vm.runInNewContext(holiday, { Date: Clock, Math, document: { getElementById: () => mark } });
+  const src = holiday.replace(/var matches = \(\s*[\s\S]*?\n\s*\);/, `var matches = ${JSON.stringify(matches)};`);
+  assert.notEqual(src, holiday);
+  vm.runInNewContext(src, { Date: Clock, Math, document: { getElementById: () => mark } });
   return mark.hidden ? null : mark;
 }
 
@@ -64,4 +69,34 @@ test('marks without a link are labelled images', () => {
   const m = on(2026, 3, 17);
   assert.equal(m.attrs.role, 'img');
   assert.equal(m.href, undefined);
+});
+
+const liverpool = ['2026-11-01T16:30:00Z', 'Liverpool', false, 'Premier League'];
+const madrid = ['2026-12-09T20:00:00Z', 'Real Madrid', true, 'Champions League'];
+const late = ['2027-01-20T01:00:00Z', 'Somebody', true, 'FA Cup'];
+
+test('a match day shows the cannon, linked to the fixtures, with the kickoff in local time', () => {
+  const m = on(2026, 11, 1, [liverpool]);
+  assert.equal(m.attrs['aria-label'], 'Liverpool v Arsenal today at 11:30 AM, Premier League');
+  assert.equal(m.href, 'https://www.arsenal.com/fixtures');
+  assert.match(m.innerHTML, /accent/);
+  assert.equal(on(2026, 12, 9, [madrid]).attrs['aria-label'], 'Arsenal v Real Madrid today at 3:00 PM, Champions League');
+  assert.equal(on(2026, 12, 10, [madrid]), null);
+});
+
+test('a match goes by the visitor’s own day', () => {
+  assert.match(on(2027, 1, 19, [late]).attrs['aria-label'], /^Arsenal v Somebody today at 8:00 PM, FA Cup/);
+  assert.equal(on(2027, 1, 20, [late]), null);
+});
+
+test('a match takes over a holiday’s run-up, but not the holiday itself', () => {
+  assert.match(on(2026, 11, 1, [liverpool]).attrs['aria-label'], /^Liverpool v Arsenal/);
+  assert.equal(on(2026, 11, 3, [['2026-11-03T20:00:00Z', 'Somebody', true, 'League Cup']]).attrs['aria-label'],
+    'Election Day is today. Find your polling place at vote.gov');
+});
+
+test('the page carries this season’s matches, soonest first', () => {
+  const list = JSON.parse(holiday.match(/var matches = \(\s*([\s\S]*?)\n\s*\);/)[1]);
+  assert.ok(list.length > 0);
+  assert.deepEqual(list.map((m) => m[0]), list.map((m) => m[0]).sort());
 });

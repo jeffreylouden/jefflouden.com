@@ -4,8 +4,8 @@
     python3 build.py           write every page that changed
     python3 build.py --check   change nothing, and fail if any page is stale
 
-The facts live in src/site.json and the log in src/log.json, each checked
-against the schema beside it. The
+The facts live in src/site.json, the log in src/log.json and Arsenal's matches
+in src/arsenal.json, each checked against the schema beside it. The
 page shells live in src/templates, the pieces they share in src/partials. The built files are committed, so the site keeps working, and
 stays editable by hand, without this script. It uses only the Python standard
 library so it should still run in 20 years.
@@ -39,7 +39,7 @@ class BuildError(Exception):
     pass
 
 
-# Schema checks: the subset of JSON Schema the two schemas use.
+# Schema checks: the subset of JSON Schema the schemas use.
 
 def validate(value, schema, root, path='$'):
     if '$ref' in schema:
@@ -203,8 +203,9 @@ def dates_long(start, end):
 # The site.
 
 class Site:
-    def __init__(self, site, log):
+    def __init__(self, site, log, arsenal=None):
         self.site, self.log = site, log
+        self.arsenal = arsenal if arsenal is not None else load('arsenal')
         self.p = site['profile']
         self.orgs = site['organizations']
         self.products = site['products']
@@ -241,6 +242,9 @@ class Site:
         dates = [e['date'] for e in self.log['entries']]
         if dates != sorted(dates, reverse=True):
             raise BuildError('log entries must be newest first')
+        kickoffs = [m['kickoff'] for m in self.arsenal['matches']]
+        if kickoffs != sorted(kickoffs):
+            raise BuildError('Arsenal matches must be soonest first')
         if not any(r['end'] is None for r in self.roles):
             raise BuildError('no current role to take the headline from')
         for key, product in self.products.items():
@@ -441,7 +445,14 @@ class Site:
             'work': self.work_html(),
             'contact': '\n'.join(contact),
             'jsonld': self.jsonld(),
+            'matches': self.matches_js(),
         })
+
+    def matches_js(self):
+        """Arsenal's matches for the page's script: kickoff (UTC), opponent, home, competition, one per line."""
+        rows = [json.dumps([m['kickoff'], m['opponent'], m['home'], m['competition']], ensure_ascii=False).replace('<', '\\u003c')
+                for m in self.arsenal['matches']]
+        return '[\n' + ',\n'.join(rows) + '\n]' if rows else '[]'
 
     # The 404 page.
 
@@ -724,7 +735,7 @@ def security_txt_expiry(text, now=None):
 
 
 def build():
-    site = Site(load('site'), load('log'))
+    site = Site(load('site'), load('log'), load('arsenal'))
     out = {}
     out['public/404.html'] = site.not_found_html()
     out['public/index.html'] = site.index_html()
