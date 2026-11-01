@@ -587,7 +587,7 @@
         { id: 'patrick', name: 'St. Patrick’s Day', date: fixed(3, 17), lead: 0 },
         { id: 'earth', name: 'Earth Day', date: fixed(4, 22), lead: 0, url: 'https://www.earthday.org' },
         { id: 'memorial', name: 'Memorial Day', date: last(5, 1), lead: 0 },
-        { id: 'juneteenth', name: 'Juneteenth', date: fixed(6, 19), lead: 0, url: 'https://nmaahc.si.edu' },
+        { id: 'juneteenth', name: 'Juneteenth', date: fixed(6, 19), lead: 0, url: 'https://www.archives.gov/news/topics/juneteenth' },
         { id: 'july4', name: 'Independence Day', date: fixed(7, 4), lead: 1 },
         { id: 'labor', name: 'Labor Day', date: nth(9, 1, 1), lead: 0 },
         { id: 'halloween', name: 'Halloween', date: fixed(10, 31), lead: 6 },
@@ -612,7 +612,7 @@
       }
       if (game && !(hit && until === 0)) {
         hit = {
-          id: 'arsenal', url: 'https://www.arsenal.com/fixtures',
+          id: 'arsenal', url: 'https://www.arsenal.com/fixtures/men/fixtures',
           always: (game[2] ? 'Arsenal v ' + game[1] : game[1] + ' v Arsenal') + ' today at ' +
             k.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + ', ' + game[3]
         };
