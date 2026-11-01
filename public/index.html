@@ -214,7 +214,7 @@
       inset: 0;
       z-index: 1;
       pointer-events: none;
-      background: radial-gradient(circle 440px at var(--x) var(--y), rgb(0 0 0 / 0) 40%, rgb(0 0 0 / 0.06) 60%, rgb(0 0 0 / 0.16) 80%, rgb(0 0 0 / 0.28) 100%);
+      background: radial-gradient(circle 340px at var(--x) var(--y), rgb(255 236 200 / 0.05) 0, rgb(0 0 0 / 0) 35%, rgb(0 0 0 / 0.18) 55%, rgb(0 0 0 / 0.42) 78%, rgb(0 0 0 / 0.6) 100%);
       opacity: 0;
       transition: opacity 0.6s;
     }
@@ -255,12 +255,37 @@
       height: 14px;
     }
 
+    #flashlight svg,
     #flashlight .lens {
-      transition: fill 0.3s;
+      transition: fill 0.3s, filter 0.3s;
+    }
+
+    /* Turned on, the lens fills and a little warm light spills from it. */
+    #flashlight::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% - 1px);
+      width: 24px;
+      height: 14px;
+      transform: translateX(-50%);
+      background: radial-gradient(ellipse at 50% 100%, rgb(255 236 200 / 0.5), rgb(255 236 200 / 0) 70%);
+      clip-path: polygon(32% 100%, 68% 100%, 100% 0, 0 0);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    #flashlight[aria-pressed="true"]::before {
+      opacity: 1;
     }
 
     #flashlight[aria-pressed="true"] .lens {
       fill: currentColor;
+    }
+
+    #flashlight[aria-pressed="true"] svg {
+      filter: drop-shadow(0 -1px 2px rgb(255 236 200 / 0.6));
     }
 
     @media (prefers-color-scheme: dark) {
