@@ -65,10 +65,12 @@ test('Halloween shows the whole week before', () => {
   assert.equal(on(2026, 10, 24), null);
 });
 
-test('marks without a link are labelled images', () => {
-  const m = on(2026, 3, 17);
-  assert.equal(m.attrs.role, 'img');
-  assert.equal(m.href, undefined);
+test('holidays link to Wikipedia, and Election Day to vote.gov', () => {
+  assert.equal(on(2026, 3, 17).href, 'https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day');
+  assert.equal(on(2026, 6, 19).href, 'https://en.wikipedia.org/wiki/Juneteenth');
+  assert.equal(on(2026, 9, 7).href, 'https://en.wikipedia.org/wiki/Labor_Day_(United_States)');
+  assert.equal(on(2026, 11, 3).href, 'https://vote.gov');
+  assert.equal(on(2026, 3, 17).attrs.role, undefined);
 });
 
 const liverpool = ['2026-11-01T16:30:00Z', 'Liverpool', false, 'Premier League'];

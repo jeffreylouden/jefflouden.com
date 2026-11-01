@@ -534,8 +534,8 @@
       light.hidden = false;
     })();
 
-    // The holiday mark. Each one is a rule (a fixed date, the nth weekday of a month, or Election Day) and how many days
-    // ahead it appears. Icons are drawn on a 24px grid in the page's ink, with an oxblood or Aureo detail here and there.
+    // The holiday mark. Each one is a rule (a fixed date, the nth weekday of a month, or Election Day), how many days
+    // ahead it appears, and where it links: Wikipedia for most, vote.gov for Election Day. Icons are drawn on a 24px grid in the page's ink, with an oxblood or Aureo detail here and there.
     // On an Arsenal match day (in the visitor's own time zone) a gothic A takes the corner, unless a holiday falls that very day.
     (function () {
       var mark = document.getElementById('holiday');
@@ -583,21 +583,21 @@
       // Election Day is the Tuesday after the first Monday in November: the first Tuesday from November 2.
       function election(y) { var d = new Date(y, 10, 2); return new Date(y, 10, 2 + (2 - d.getDay() + 7) % 7); }
       var marks = [
-        { id: 'newyear', name: 'New Year’s Day', date: fixed(1, 1), lead: 1 },
-        { id: 'valentine', name: 'Valentine’s Day', date: fixed(2, 14), lead: 0 },
-        { id: 'presidents', name: 'Presidents’ Day', date: nth(2, 1, 3), lead: 0 },
-        { id: 'pi', name: 'Pi Day', date: fixed(3, 14), lead: 0 },
-        { id: 'patrick', name: 'St. Patrick’s Day', date: fixed(3, 17), lead: 0 },
-        { id: 'earth', name: 'Earth Day', date: fixed(4, 22), lead: 0, url: 'https://www.earthday.org' },
-        { id: 'memorial', name: 'Memorial Day', date: last(5, 1), lead: 0 },
-        { id: 'juneteenth', name: 'Juneteenth', date: fixed(6, 19), lead: 0, url: 'https://www.archives.gov/news/topics/juneteenth' },
-        { id: 'july4', name: 'Independence Day', date: fixed(7, 4), lead: 1 },
-        { id: 'labor', name: 'Labor Day', date: nth(9, 1, 1), lead: 0 },
-        { id: 'halloween', name: 'Halloween', date: fixed(10, 31), lead: 6 },
+        { id: 'newyear', name: 'New Year’s Day', date: fixed(1, 1), lead: 1, url: 'https://en.wikipedia.org/wiki/New_Year%27s_Day' },
+        { id: 'valentine', name: 'Valentine’s Day', date: fixed(2, 14), lead: 0, url: 'https://en.wikipedia.org/wiki/Valentine%27s_Day' },
+        { id: 'presidents', name: 'Presidents’ Day', date: nth(2, 1, 3), lead: 0, url: 'https://en.wikipedia.org/wiki/Presidents%27_Day' },
+        { id: 'pi', name: 'Pi Day', date: fixed(3, 14), lead: 0, url: 'https://en.wikipedia.org/wiki/Pi_Day' },
+        { id: 'patrick', name: 'St. Patrick’s Day', date: fixed(3, 17), lead: 0, url: 'https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day' },
+        { id: 'earth', name: 'Earth Day', date: fixed(4, 22), lead: 0, url: 'https://en.wikipedia.org/wiki/Earth_Day' },
+        { id: 'memorial', name: 'Memorial Day', date: last(5, 1), lead: 0, url: 'https://en.wikipedia.org/wiki/Memorial_Day' },
+        { id: 'juneteenth', name: 'Juneteenth', date: fixed(6, 19), lead: 0, url: 'https://en.wikipedia.org/wiki/Juneteenth' },
+        { id: 'july4', name: 'Independence Day', date: fixed(7, 4), lead: 1, url: 'https://en.wikipedia.org/wiki/Independence_Day_(United_States)' },
+        { id: 'labor', name: 'Labor Day', date: nth(9, 1, 1), lead: 0, url: 'https://en.wikipedia.org/wiki/Labor_Day_(United_States)' },
+        { id: 'halloween', name: 'Halloween', date: fixed(10, 31), lead: 6, url: 'https://en.wikipedia.org/wiki/Halloween' },
         { id: 'election', name: 'Election Day', date: election, lead: 7, url: 'https://vote.gov', cta: 'Find your polling place at vote.gov' },
-        { id: 'veterans', name: 'Veterans Day', date: fixed(11, 11), lead: 0 },
-        { id: 'thanksgiving', name: 'Thanksgiving', date: nth(11, 4, 4), lead: 0 },
-        { id: 'holidays', name: 'Happy holidays', date: fixed(12, 30), lead: 10, always: 'Happy holidays' }
+        { id: 'veterans', name: 'Veterans Day', date: fixed(11, 11), lead: 0, url: 'https://en.wikipedia.org/wiki/Veterans_Day' },
+        { id: 'thanksgiving', name: 'Thanksgiving', date: nth(11, 4, 4), lead: 0, url: 'https://en.wikipedia.org/wiki/Thanksgiving_(United_States)' },
+        { id: 'holidays', name: 'Happy holidays', date: fixed(12, 30), lead: 10, url: 'https://en.wikipedia.org/wiki/Christmas_and_holiday_season', always: 'Happy holidays' }
       ];
       var now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       var hit, i, j, d, until;
