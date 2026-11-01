@@ -1,4 +1,4 @@
-// Tests for the holiday mark (and the Arsenal match-day cannon) on the home page. Run with `node --test tests/holiday.test.mjs`.
+// Tests for the holiday mark (and the Arsenal match-day gothic A) on the home page. Run with `node --test tests/holiday.test.mjs`.
 // The page's own script runs against a stand-in for the mark, a clock set to the day under test, and the test's own
 // list of matches, in New York time.
 
@@ -75,7 +75,7 @@ const liverpool = ['2026-11-01T16:30:00Z', 'Liverpool', false, 'Premier League']
 const madrid = ['2026-12-09T20:00:00Z', 'Real Madrid', true, 'Champions League'];
 const late = ['2027-01-20T01:00:00Z', 'Somebody', true, 'FA Cup'];
 
-test('a match day shows the cannon, linked to the fixtures, with the kickoff in local time', () => {
+test('a match day shows the gothic A, linked to the fixtures, with the kickoff in local time', () => {
   const m = on(2026, 11, 1, [liverpool]);
   assert.equal(m.attrs['aria-label'], 'Liverpool v Arsenal today at 11:30 AM, Premier League');
   assert.equal(m.href, 'https://www.arsenal.com/fixtures');

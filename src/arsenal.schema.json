@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Arsenal fixtures",
-  "description": "Arsenal men's first-team matches for the season, soonest first. On a match day the home page shows a small cannon by the theme toggle. scripts/arsenal_fixtures.py refreshes the Premier League and Champions League from fixturedownload.com and keeps every other competition as it is, so cup ties are added by hand.",
+  "description": "Arsenal men's first-team matches for the season, soonest first. On a match day the home page shows a small gothic A by the theme toggle. scripts/arsenal_fixtures.py refreshes the Premier League and Champions League from fixturedownload.com and keeps every other competition as it is, so cup ties are added by hand.",
   "type": "object",
   "additionalProperties": false,
   "required": ["matches"],
