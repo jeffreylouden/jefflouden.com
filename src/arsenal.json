@@ -1,0 +1,256 @@
+{
+  "$schema": "./arsenal.schema.json",
+  "matches": [
+    {
+      "kickoff": "2026-08-21T19:00:00Z",
+      "opponent": "Coventry",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-08-31T19:00:00Z",
+      "opponent": "Aston Villa",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-09-06T15:30:00Z",
+      "opponent": "Chelsea",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-09-09T19:00:00Z",
+      "opponent": "Napoli",
+      "home": false,
+      "competition": "Champions League"
+    },
+    {
+      "kickoff": "2026-09-12T19:00:00Z",
+      "opponent": "Sunderland",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-09-19T14:00:00Z",
+      "opponent": "Brighton",
+      "home": false,
+      "competition": "Premier League"
+    },
+    { "kickoff": "2026-10-10T11:30:00Z", "opponent": "Leeds", "home": true, "competition": "Premier League" },
+    {
+      "kickoff": "2026-10-13T19:00:00Z",
+      "opponent": "Lille",
+      "home": true,
+      "competition": "Champions League"
+    },
+    {
+      "kickoff": "2026-10-18T15:30:00Z",
+      "opponent": "Nottingham Forest",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-10-21T19:00:00Z",
+      "opponent": "Bayern Munich",
+      "home": false,
+      "competition": "Champions League"
+    },
+    {
+      "kickoff": "2026-10-24T14:00:00Z",
+      "opponent": "Everton",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-11-01T16:30:00Z",
+      "opponent": "Liverpool",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-11-04T20:00:00Z",
+      "opponent": "Slavia Prague",
+      "home": false,
+      "competition": "Champions League"
+    },
+    { "kickoff": "2026-11-07T15:00:00Z", "opponent": "Hull", "home": true, "competition": "Premier League" },
+    {
+      "kickoff": "2026-11-21T17:30:00Z",
+      "opponent": "Newcastle",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-11-24T20:00:00Z",
+      "opponent": "Borussia Dortmund",
+      "home": true,
+      "competition": "Champions League"
+    },
+    {
+      "kickoff": "2026-11-29T16:30:00Z",
+      "opponent": "Manchester City",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-12-02T20:15:00Z",
+      "opponent": "Brentford",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-12-06T16:30:00Z",
+      "opponent": "Tottenham",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-12-09T20:00:00Z",
+      "opponent": "Real Madrid",
+      "home": true,
+      "competition": "Champions League"
+    },
+    {
+      "kickoff": "2026-12-13T14:00:00Z",
+      "opponent": "Bournemouth",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-12-20T16:30:00Z",
+      "opponent": "Manchester United",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-12-27T19:00:00Z",
+      "opponent": "Crystal Palace",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2026-12-30T19:30:00Z",
+      "opponent": "Fulham",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-01-02T15:00:00Z",
+      "opponent": "Ipswich",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-01-05T19:30:00Z",
+      "opponent": "Brentford",
+      "home": true,
+      "competition": "Premier League"
+    },
+    { "kickoff": "2027-01-16T15:00:00Z", "opponent": "Hull", "home": false, "competition": "Premier League" },
+    {
+      "kickoff": "2027-01-20T20:00:00Z",
+      "opponent": "Real Betis",
+      "home": false,
+      "competition": "Champions League"
+    },
+    {
+      "kickoff": "2027-01-23T15:00:00Z",
+      "opponent": "Newcastle",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-01-27T20:00:00Z",
+      "opponent": "Sabah",
+      "home": true,
+      "competition": "Champions League"
+    },
+    {
+      "kickoff": "2027-01-30T15:00:00Z",
+      "opponent": "Manchester City",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-02-06T15:00:00Z",
+      "opponent": "Liverpool",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-02-10T20:00:00Z",
+      "opponent": "Ipswich",
+      "home": false,
+      "competition": "Premier League"
+    },
+    { "kickoff": "2027-02-20T15:00:00Z", "opponent": "Fulham", "home": true, "competition": "Premier League" },
+    {
+      "kickoff": "2027-02-27T15:00:00Z",
+      "opponent": "Manchester United",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-03-03T20:00:00Z",
+      "opponent": "Crystal Palace",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-03-13T15:00:00Z",
+      "opponent": "Chelsea",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-03-20T15:00:00Z",
+      "opponent": "Sunderland",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-04-10T14:00:00Z",
+      "opponent": "Coventry",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-04-17T14:00:00Z",
+      "opponent": "Aston Villa",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-04-24T14:00:00Z",
+      "opponent": "Bournemouth",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-05-01T14:00:00Z",
+      "opponent": "Tottenham",
+      "home": true,
+      "competition": "Premier League"
+    },
+    { "kickoff": "2027-05-08T14:00:00Z", "opponent": "Leeds", "home": false, "competition": "Premier League" },
+    {
+      "kickoff": "2027-05-15T14:00:00Z",
+      "opponent": "Nottingham Forest",
+      "home": true,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-05-23T14:00:00Z",
+      "opponent": "Everton",
+      "home": false,
+      "competition": "Premier League"
+    },
+    {
+      "kickoff": "2027-05-30T15:00:00Z",
+      "opponent": "Brighton",
+      "home": true,
+      "competition": "Premier League"
+    }
+  ]
+}
