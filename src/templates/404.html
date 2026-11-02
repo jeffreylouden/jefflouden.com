@@ -16,6 +16,7 @@
   </style>
 </head>
 <body>
+  <div class="flashlight" aria-hidden="true" hidden></div>
   <main>
     {{> header}}
     <h1 class="intro">404</h1>
@@ -25,10 +26,14 @@
         // Each visit finds the house a little different. The first visit, and every visit without JavaScript, gets the line above.
         (function () { var lines = ['We traced the page. It isn’t coming from inside the site.', 'Nobody’s lived at this address for years.', 'Whatever was here, it’s gone now. Probably.', 'You heard it too? It’s nothing. Go back upstairs.', 'Don’t split up. Head back to the house together.']; var n = 0; try { n = (parseInt(localStorage.getItem('haunt'), 10) + 1) % lines.length || 0; localStorage.setItem('haunt', n); } catch (e) {} document.getElementById('haunt').textContent = lines[n]; })();
       </script>
-      <p><a href="/">Get back to the house</a></p>
+      <p><a class="way-out" href="/">Get back to the house</a></p>
     </div>
   </main>
 
   {{> footer}}
+
+  <script>
+    {{> flashlight}}
+  </script>
 </body>
 </html>

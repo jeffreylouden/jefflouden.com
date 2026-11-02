@@ -204,46 +204,7 @@
       view-transition-name: theme-toggle;
     }
 
-    /* Dark mode is lit by a flashlight: a soft pool of light follows the pointer and the edges of the page fall into shadow.
-       On touch screens and with reduced motion it stays put. Light mode, print and no-JS never see it. */
-    .flashlight {
-      --x: 50%;
-      --y: 40%;
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background: radial-gradient(circle 340px at var(--x) var(--y), rgb(255 236 200 / 0.05) 0, rgb(0 0 0 / 0) 35%, rgb(0 0 0 / 0.18) 55%, rgb(0 0 0 / 0.42) 78%, rgb(0 0 0 / 0.6) 100%);
-      opacity: 0;
-      transition: opacity 0.6s;
-    }
-
-    .flashlight[hidden] {
-      display: none;
-    }
-
-    /* On a Friday the 13th the light flickers once as the page opens. */
-    @keyframes flicker {
-      0%, 100% { opacity: 1; }
-      8% { opacity: 0.15; }
-      14% { opacity: 1; }
-      22% { opacity: 0.3; }
-      27% { opacity: 1; }
-    }
-
-    :root[data-spooky="friday13"] .flashlight {
-      animation: flicker 1.4s 0.4s 1 both;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      :root[data-spooky="friday13"] .flashlight { animation: none; }
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) .flashlight { opacity: 1; }
-    }
-
-    :root[data-theme="dark"] .flashlight { opacity: 1; }
+    /* The flashlight, the line in the dark and the Friday the 13th flicker live in site.css, shared with the 404. */
 
     /* On a holiday, or in the run-up to the few that earn one, a small mark sits beside the toggle. The script below works the dates out from rules, so nothing needs touching each year. A few link out.
        On an Arsenal match day it is a gothic A instead, linked to The Athletic's schedule. Without JavaScript, and in print, it stays hidden. */
@@ -439,9 +400,6 @@
 
       #theme,
       #holiday,
-      .flashlight {
-        display: none;
-      }
 
       .aureo {
         filter: none;
@@ -454,6 +412,7 @@
   <data class="u-url u-uid" value="https://jefflouden.com/"></data>
   <data class="u-photo" value="https://jefflouden.com/jeffrey-louden-square.jpg"></data>
   <div class="flashlight" aria-hidden="true" hidden></div>
+  <div class="ink" aria-hidden="true"><p>Still here?</p></div>
   <button id="theme" type="button" hidden><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.25"/><path class="half" d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
   <a id="holiday" hidden></a>
   <main>
@@ -529,23 +488,7 @@
       button.hidden = false;
     })();
 
-    // The flashlight that lights dark mode follows a mouse or pen. (It used to be a button whose choice was saved, so that is cleared.)
-    (function () {
-      var light = document.querySelector('.flashlight');
-      try { localStorage.removeItem('flashlight'); } catch (e) {}
-      var still = window.matchMedia('(prefers-reduced-motion: reduce)');
-      var frame = 0, x, y;
-      document.addEventListener('pointermove', function (e) {
-        if (e.pointerType === 'touch' || still.matches) return;
-        x = e.clientX; y = e.clientY;
-        if (!frame) frame = requestAnimationFrame(function () {
-          frame = 0;
-          light.style.setProperty('--x', x + 'px');
-          light.style.setProperty('--y', y + 'px');
-        });
-      }, { passive: true });
-      light.hidden = false;
-    })();
+    {{> flashlight}}
 
     // The holiday mark. Each one is a rule (a fixed date, the nth weekday of a month, or Election Day), how many days
     // ahead it appears, and where it links: Wikipedia for most, vote.gov for Election Day. Icons are drawn on a 24px grid in the page's ink, with an oxblood or Aureo detail here and there.

@@ -150,3 +150,49 @@ test('both pages run the spooky days before paint, and the toggle stays hidden o
   for (const page of [html, notFound]) assert.ok(page.indexOf('var spooky') > 0 && page.indexOf('var spooky') < page.indexOf('<body'));
   assert.match(html, /if \(root\.dataset\.spooky\) return;/);
 });
+
+// The flashlight's battery and the things that hide in the dark, run against stand-ins for the page.
+const flashSrc = await readFile(new URL('../src/partials/flashlight.html', import.meta.url), 'utf8');
+function flashlight({ fine = true, still = false, theme = 'dark' } = {}) {
+  const props = {}, handlers = {}, ticks = [];
+  let now = 0;
+  const root = { dataset: theme ? { theme } : {}, style: { setProperty: (k, v) => { props[k] = v; } } };
+  const ctx = {
+    Math, localStorage: { removeItem() {} },
+    performance: { now: () => now },
+    requestAnimationFrame: (f) => f(),
+    setInterval: (f) => ticks.push(f), setTimeout: () => 0,
+    window: { matchMedia: (q) => ({ matches: q.includes('pointer') ? fine : q.includes('reduced') ? still : true }) },
+    document: { documentElement: root, hidden: false, querySelector: (s) => (s === '.flashlight' ? { hidden: true } : null), addEventListener: (t, f) => { handlers[t] = f; } },
+  };
+  vm.runInNewContext(flashSrc, ctx);
+  return {
+    root, props,
+    wait: (s) => { for (let i = 0; i < s; i++) ticks.forEach((f) => f()); },
+    move: (x, y, dt = 16) => { now += dt; handlers.pointermove({ clientX: x, clientY: y, pointerType: 'mouse' }); },
+  };
+}
+
+test('the light can hide things only where it can move', () => {
+  assert.ok('lit' in flashlight().root.dataset);
+  assert.ok(!('lit' in flashlight({ fine: false }).root.dataset));
+  assert.ok(!('lit' in flashlight({ still: true }).root.dataset));
+});
+
+test('the battery fades after two minutes of dark mode, and a shake brings it back', () => {
+  const f = flashlight();
+  f.wait(120);
+  assert.equal(f.props['--fr'], '340px');
+  f.wait(150);
+  assert.ok(parseInt(f.props['--fr'], 10) < 220, f.props['--fr']);
+  f.move(100, 100);
+  for (let i = 0; i < 30; i++) f.move(i % 2 ? 100 : 400, 100, 16);
+  assert.equal(f.props['--fr'], '340px');
+  assert.equal(f.props['--fx'], '100px');
+});
+
+test('the battery only runs down in dark mode', () => {
+  const f = flashlight({ theme: 'light' });
+  f.wait(300);
+  assert.equal(f.props['--fr'], undefined);
+});
