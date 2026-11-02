@@ -276,7 +276,8 @@ class Haunting(unittest.TestCase):
     def test_flashlight_stays_hidden_without_javascript(self):
         page = site().index_html()
         self.assertIn('<div class="flashlight" aria-hidden="true" hidden></div>', page)
-        self.assertRegex(page, r'<button id="flashlight" [^>]*hidden>')
+        self.assertNotIn('id="flashlight"', page)
+        self.assertNotIn('data-flashlight', page)
 
     def test_holiday_mark_stays_hidden_without_javascript(self):
         page = site().index_html()
