@@ -30,7 +30,7 @@ jobs:
       - run: python3 scripts/arsenal_fixtures.py
       - run: python3 build.py
       - run: python3 -m unittest discover tests
-      - run: node --test tests/middleware.test.mjs tests/holiday.test.mjs
+      - run: node --test tests/middleware.test.mjs tests/holiday.test.mjs tests/contrast.test.mjs
       - name: Open or update the pull request
         run: |
           if git diff --quiet -- src/arsenal.json; then

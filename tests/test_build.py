@@ -290,6 +290,29 @@ class Haunting(unittest.TestCase):
         for rule in re.findall(r'^[^{}\n]*(?:\.ink \{ display: block|\.way-out:not)[^{}\n]*', css, re.M):
             self.assertIn('[data-lit]', rule)
 
+    def test_each_feature_has_its_own_script(self):
+        page = site().index_html()
+        scripts = re.findall(r'<script>(.*?)</script>', page, re.S)
+        for marker in ('The light and dark toggle', 'The flashlight that lights dark mode', 'The holiday mark.',
+                       'The email copies on a plain click', 'Printing from the keyboard', 'For whoever opens the console'):
+            self.assertEqual(sum(marker in js for js in scripts), 1, marker)
+
+    def test_the_holiday_mark_sits_in_the_main_landmark(self):
+        page = site().index_html()
+        main = re.search(r'<main>(.*?)</main>', page, re.S).group(1)
+        self.assertIn('<a id="holiday" hidden></a>', main)
+
+    def test_scripts_stay_under_budget(self):
+        page = site().index_html()
+        self.assertLess(build.inline_script_bytes(page), build.SCRIPT_BUDGET)
+        with self.assertRaises(build.BuildError):
+            original = build.SCRIPT_BUDGET
+            try:
+                build.SCRIPT_BUDGET = 1000
+                build.build()
+            finally:
+                build.SCRIPT_BUDGET = original
+
     def test_shortcuts_and_email_still_work_without_javascript(self):
         page = site().index_html()
         self.assertRegex(page, r'<dialog id="keys"[^>]*>')

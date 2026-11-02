@@ -430,8 +430,8 @@
   <div class="flashlight" aria-hidden="true" hidden></div>
   <div class="ink" aria-hidden="true"><p>Still here?</p></div>
   <button id="theme" type="button" hidden><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.25"/><path class="half" d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
-  <a id="holiday" hidden></a>
   <main>
+    <a id="holiday" hidden></a>
     <p class="print-note">The full résumé is at jefflouden.com/resume.pdf</p>
     <header>
       <h1 class="p-name">Jeffrey Louden</h1>
@@ -512,6 +512,7 @@
     <span><span class="p-locality">Washington, D.C.</span> <span class="sep">/</span> <a href="https://github.com/jeffreylouden/jefflouden.com">Source</a></span>
   </footer>
 
+  <!-- Each feature has its own script, so one that fails can never stop the others. -->
   <script>
     // The light and dark toggle. It shows the current mode and is labelled with the next; a choice that matches
     // the system setting is forgotten so the system decides again.
@@ -544,6 +545,8 @@
       button.hidden = false;
     })();
 
+  </script>
+  <script>
     // The flashlight that lights dark mode, on both pages. It follows a mouse or pen, and the page is marked data-lit so the
     // line in the margin and the 404's way out can hide in the dark. On touch screens and with reduced motion it stays put
     // and nothing hides. Its battery: after two minutes of dark mode it narrows, cools and starts to flicker over the next
@@ -592,13 +595,15 @@
       (function flicker() {
         var low = charge < 0.45 && dark();
         if (low) {
-          root.style.setProperty('--fd', '0.5');
+          root.style.setProperty('--fd', '0.22');
           setTimeout(function () { root.style.setProperty('--fd', '0'); }, 70 + Math.random() * 90);
         }
         setTimeout(flicker, low ? 600 + Math.random() * 2200 * (charge + 0.2) : 1000);
       })();
     })();
 
+  </script>
+  <script>
     // The holiday mark. Each one is a rule (a fixed date, the nth weekday of a month, or Election Day), how many days
     // ahead it appears, and where it links: Wikipedia for most, vote.gov for Election Day. Icons are drawn on a 24px grid in the page's ink, with an oxblood or Aureo detail here and there.
     // On an Arsenal match day (in the visitor's own time zone) a gothic A takes the corner, unless a holiday falls that very day.
@@ -752,6 +757,8 @@
       mark.hidden = false;
     })();
 
+  </script>
+  <script>
     // The email copies on a plain click (a modified click, or no clipboard, still opens the mail app), the résumé
     // starts loading when a pointer or focus reaches its link, and a few keys do the obvious: t for light or dark,
     // r for the résumé, e to copy the email, ? to list them.
@@ -805,6 +812,8 @@
       });
     })();
 
+  </script>
+  <script>
     // Printing from the keyboard opens the résumé, the printable version of this page.
     // Printing from the browser's menu still prints the page, pointing to the résumé.
     document.addEventListener('keydown', function (e) {
@@ -814,6 +823,8 @@
       }
     });
 
+  </script>
+  <script>
         // For whoever opens the console: the name (drawn after Instrument Sans), a whisper, and where things live.
     console.log('%c' + [
       "   █       ▄▀  ▄▀                   █                 █",
@@ -847,7 +858,7 @@
           "url": "https://jefflouden.com/",
           "name": "Jeffrey Louden, SVP, Engineering at The Atlantic",
           "inLanguage": "en-US",
-          "dateModified": "2026-11-01T21:56:37-05:00",
+          "dateModified": "2026-11-01T22:10:06-05:00",
           "isPartOf": { "@id": "https://jefflouden.com/#website" },
           "mainEntity": { "@id": "https://jefflouden.com/#person" },
           "primaryImageOfPage": { "@type": "ImageObject", "url": "https://jefflouden.com/og.png", "width": 1200, "height": 630 }

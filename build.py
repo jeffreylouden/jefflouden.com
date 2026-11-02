@@ -734,6 +734,15 @@ def security_txt_expiry(text, now=None):
         raise BuildError(f'public/.well-known/security.txt expires in {left} days. Push Expires forward a year.')
 
 
+# The home page's own scripts (not the JSON-LD) stay under this many bytes, uncompressed, so the page stays light.
+SCRIPT_BUDGET = 32 * 1024
+
+
+def inline_script_bytes(page):
+    return sum(len(js.encode('utf-8')) for attrs, js in re.findall(r'<script([^>]*)>(.*?)</script>', page, re.S)
+               if 'ld+json' not in attrs)
+
+
 def build():
     site = Site(load('site'), load('log'), load('arsenal'))
     out = {}
@@ -756,6 +765,9 @@ def build():
     ld = re.search(r'<script type="application/ld\+json">(.*?)</script>', out['public/index.html'], re.S).group(1)
     json.loads(ld)
     json.loads(out['public/.well-known/ai-catalog.json'])
+    scripts = inline_script_bytes(out['public/index.html'])
+    if scripts > SCRIPT_BUDGET:
+        raise BuildError(f'the home page\'s inline scripts are {scripts:,} bytes, over the {SCRIPT_BUDGET:,} byte budget')
     for n, line in enumerate(out['public/index.txt'].splitlines(), 1):
         if len(line) > 80:
             raise BuildError(f'public/index.txt line {n} is {len(line)} columns, over 80')

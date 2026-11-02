@@ -103,7 +103,7 @@
       (function flicker() {
         var low = charge < 0.45 && dark();
         if (low) {
-          root.style.setProperty('--fd', '0.5');
+          root.style.setProperty('--fd', '0.22');
           setTimeout(function () { root.style.setProperty('--fd', '0'); }, 70 + Math.random() * 90);
         }
         setTimeout(flicker, low ? 600 + Math.random() * 2200 * (charge + 0.2) : 1000);
