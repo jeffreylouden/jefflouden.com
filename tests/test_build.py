@@ -279,6 +279,13 @@ class Haunting(unittest.TestCase):
         self.assertNotIn('id="flashlight"', page)
         self.assertNotIn('data-flashlight', page)
 
+    def test_shortcuts_and_email_still_work_without_javascript(self):
+        page = site().index_html()
+        self.assertRegex(page, r'<dialog id="keys"[^>]*>')
+        self.assertNotRegex(page, r'<dialog id="keys"[^>]*\bopen\b')
+        self.assertRegex(page, r'<a class="u-email" href="mailto:[^"]+" rel="me">')
+        self.assertIn('press ? on the page', page)
+
     def test_holiday_mark_stays_hidden_without_javascript(self):
         page = site().index_html()
         self.assertIn('<a id="holiday" hidden></a>', page)
