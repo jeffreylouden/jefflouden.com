@@ -282,13 +282,21 @@ class Haunting(unittest.TestCase):
     def test_the_dark_hides_nothing_without_javascript(self):
         s = site()
         page, nf = s.index_html(), s.not_found_html()
-        self.assertIn('<div class="ink" aria-hidden="true"><p>Still here?</p></div>', page)
+        self.assertIn('<div class="ink" aria-hidden="true" hidden><p>Still here?</p></div>', page)
         self.assertIn('<div class="flashlight" aria-hidden="true" hidden></div>', nf)
         self.assertIn('<a class="way-out" href="/">Get back to the house</a>', nf)
         css = (build.PUBLIC / 'site.css').read_text(encoding='utf-8')
         # The line and the way out only hide once the script marks the page data-lit.
-        for rule in re.findall(r'^[^{}\n]*(?:\.ink \{ display: block|\.way-out:not)[^{}\n]*', css, re.M):
+        for rule in re.findall(r'^[^{}\n]*(?:\.ink:not\(\[hidden\]\) \{ display: block|\.way-out:not)[^{}\n]*', css, re.M):
             self.assertIn('[data-lit]', rule)
+        self.assertEqual(len(re.findall(r'\.ink:not\(\[hidden\]\) \{ display: block', css)), 2)
+
+    def test_pages_link_the_stylesheet_by_its_contents(self):
+        digest = hashlib.sha256((build.PUBLIC / 'site.css').read_bytes()).hexdigest()[:10]
+        s = site()
+        for page in (s.index_html(), s.not_found_html()):
+            self.assertIn(f'<link rel="stylesheet" href="/site.css?v={digest}">', page)
+            self.assertNotIn('href="/site.css"', page)
 
     def test_each_feature_has_its_own_script(self):
         page = site().index_html()

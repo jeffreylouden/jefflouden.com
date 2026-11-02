@@ -226,6 +226,7 @@ class Site:
             'url': self.p['url'],
             'location': self.p['location']['display'],
             'year': self.year,
+            'css': css_href(),
         }
 
     def check(self):
@@ -732,6 +733,13 @@ def security_txt_expiry(text, now=None):
     left = (expires - now).days
     if left < 90:
         raise BuildError(f'public/.well-known/security.txt expires in {left} days. Push Expires forward a year.')
+
+
+def css_href():
+    """The shared stylesheet's address, with a fingerprint of its contents, so a change reaches every browser at once
+    instead of waiting out the browser cache (Cloudflare tells browsers to keep it for a month)."""
+    digest = hashlib.sha256((PUBLIC / 'site.css').read_bytes()).hexdigest()[:10]
+    return f'/site.css?v={digest}'
 
 
 # The home page's own scripts (not the JSON-LD) stay under this many bytes, uncompressed, so the page stays light.

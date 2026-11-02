@@ -158,7 +158,7 @@ function flashlight({ fine = true, still = false, theme = 'dark' } = {}) {
   let now = 0;
   const root = { dataset: theme ? { theme } : {}, style: { setProperty: (k, v) => { props[k] = v; } } };
   const ctx = {
-    Math, localStorage: { removeItem() {} },
+    Math, localStorage: { removeItem() {} }, getComputedStyle: () => ({ position: 'fixed' }),
     performance: { now: () => now },
     requestAnimationFrame: (f) => f(),
     setInterval: (f) => ticks.push(f), setTimeout: () => 0,

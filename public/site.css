@@ -280,11 +280,11 @@ footer a {
 :root[data-theme="dark"] .flashlight { opacity: 1; }
 
 @media (min-width: 900px) and (prefers-color-scheme: dark) {
-  :root[data-lit]:not([data-theme="light"]) .ink { display: block; }
+  :root[data-lit]:not([data-theme="light"]) .ink:not([hidden]) { display: block; }
 }
 
 @media (min-width: 900px) {
-  :root[data-lit][data-theme="dark"] .ink { display: block; }
+  :root[data-lit][data-theme="dark"] .ink:not([hidden]) { display: block; }
 }
 
 @media (prefers-color-scheme: dark) {
