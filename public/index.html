@@ -368,6 +368,76 @@
       }
     }
 
+    /* Clicking the email copies it, and says so quietly beside it. */
+    .copied {
+      margin-left: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .copied.on {
+      opacity: 1;
+    }
+
+    /* Keyboard shortcuts, listed by pressing ? (t, r, e). Without JavaScript the list never opens. */
+    #keys {
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: var(--paper);
+      color: var(--ink);
+      padding: 20px 24px;
+      min-width: 220px;
+      font: inherit;
+    }
+
+    #keys:focus,
+    #keys:focus-visible {
+      outline: none;
+    }
+
+    #keys::backdrop {
+      background: rgb(0 0 0 / 0.3);
+    }
+
+    #keys h2 {
+      margin: 0 0 14px;
+    }
+
+    #keys dl {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+    }
+
+    #keys dl div {
+      display: flex;
+      gap: 14px;
+      align-items: baseline;
+    }
+
+    #keys dt {
+      width: 1.75em;
+    }
+
+    #keys dd {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    kbd {
+      display: inline-block;
+      min-width: 1.6em;
+      padding: 3px 6px;
+      border: 1px solid var(--rule);
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      font: 500 12px/1 var(--sans);
+      text-align: center;
+      color: var(--ink);
+    }
+
     .print-note {
       display: none;
     }
@@ -458,15 +528,25 @@
       <h2 id="contact">Contact</h2>
       <address>
         <ul class="contact">
-          <!--email_off--><li><a class="u-email" href="mailto:jeff@jefflouden.com" rel="me">jeff@jefflouden.com</a></li><!--/email_off-->
+          <!--email_off--><li><a class="u-email" href="mailto:jeff@jefflouden.com" rel="me">jeff@jefflouden.com</a><span class="copied" aria-live="polite"></span></li><!--/email_off-->
           <li><a class="u-url" href="https://github.com/jeffreylouden" rel="me" data-brand="ink">GitHub</a></li>
           <li><a class="u-url" href="https://www.linkedin.com/in/jeffreylouden/" rel="me" data-brand="linkedin">LinkedIn</a></li>
-          <li><a href="resume.pdf" type="application/pdf">Résumé (PDF)</a></li>
+          <li><a id="resume" href="resume.pdf" type="application/pdf">Résumé (PDF)</a></li>
           <li><a href="jeffrey-louden.vcf" type="text/vcard" download>Save contact</a></li>
         </ul>
       </address>
     </section>
   </main>
+
+  <dialog id="keys" aria-labelledby="keys-title">
+    <h2 id="keys-title">Keyboard</h2>
+    <dl>
+      <div><dt><kbd>t</kbd></dt><dd id="keys-theme">Light or dark</dd></div>
+      <div><dt><kbd>r</kbd></dt><dd>Résumé</dd></div>
+      <div><dt><kbd>e</kbd></dt><dd>Copy email</dd></div>
+      <div><dt><kbd>?</kbd></dt><dd>These keys</dd></div>
+    </dl>
+  </dialog>
 
   <footer>
     <small>© <time datetime="2009">2009</time>–<time datetime="2026">2026</time> <a href="/">Jeffrey Louden</a></small>
@@ -676,6 +756,59 @@
       mark.hidden = false;
     })();
 
+    // The email copies on a plain click (a modified click, or no clipboard, still opens the mail app), the résumé
+    // starts loading when a pointer or focus reaches its link, and a few keys do the obvious: t for light or dark,
+    // r for the résumé, e to copy the email, ? to list them.
+    (function () {
+      var root = document.documentElement;
+      var email = document.querySelector('.u-email');
+      var note = email.nextElementSibling;
+      var keys = document.getElementById('keys');
+      var timer;
+      function copy(fallback) {
+        if (!navigator.clipboard || !window.isSecureContext) return false;
+        navigator.clipboard.writeText(email.textContent).then(function () {
+          note.textContent = 'Copied';
+          note.classList.add('on');
+          clearTimeout(timer);
+          timer = setTimeout(function () { note.classList.remove('on'); }, 1600);
+        }, fallback || function () {});
+        return true;
+      }
+      email.addEventListener('click', function (e) {
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (copy(function () { location.href = email.href; })) e.preventDefault();
+      });
+      var resume = document.getElementById('resume'), fetched = false;
+      function prefetch() {
+        if (fetched) return;
+        fetched = true;
+        var link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = 'resume.pdf';
+        document.head.appendChild(link);
+      }
+      resume.addEventListener('pointerenter', prefetch);
+      resume.addEventListener('focus', prefetch);
+      if (root.dataset.spooky) document.getElementById('keys-theme').textContent = 'Light or dark (not tonight)';
+      keys.addEventListener('click', function (e) { if (e.target === keys) keys.close(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.metaKey || e.ctrlKey || e.altKey || e.defaultPrevented || e.repeat) return;
+        var tag = e.target && e.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)) return;
+        var theme = document.getElementById('theme');
+        if (e.key === '?') {
+          e.preventDefault();
+          if (keys.open) keys.close(); else keys.showModal();
+          return;
+        }
+        if (keys.open && e.key !== 'Escape') keys.close();
+        if (e.key === 't' && !theme.hidden) theme.click();
+        else if (e.key === 'r') window.open('resume.pdf', '_blank', 'noopener');
+        else if (e.key === 'e') copy();
+      });
+    })();
+
     // Printing from the keyboard opens the résumé, the printable version of this page.
     // Printing from the browser's menu still prints the page, pointing to the résumé.
     document.addEventListener('keydown', function (e) {
@@ -701,6 +834,7 @@
       "  markdown  curl -H \"Accept: text/markdown\" https://jefflouden.com/",
       "  llms.txt  https://jefflouden.com/llms.txt",
       "  résumé    https://jefflouden.com/resume.pdf",
+      "  keys      press ? on the page",
       "  email     jeff@jefflouden.com"
     ].join('\n'),
       'font: 12px ui-monospace, Menlo, Consolas, monospace; color: #6b6b6b',
@@ -717,7 +851,7 @@
           "url": "https://jefflouden.com/",
           "name": "Jeffrey Louden, SVP, Engineering at The Atlantic",
           "inLanguage": "en-US",
-          "dateModified": "2026-11-01T19:03:43-05:00",
+          "dateModified": "2026-11-01T21:11:22-05:00",
           "isPartOf": { "@id": "https://jefflouden.com/#website" },
           "mainEntity": { "@id": "https://jefflouden.com/#person" },
           "primaryImageOfPage": { "@type": "ImageObject", "url": "https://jefflouden.com/og.png", "width": 1200, "height": 630 }
