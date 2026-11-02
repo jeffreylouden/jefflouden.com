@@ -10,8 +10,8 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
-const script = html.match(/<script>\s*(\/\/ The light and dark toggle[\s\S]*?)<\/script>/)[1];
-const holiday = script.slice(script.indexOf('// The holiday mark.'), script.indexOf('// The email copies on a plain click'));
+// The holiday mark has a script of its own on the page (each feature does, so one failing never stops the others).
+const holiday = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]).find((js) => js.includes('// The holiday mark.'));
 
 function on(y, m, d, matches = [], spooky = '') {
   const mark = { hidden: true, attrs: {}, setAttribute(k, v) { this.attrs[k] = v; } };
