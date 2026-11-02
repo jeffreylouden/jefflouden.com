@@ -279,6 +279,17 @@ class Haunting(unittest.TestCase):
         self.assertNotIn('id="flashlight"', page)
         self.assertNotIn('data-flashlight', page)
 
+    def test_the_dark_hides_nothing_without_javascript(self):
+        s = site()
+        page, nf = s.index_html(), s.not_found_html()
+        self.assertIn('<div class="ink" aria-hidden="true"><p>Still here?</p></div>', page)
+        self.assertIn('<div class="flashlight" aria-hidden="true" hidden></div>', nf)
+        self.assertIn('<a class="way-out" href="/">Get back to the house</a>', nf)
+        css = (build.PUBLIC / 'site.css').read_text(encoding='utf-8')
+        # The line and the way out only hide once the script marks the page data-lit.
+        for rule in re.findall(r'^[^{}\n]*(?:\.ink \{ display: block|\.way-out:not)[^{}\n]*', css, re.M):
+            self.assertIn('[data-lit]', rule)
+
     def test_shortcuts_and_email_still_work_without_javascript(self):
         page = site().index_html()
         self.assertRegex(page, r'<dialog id="keys"[^>]*>')

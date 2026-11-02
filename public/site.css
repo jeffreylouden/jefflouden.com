@@ -203,6 +203,100 @@ footer a {
   }
 }
 
+/* Dark mode is lit by a flashlight on both pages: a soft pool of light follows the pointer and the edges fall into shadow.
+   The script in src/partials/flashlight.html moves it (--fx, --fy) and runs its battery (--fr, --fw, --fd), and marks the
+   page data-lit where the light can move (a mouse or pen, without reduced motion). Light mode, print and no-JS never see it. */
+:root {
+  --fx: 50%;
+  --fy: 40%;
+  --fr: 340px;
+  --fw: 0.05;
+  --fd: 0;
+}
+
+.flashlight {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle var(--fr) at var(--fx) var(--fy), rgb(255 236 200 / var(--fw)) 0, rgb(0 0 0 / var(--fd)) 35%, rgb(0 0 0 / 0.18) 55%, rgb(0 0 0 / 0.42) 78%, rgb(0 0 0 / 0.6) 100%);
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+
+.flashlight[hidden] {
+  display: none;
+}
+
+/* Writing in the dark: a line in the right margin, only readable where the light falls. */
+.ink {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(circle calc(var(--fr) * 0.42) at var(--fx) var(--fy), #000 0, rgb(0 0 0 / 0.5) 45%, transparent 100%);
+  mask-image: radial-gradient(circle calc(var(--fr) * 0.42) at var(--fx) var(--fy), #000 0, rgb(0 0 0 / 0.5) 45%, transparent 100%);
+}
+
+.ink p {
+  position: absolute;
+  right: clamp(20px, 3vw, 36px);
+  top: 36vh;
+  margin: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font: 400 15px/1.4 var(--serif);
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  opacity: 0.55;
+}
+
+/* On a Friday the 13th the light flickers once as the page opens. */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  8% { opacity: 0.15; }
+  14% { opacity: 1; }
+  22% { opacity: 0.3; }
+  27% { opacity: 1; }
+}
+
+:root[data-spooky="friday13"] .flashlight {
+  animation: flicker 1.4s 0.4s 1 both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-spooky="friday13"] .flashlight { animation: none; }
+}
+
+/* In dark mode the light is on. Where it can move, the line shows in a wide enough window, and the 404's way out only
+   shows where the light finds it (a keyboard's focus always shows it). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .flashlight { opacity: 1; }
+}
+
+:root[data-theme="dark"] .flashlight { opacity: 1; }
+
+@media (min-width: 900px) and (prefers-color-scheme: dark) {
+  :root[data-lit]:not([data-theme="light"]) .ink { display: block; }
+}
+
+@media (min-width: 900px) {
+  :root[data-lit][data-theme="dark"] .ink { display: block; }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-lit]:not([data-theme="light"]) .way-out:not(:focus-visible) {
+    -webkit-mask-image: radial-gradient(circle 120px at var(--wx, -999px) var(--wy, -999px), #000 0, transparent 100%);
+    mask-image: radial-gradient(circle 120px at var(--wx, -999px) var(--wy, -999px), #000 0, transparent 100%);
+  }
+}
+
+:root[data-lit][data-theme="dark"] .way-out:not(:focus-visible) {
+  -webkit-mask-image: radial-gradient(circle 120px at var(--wx, -999px) var(--wy, -999px), #000 0, transparent 100%);
+  mask-image: radial-gradient(circle 120px at var(--wx, -999px) var(--wy, -999px), #000 0, transparent 100%);
+}
+
 /* Print in light, whatever mode is on screen. */
 @media print {
   :root:not(#print) {
@@ -218,5 +312,15 @@ footer a {
     --aureo-3: #8f7f2f;
     --aureo-4: #337a9d;
     --aureo-5: #4f5fbf;
+  }
+
+  .flashlight,
+  .ink {
+    display: none !important;
+  }
+
+  .way-out {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
   }
 }
