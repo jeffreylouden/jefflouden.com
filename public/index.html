@@ -220,9 +220,8 @@
       view-transition-name: theme-toggle;
     }
 
-    /* In dark mode a button beside the toggle turns on a flashlight: a soft pool of light follows the pointer and the edges of
-       the page fall into shadow. On touch screens and with reduced motion it stays put. It starts off, the choice is saved in
-       localStorage (flashlight), and light mode, print and no-JS never see the button or the light. */
+    /* Dark mode is lit by a flashlight: a soft pool of light follows the pointer and the edges of the page fall into shadow.
+       On touch screens and with reduced motion it stays put. Light mode, print and no-JS never see it. */
     .flashlight {
       --x: 50%;
       --y: 40%;
@@ -239,71 +238,6 @@
       display: none;
     }
 
-    #flashlight {
-      position: absolute;
-      top: clamp(16px, 2.5vw, 24px);
-      right: calc(clamp(16px, 2.5vw, 24px) + 30px);
-      display: none;
-      background: none;
-      border: 0;
-      padding: 0;
-      color: var(--ink);
-      cursor: pointer;
-      opacity: 0.8;
-      transition: opacity 0.2s;
-      z-index: 2;
-    }
-
-    #flashlight:hover,
-    #flashlight:focus-visible {
-      opacity: 1;
-    }
-
-    #flashlight:focus-visible {
-      outline: 2px solid var(--blood);
-      outline-offset: 3px;
-      border-radius: 2px;
-    }
-
-    #flashlight svg {
-      display: block;
-      width: 14px;
-      height: 14px;
-    }
-
-    #flashlight svg,
-    #flashlight .lens {
-      transition: fill 0.3s, filter 0.3s;
-    }
-
-    /* Turned on, the lens fills and a little warm light spills from it. */
-    #flashlight::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: calc(100% - 1px);
-      width: 24px;
-      height: 14px;
-      transform: translateX(-50%);
-      background: radial-gradient(ellipse at 50% 100%, rgb(255 236 200 / 0.5), rgb(255 236 200 / 0) 70%);
-      clip-path: polygon(32% 100%, 68% 100%, 100% 0, 0 0);
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-    }
-
-    #flashlight[aria-pressed="true"]::before {
-      opacity: 1;
-    }
-
-    #flashlight[aria-pressed="true"] .lens {
-      fill: currentColor;
-    }
-
-    #flashlight[aria-pressed="true"] svg {
-      filter: drop-shadow(0 -1px 2px rgb(255 236 200 / 0.6));
-    }
-
     /* On a Friday the 13th the light flickers once as the page opens. */
     @keyframes flicker {
       0%, 100% { opacity: 1; }
@@ -313,24 +247,21 @@
       27% { opacity: 1; }
     }
 
-    :root[data-spooky="friday13"][data-flashlight] .flashlight {
+    :root[data-spooky="friday13"] .flashlight {
       animation: flicker 1.4s 0.4s 1 both;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      :root[data-spooky="friday13"][data-flashlight] .flashlight { animation: none; }
+      :root[data-spooky="friday13"] .flashlight { animation: none; }
     }
 
     @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) #flashlight:not([hidden]) { display: inline-flex; }
-      :root:not([data-theme="light"])[data-flashlight] .flashlight { opacity: 1; }
+      :root:not([data-theme="light"]) .flashlight { opacity: 1; }
     }
 
-    :root[data-theme="dark"] #flashlight:not([hidden]) { display: inline-flex; }
-    :root[data-theme="dark"][data-flashlight] .flashlight { opacity: 1; }
+    :root[data-theme="dark"] .flashlight { opacity: 1; }
 
-    /* On a holiday, or in the run-up to the few that earn one, a small mark sits beside the toggle (and the flashlight in
-       dark mode). The script below works the dates out from rules, so nothing needs touching each year. A few link out.
+    /* On a holiday, or in the run-up to the few that earn one, a small mark sits beside the toggle. The script below works the dates out from rules, so nothing needs touching each year. A few link out.
        On an Arsenal match day it is a gothic A instead, linked to The Athletic's schedule. Without JavaScript, and in print, it stays hidden. */
     #holiday {
       position: absolute;
@@ -358,11 +289,6 @@
       border-radius: 2px;
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) #holiday { right: calc(clamp(16px, 2.5vw, 24px) + 60px); }
-    }
-
-    :root[data-theme="dark"] #holiday { right: calc(clamp(16px, 2.5vw, 24px) + 60px); }
 
     #holiday svg {
       display: block;
@@ -458,7 +384,6 @@
       }
 
       #theme,
-      #flashlight,
       #holiday,
       .flashlight {
         display: none;
@@ -475,7 +400,6 @@
   <data class="u-url u-uid" value="https://jefflouden.com/"></data>
   <data class="u-photo" value="https://jefflouden.com/jeffrey-louden-square.jpg"></data>
   <div class="flashlight" aria-hidden="true" hidden></div>
-  <button id="flashlight" type="button" aria-pressed="false" aria-label="Flashlight" hidden><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round"><path class="lens" d="M3.5 1.5h9l-2.25 4.5h-4.5z"/><path d="M5.75 6h4.5v8.5h-4.5z"/><path d="M8 8.75v1.5"/></svg></button>
   <button id="theme" type="button" hidden><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.25"/><path class="half" d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg></button>
   <a id="holiday" hidden></a>
   <main>
@@ -581,23 +505,10 @@
       button.hidden = false;
     })();
 
-    // The flashlight: a button beside the toggle, shown only in dark mode, turns it on and off and remembers the choice.
-    // The light follows a mouse or pen.
+    // The flashlight that lights dark mode follows a mouse or pen. (It used to be a button whose choice was saved, so that is cleared.)
     (function () {
       var light = document.querySelector('.flashlight');
-      var button = document.getElementById('flashlight');
-      var root = document.documentElement;
-      function set(on) {
-        if (on) root.dataset.flashlight = ''; else delete root.dataset.flashlight;
-        button.setAttribute('aria-pressed', on ? 'true' : 'false');
-      }
-      try { set(localStorage.getItem('flashlight') === 'on'); } catch (e) {}
-      button.addEventListener('click', function () {
-        var on = !('flashlight' in root.dataset);
-        set(on);
-        try { if (on) localStorage.setItem('flashlight', 'on'); else localStorage.removeItem('flashlight'); } catch (e) {}
-      });
-      button.hidden = false;
+      try { localStorage.removeItem('flashlight'); } catch (e) {}
       var still = window.matchMedia('(prefers-reduced-motion: reduce)');
       var frame = 0, x, y;
       document.addEventListener('pointermove', function (e) {
@@ -806,7 +717,7 @@
           "url": "https://jefflouden.com/",
           "name": "Jeffrey Louden, SVP, Engineering at The Atlantic",
           "inLanguage": "en-US",
-          "dateModified": "2026-11-01T16:58:30-05:00",
+          "dateModified": "2026-11-01T19:03:43-05:00",
           "isPartOf": { "@id": "https://jefflouden.com/#website" },
           "mainEntity": { "@id": "https://jefflouden.com/#person" },
           "primaryImageOfPage": { "@type": "ImageObject", "url": "https://jefflouden.com/og.png", "width": 1200, "height": 630 }
