@@ -25,13 +25,14 @@
     if (spooky) { document.documentElement.dataset.theme = 'dark'; document.documentElement.dataset.spooky = spooky; }
   </script>
   <link rel="icon" href="/favicon.ico" sizes="48x48">
-  <link rel="stylesheet" href="/site.css?v=2b03a6fbe5">
+  <link rel="stylesheet" href="/site.css?v=4df17b70d6">
   <style>
     /* Shared styles live in site.css. These are this page's own. */
     .note { display: grid; gap: 12px; }
   </style>
 </head>
 <body>
+  <div class="flashlight-glow" aria-hidden="true" hidden></div>
   <div class="flashlight" aria-hidden="true" hidden></div>
   <main>
     <header>
@@ -64,6 +65,8 @@
       if (!light) return;
       try { localStorage.removeItem('flashlight'); } catch (e) {}
       light.hidden = false;
+      var glow = document.querySelector('.flashlight-glow');
+      if (glow) glow.hidden = false;
       var fine = window.matchMedia('(hover: hover) and (pointer: fine)'), still = window.matchMedia('(prefers-reduced-motion: reduce)'), system = window.matchMedia('(prefers-color-scheme: dark)');
       if (!fine.matches || still.matches) return;
       root.dataset.lit = '';

@@ -39,3 +39,15 @@ test('every kind of text keeps 4.5:1 in the flashlight’s deepest shadow', () =
     }
   }
 });
+
+test('the warm glow behind the text never lifts the page so far that muted text loses 4.5:1', () => {
+  const bg = hex(token(darkBlocks[0], 'paper')), muted = hex(token(darkBlocks[0], 'muted'));
+  const glow = css.match(/\.flashlight-glow \{[^}]*background:\s*radial-gradient\(([^;]*)\);/)[1];
+  const warm = Math.max(...[...glow.matchAll(/calc\(var\(--fw\) \* ([\d.]+)\)/g)].map((m) => +m[1]));
+  const fw = +css.match(/--fw:\s*([\d.]+)/)[1];
+  const lifted = mix([255, 236, 200], bg, warm * fw);
+  const r = ratio(muted, lifted);
+  assert.ok(r >= 4.5, `muted text on the brightest glow is ${r.toFixed(2)}:1`);
+  // And the glow sits behind the text, so its shadow never touches the words.
+  assert.match(css, /\.flashlight-glow \{[^}]*z-index: -1;/);
+});

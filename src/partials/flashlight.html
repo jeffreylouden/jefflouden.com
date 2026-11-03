@@ -7,6 +7,8 @@
   if (!light) return;
   try { localStorage.removeItem('flashlight'); } catch (e) {}
   light.hidden = false;
+  var glow = document.querySelector('.flashlight-glow');
+  if (glow) glow.hidden = false;
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)'), still = window.matchMedia('(prefers-reduced-motion: reduce)'), system = window.matchMedia('(prefers-color-scheme: dark)');
   if (!fine.matches || still.matches) return;
   root.dataset.lit = '';
