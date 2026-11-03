@@ -25,7 +25,7 @@
     if (spooky) { document.documentElement.dataset.theme = 'dark'; document.documentElement.dataset.spooky = spooky; }
   </script>
   <link rel="icon" href="/favicon.ico" sizes="48x48">
-  <link rel="stylesheet" href="/site.css?v=4df17b70d6">
+  <link rel="stylesheet" href="/site.css?v=337219a113">
   <style>
     /* Shared styles live in site.css. These are this page's own. */
     .note { display: grid; gap: 12px; }
@@ -76,6 +76,7 @@
         ink.hidden = false;
         if (getComputedStyle(ink).position !== 'fixed') ink.hidden = true; // Its styles never arrived, so keep it out of sight.
       }
+
       var out = document.querySelector('.way-out'), frame = 0, x, y, lx = null, ly = null, lt = 0, shake = 0, charge = 1, lit = 0;
       function dark() { return root.dataset.theme ? root.dataset.theme === 'dark' : system.matches; }
       function power() {

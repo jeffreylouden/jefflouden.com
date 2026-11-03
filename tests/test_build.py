@@ -282,7 +282,7 @@ class Haunting(unittest.TestCase):
     def test_the_dark_hides_nothing_without_javascript(self):
         s = site()
         page, nf = s.index_html(), s.not_found_html()
-        self.assertIn('<div class="ink" aria-hidden="true" hidden><p>Still here?</p></div>', page)
+        self.assertIn('<div class="ink" aria-hidden="true" hidden><p>Don’t turn around.</p></div>', page)
         self.assertIn('<div class="flashlight" aria-hidden="true" hidden></div>', nf)
         self.assertIn('<a class="way-out" href="/">Get back to the house</a>', nf)
         css = (build.PUBLIC / 'site.css').read_text(encoding='utf-8')

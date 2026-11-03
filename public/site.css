@@ -214,6 +214,7 @@ footer a {
   --fr: 340px;
   --fw: 0.05;
   --fd: 0;
+  --fs: 0.24;
 }
 
 .flashlight {
@@ -221,13 +222,20 @@ footer a {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(circle var(--fr) at var(--fx) var(--fy), rgb(255 236 200 / var(--fw)) 0, rgb(0 0 0 / var(--fd)) 35%, rgb(0 0 0 / 0.08) 55%, rgb(0 0 0 / 0.17) 78%, rgb(0 0 0 / 0.24) 100%);
+  background: radial-gradient(circle var(--fr) at var(--fx) var(--fy), rgb(255 236 200 / var(--fw)) 0, rgb(0 0 0 / var(--fd)) 35%, rgb(0 0 0 / calc(var(--fs) * 0.33)) 55%, rgb(0 0 0 / calc(var(--fs) * 0.71)) 78%, rgb(0 0 0 / var(--fs)) 100%);
   opacity: 0;
   transition: opacity 0.6s;
 }
 
 .flashlight[hidden] {
   display: none;
+}
+
+/* Where the light can move, the text away from it falls further into shadow (--fs, the darkest the layer above gets),
+   since pointing at a line brings it back. It never drops below 3:1. Phones and reduced motion, where the light
+   can't move, keep the 24% that holds every line at 4.5:1. */
+:root[data-lit] {
+  --fs: 0.42;
 }
 
 /* The light's glow, painted behind the text: a warm pool around the pointer and deep shadow at the edges. Behind the
