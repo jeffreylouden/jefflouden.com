@@ -9,13 +9,14 @@
   <meta name="color-scheme" content="light dark">
   {{> theme}}
   <link rel="icon" href="/favicon.ico" sizes="48x48">
-  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="{{css}}">
   <style>
     /* Shared styles live in site.css. These are this page's own. */
     .note { display: grid; gap: 12px; }
   </style>
 </head>
 <body>
+  <div class="flashlight-glow" aria-hidden="true" hidden></div>
   <div class="flashlight" aria-hidden="true" hidden></div>
   <main>
     {{> header}}

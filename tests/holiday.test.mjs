@@ -153,21 +153,22 @@ test('both pages run the spooky days before paint, and the toggle stays hidden o
 
 // The flashlight's battery and the things that hide in the dark, run against stand-ins for the page.
 const flashSrc = await readFile(new URL('../src/partials/flashlight.html', import.meta.url), 'utf8');
-function flashlight({ fine = true, still = false, theme = 'dark' } = {}) {
-  const props = {}, handlers = {}, ticks = [];
+function flashlight({ fine = true, still = false, theme = 'dark', ink = null, stored = null } = {}) {
+  const props = {}, handlers = {}, ticks = [], later = [], saved = {};
   let now = 0;
   const root = { dataset: theme ? { theme } : {}, style: { setProperty: (k, v) => { props[k] = v; } } };
   const ctx = {
-    Math, localStorage: { removeItem() {} },
+    Math, localStorage: { removeItem() {}, getItem: () => stored, setItem: (k, v) => { saved[k] = String(v); } }, getComputedStyle: () => ({ position: 'fixed', getPropertyValue: () => '340px' }),
     performance: { now: () => now },
     requestAnimationFrame: (f) => f(),
-    setInterval: (f) => ticks.push(f), setTimeout: () => 0,
+    setInterval: (f) => ticks.push(f), setTimeout: (f, ms) => { if (ms > 2000) later.push(f); return 0; },
     window: { matchMedia: (q) => ({ matches: q.includes('pointer') ? fine : q.includes('reduced') ? still : true }) },
-    document: { documentElement: root, hidden: false, querySelector: (s) => (s === '.flashlight' ? { hidden: true } : null), addEventListener: (t, f) => { handlers[t] = f; } },
+    document: { documentElement: root, hidden: false, querySelector: (s) => (s === '.flashlight' ? { hidden: true } : s === '.ink' ? ink : null), addEventListener: (t, f) => { handlers[t] = f; } },
   };
   vm.runInNewContext(flashSrc, ctx);
   return {
-    root, props,
+    root, props, saved, later,
+    tick: (ms) => { now += ms; ticks.forEach((f) => f()); },
     wait: (s) => { for (let i = 0; i < s; i++) ticks.forEach((f) => f()); },
     move: (x, y, dt = 16) => { now += dt; handlers.pointermove({ clientX: x, clientY: y, pointerType: 'mouse' }); },
   };
@@ -196,3 +197,4 @@ test('the battery only runs down in dark mode', () => {
   f.wait(300);
   assert.equal(f.props['--fr'], undefined);
 });
+

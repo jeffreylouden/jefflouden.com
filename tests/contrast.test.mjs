@@ -27,15 +27,37 @@ test('both dark copies of the tokens agree', () => {
   for (const name of ['paper', 'ink', 'muted']) assert.equal(new Set(darkBlocks.map((b) => token(b, name))).size, 1, name);
 });
 
-test('every kind of text keeps 4.5:1 in the flashlight’s deepest shadow', () => {
+const kinds = () => {
   const bg = hex(token(darkBlocks[0], 'paper')), ink = hex(token(darkBlocks[0], 'ink')), muted = hex(token(darkBlocks[0], 'muted'));
+  return { bg, list: [['body text', ink], ['muted text', muted], ['links (80% opacity)', mix(ink, bg, 0.8)]] };
+};
+const worst = (a) => { const { bg, list } = kinds(); return Math.min(...list.map(([, c]) => ratio(dim(c, a), dim(bg, a)))); };
+
+test('the layer above the text darkens no further than --fs, at every stop', () => {
   const gradient = css.match(/\.flashlight \{[^}]*background:\s*radial-gradient\(([^;]*)\);/)[1];
-  const shadow = Math.max(...[...gradient.matchAll(/rgb\(0 0 0 \/ ([\d.]+)\)/g)].map((m) => +m[1]));
+  assert.equal([...gradient.matchAll(/rgb\(0 0 0 \/ ([\d.]+)\)/g)].length, 0, 'no fixed shadow stops, only --fs');
+  for (const m of gradient.matchAll(/calc\(var\(--fs\) \* ([\d.]+)\)/g)) assert.ok(+m[1] <= 1);
+});
+
+test('phones and reduced motion keep 4.5:1 in the deepest shadow, and the flicker too', () => {
+  const fs = +css.match(/:root \{[^}]*--fs:\s*([\d.]+)/)[1];
   const flicker = Math.max(...[...flashlight.matchAll(/'--fd', '([\d.]+)'/g)].map((m) => +m[1]));
-  for (const a of [shadow, flicker]) {
-    for (const [name, color] of [['body text', ink], ['muted text', muted], ['links (80% opacity)', mix(ink, bg, 0.8)]]) {
-      const r = ratio(dim(color, a), dim(bg, a));
-      assert.ok(r >= 4.5, `${name} at ${a * 100}% shadow is ${r.toFixed(2)}:1`);
-    }
-  }
+  for (const a of [fs, flicker]) assert.ok(worst(a) >= 4.5, `${a * 100}% shadow leaves ${worst(a).toFixed(2)}:1`);
+});
+
+test('where the light can move, text far from it never drops below 3:1', () => {
+  const fs = +css.match(/:root\[data-lit\] \{[^}]*--fs:\s*([\d.]+)/)[1];
+  assert.ok(worst(fs) >= 3, `${fs * 100}% shadow leaves ${worst(fs).toFixed(2)}:1`);
+});
+
+test('the warm glow behind the text never lifts the page so far that muted text loses 4.5:1', () => {
+  const bg = hex(token(darkBlocks[0], 'paper')), muted = hex(token(darkBlocks[0], 'muted'));
+  const glow = css.match(/\.flashlight-glow \{[^}]*background:\s*radial-gradient\(([^;]*)\);/)[1];
+  const warm = Math.max(...[...glow.matchAll(/calc\(var\(--fw\) \* ([\d.]+)\)/g)].map((m) => +m[1]));
+  const fw = +css.match(/--fw:\s*([\d.]+)/)[1];
+  const lifted = mix([255, 236, 200], bg, warm * fw);
+  const r = ratio(muted, lifted);
+  assert.ok(r >= 4.5, `muted text on the brightest glow is ${r.toFixed(2)}:1`);
+  // And the glow sits behind the text, so its shadow never touches the words.
+  assert.match(css, /\.flashlight-glow \{[^}]*z-index: -1;/);
 });

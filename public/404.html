@@ -25,13 +25,14 @@
     if (spooky) { document.documentElement.dataset.theme = 'dark'; document.documentElement.dataset.spooky = spooky; }
   </script>
   <link rel="icon" href="/favicon.ico" sizes="48x48">
-  <link rel="stylesheet" href="/site.css">
+  <link rel="stylesheet" href="/site.css?v=337219a113">
   <style>
     /* Shared styles live in site.css. These are this page's own. */
     .note { display: grid; gap: 12px; }
   </style>
 </head>
 <body>
+  <div class="flashlight-glow" aria-hidden="true" hidden></div>
   <div class="flashlight" aria-hidden="true" hidden></div>
   <main>
     <header>
@@ -64,9 +65,18 @@
       if (!light) return;
       try { localStorage.removeItem('flashlight'); } catch (e) {}
       light.hidden = false;
+      var glow = document.querySelector('.flashlight-glow');
+      if (glow) glow.hidden = false;
       var fine = window.matchMedia('(hover: hover) and (pointer: fine)'), still = window.matchMedia('(prefers-reduced-motion: reduce)'), system = window.matchMedia('(prefers-color-scheme: dark)');
       if (!fine.matches || still.matches) return;
       root.dataset.lit = '';
+      // The line in the margin stays hidden in the page itself until now, so a stale or missing stylesheet can never show it.
+      var ink = document.querySelector('.ink');
+      if (ink) {
+        ink.hidden = false;
+        if (getComputedStyle(ink).position !== 'fixed') ink.hidden = true; // Its styles never arrived, so keep it out of sight.
+      }
+
       var out = document.querySelector('.way-out'), frame = 0, x, y, lx = null, ly = null, lt = 0, shake = 0, charge = 1, lit = 0;
       function dark() { return root.dataset.theme ? root.dataset.theme === 'dark' : system.matches; }
       function power() {

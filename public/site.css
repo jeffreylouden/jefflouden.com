@@ -214,6 +214,7 @@ footer a {
   --fr: 340px;
   --fw: 0.05;
   --fd: 0;
+  --fs: 0.24;
 }
 
 .flashlight {
@@ -221,12 +222,36 @@ footer a {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(circle var(--fr) at var(--fx) var(--fy), rgb(255 236 200 / var(--fw)) 0, rgb(0 0 0 / var(--fd)) 35%, rgb(0 0 0 / 0.08) 55%, rgb(0 0 0 / 0.17) 78%, rgb(0 0 0 / 0.24) 100%);
+  background: radial-gradient(circle var(--fr) at var(--fx) var(--fy), rgb(255 236 200 / var(--fw)) 0, rgb(0 0 0 / var(--fd)) 35%, rgb(0 0 0 / calc(var(--fs) * 0.33)) 55%, rgb(0 0 0 / calc(var(--fs) * 0.71)) 78%, rgb(0 0 0 / var(--fs)) 100%);
   opacity: 0;
   transition: opacity 0.6s;
 }
 
 .flashlight[hidden] {
+  display: none;
+}
+
+/* Where the light can move, the text away from it falls further into shadow (--fs, the darkest the layer above gets),
+   since pointing at a line brings it back. It never drops below 3:1. Phones and reduced motion, where the light
+   can't move, keep the 24% that holds every line at 4.5:1. */
+:root[data-lit] {
+  --fs: 0.42;
+}
+
+/* The light's glow, painted behind the text: a warm pool around the pointer and deep shadow at the edges. Behind the
+   text it can be strong, because it only darkens the page around the words, never the words themselves, so contrast
+   only improves. The layer above (.flashlight) dims the text a little and stays capped for contrast. */
+.flashlight-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(circle calc(var(--fr) * 1.15) at var(--fx) var(--fy), rgb(255 236 200 / calc(var(--fw) * 2.4)) 0, rgb(255 236 200 / calc(var(--fw) * 0.8)) 22%, rgb(0 0 0 / 0) 42%, rgb(0 0 0 / 0.35) 68%, rgb(0 0 0 / 0.7) 100%);
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+
+.flashlight-glow[hidden] {
   display: none;
 }
 
@@ -263,28 +288,32 @@ footer a {
   27% { opacity: 1; }
 }
 
-:root[data-spooky="friday13"] .flashlight {
+:root[data-spooky="friday13"] .flashlight,
+:root[data-spooky="friday13"] .flashlight-glow {
   animation: flicker 1.4s 0.4s 1 both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root[data-spooky="friday13"] .flashlight { animation: none; }
+  :root[data-spooky="friday13"] .flashlight,
+  :root[data-spooky="friday13"] .flashlight-glow { animation: none; }
 }
 
 /* In dark mode the light is on. Where it can move, the line shows in a wide enough window, and the 404's way out only
    shows where the light finds it (a keyboard's focus always shows it). */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .flashlight { opacity: 1; }
+  :root:not([data-theme="light"]) .flashlight,
+  :root:not([data-theme="light"]) .flashlight-glow { opacity: 1; }
 }
 
-:root[data-theme="dark"] .flashlight { opacity: 1; }
+:root[data-theme="dark"] .flashlight,
+:root[data-theme="dark"] .flashlight-glow { opacity: 1; }
 
 @media (min-width: 900px) and (prefers-color-scheme: dark) {
-  :root[data-lit]:not([data-theme="light"]) .ink { display: block; }
+  :root[data-lit]:not([data-theme="light"]) .ink:not([hidden]) { display: block; }
 }
 
 @media (min-width: 900px) {
-  :root[data-lit][data-theme="dark"] .ink { display: block; }
+  :root[data-lit][data-theme="dark"] .ink:not([hidden]) { display: block; }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -317,6 +346,7 @@ footer a {
   }
 
   .flashlight,
+  .flashlight-glow,
   .ink {
     display: none !important;
   }
