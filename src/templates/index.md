@@ -15,6 +15,6 @@
 - Résumé (PDF): https://jefflouden.com/resume.pdf
 - Contact card (vCard): https://jefflouden.com/jeffrey-louden.vcf
 
-© 2009–{{year}} {{name}}, {{location}}
+© 2000–{{year}} {{name}}, {{location}}
 
 https://jefflouden.com/

@@ -28,7 +28,7 @@
   markdown   curl -H "Accept: text/markdown" https://jefflouden.com/
   source     https://github.com/jeffreylouden/jefflouden.com
 
-  Washington, D.C.   © 2009–2026 Jeffrey Louden
+  Washington, D.C.   © 2000–2026 Jeffrey Louden
 
   You came in through the back door. We left it unlocked for you.
 

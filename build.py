@@ -380,7 +380,7 @@ class Site:
                 'inLanguage': 'en-US',
                 'publisher': {'@id': person},
                 'copyrightHolder': {'@id': person},
-                'copyrightYear': 2009,
+                'copyrightYear': 2000,
             },
             {
                 '@type': 'Person',
